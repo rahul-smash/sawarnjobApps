@@ -4,7 +4,7 @@
     package="com.sarwarajobsapp">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name="com.markrap.MyApp"
@@ -18,11 +18,14 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ThanksActivity"
+            android:exported="false" />
+        <activity
             android:name=".base.BaseActivity"
             android:exported="false" />
         <activity
-            android:exported="true"
             android:name=".splash.SplashActivity"
+            android:exported="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,6 +35,9 @@
         </activity>
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".dashboard.MainActivity" />
+        <activity android:name=".activity.ThanksActivity" />
+        <activity android:name=".activity.NewPostionScreen" />
+        <activity android:name=".activity.PersonInfoActivity" />
     </application>
 
 </manifest>

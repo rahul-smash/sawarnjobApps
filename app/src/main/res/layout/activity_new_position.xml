@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+
+            android:id="@+id/ll_sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:visibility="visible">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtTile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bottom_line"
+                android:hint="Title"
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none">
+
+                <EditText
+                    android:id="@+id/txtUsername"
+                    style="@style/EditText.Login"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center|left"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <Spinner
+                android:id="@+id/spinerSelectSkilColor"
+
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+
+                android:layout_centerInParent="true"
+
+                android:layout_gravity="top"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@+id/txtMonths"
+                android:background="@drawable/spinner_background"
+                android:gravity="center"></Spinner>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtCompanyName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bottom_line"
+                android:hint="Company Name"
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none">
+
+                <EditText
+                    android:id="@+id/txtEmail"
+                    style="@style/EditText.Login"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center|left"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bottom_line"
+                android:hint="Location"
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none">
+
+                <EditText
+                    android:id="@+id/txtMobile"
+                    style="@style/EditText.Login"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center|left"
+                    android:inputType="number"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edittext_bg"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/txtSelectYourPhoto"
+                    style="@style/EditText.Login"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edittext_bg"
+                    android:drawableEnd="@drawable/calendericon"
+                    android:gravity="center|left"
+                    android:hint="Start Date"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_light_gray" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+
+
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edittext_bg"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/txtEOD"
+                    style="@style/EditText.Login"
+                    android:layout_width="0dp"
+
+
+                    android:layout_height="50dp"
+                    android:layout_weight="1.4"
+                    android:background="@drawable/edittext_bg"
+                    android:drawableEnd="@drawable/calendericon"
+                    android:gravity="center|left"
+
+                    android:hint="End Date"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true" />
+
+
+            </LinearLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputDOB"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bottom_line"
+                android:hint="Job Role Description "
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none">
+
+                <EditText
+                    android:id="@+id/txtJobRpleDescritpion"
+                    style="@style/EditText.Login"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="left"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_sign_in"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButtonRememberMe"
+                    style="@style/TextAppearance.AppCompat.Small"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:background="@android:color/transparent"
+                    android:checked="false"
+                    android:text="Remember me"
+                    android:textColor="@color/color_dark_gray"
+                    android:textSize="15dp"
+                    android:visibility="gone" />
+
+
+            </RelativeLayout>
+
+            <fontspackageForTextView.Regular
+                android:id="@+id/verify_btn"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="right"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edittext_bg"
+
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Next"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/text_size_normal"
+                android:visibility="visible" />
+
+            <fontspackageForTextView.Regular
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="right"
+                android:layout_marginTop="20dp"
+                android:background="@color/goldencolor"
+                android:contentDescription=""
+                android:gravity="center"
+                android:minHeight="10dp"
+                android:padding="10dp"
+                android:text="Next"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_size_normal"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+
+    </ScrollView>
+</RelativeLayout>

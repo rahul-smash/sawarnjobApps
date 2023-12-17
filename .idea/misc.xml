@@ -19,7 +19,10 @@
         <entry key="app/src/main/res/layout/activity_base2.xml" value="0.14447463768115942" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.14447463768115942" />
+        <entry key="app/src/main/res/layout/activity_new_position.xml" value="0.11302083333333333" />
+        <entry key="app/src/main/res/layout/activity_personal_info.xml" value="0.11302083333333333" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_thanks.xml" value="0.11302083333333333" />
         <entry key="app/src/main/res/layout/confirmbox.xml" value="0.1" />
         <entry key="app/src/main/res/layout/home_menu_layout.xml" value="0.14447463768115942" />
         <entry key="app/src/main/res/layout/progress_dialog.xml" value="0.1" />
