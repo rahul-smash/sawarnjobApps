@@ -3,7 +3,7 @@ package com.sarwarajobsapp.util;
 import android.app.ProgressDialog;
 import android.content.Context;
 
-import com.markrap.R;
+import com.sarwarajobsapp.R;
 
 
 /**
