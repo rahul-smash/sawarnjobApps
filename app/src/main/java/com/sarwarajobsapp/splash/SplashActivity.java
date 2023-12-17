@@ -1,8 +1,7 @@
 package com.sarwarajobsapp.splash;
 
-import android.Manifest;
+
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
@@ -14,40 +13,38 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import com.app.preferences.SavePreferences;
-import com.sarwarajobsapp.MainActivity;
 import com.sarwarajobsapp.R;
 import com.sarwarajobsapp.base.BaseActivity;
+import com.sarwarajobsapp.login.LoginActivity;
 import com.sarwarajobsapp.utility.AppConstants;
 
 
 public class SplashActivity extends BaseActivity {
 
     private static final int DEFAULT_DELAY = 1000;
+    private TextView  txtNext;
+    private ImageView imageViewLogo;
+
     private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
-         //   startActivity(LoginActivity.getIntent(SplashActivity.this));
-           // finish();
+            startActivity(LoginActivity.getIntent(SplashActivity.this));
+           finish();
         }
     };
-    private TextView textViewAppName;
-    private ImageView imageViewLogo;
 
     @Override
     protected void setUp()
-       {
+    {
 
         setUpStatusBar();
         initViews();
         animateLogo();
         animateAppName();
-        requestPermissions();
-
-       }
+        //requestPermissions();
+       checkSession();
+    }
 
 
 
@@ -65,8 +62,6 @@ public class SplashActivity extends BaseActivity {
         AnimationSet animationSet = new AnimationSet(true);
         animationSet.addAnimation(translateAnimation);
         animationSet.addAnimation(alphaAnimation);
-        textViewAppName.setAnimation(animationSet);
-        textViewAppName.animate();
     }
 
     private void animateLogo() {
@@ -89,7 +84,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void initViews() {
-        textViewAppName = findViewById(R.id.tv_app_name);
+        txtNext=findViewById(R.id.txtNext);
         imageViewLogo = findViewById(R.id.iv_logo);
     }
 
@@ -110,11 +105,10 @@ public class SplashActivity extends BaseActivity {
         }
         else
         {
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+         //   startActivity(new Intent(SplashActivity.this, SamraddhiActionaleActivity.class));
             finish();
         }
     }
-
 
     private void openMainScreen() {
         new Handler().postDelayed(runnable, DEFAULT_DELAY);
@@ -122,19 +116,19 @@ public class SplashActivity extends BaseActivity {
 
 
 
-    private void foregroundService()
+    /*private void foregroundService()
     {
 
         checkSession();
 
-    }
+    }*/
 
 
 
-    private void requestPermissions() {
+  /*  private void requestPermissions() {
         try {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1001);
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1001);
             }
             else
             {
@@ -145,8 +139,8 @@ public class SplashActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
-
-    @Override
+*/
+ /*   @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
@@ -168,7 +162,7 @@ public class SplashActivity extends BaseActivity {
             }
         }
     }
-
+*/
 
 
 

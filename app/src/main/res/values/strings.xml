@@ -8,7 +8,8 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
+    <string name="str_best_app">The Best App for Find \n Your Dream Job</string>
+    <string name="str_splash_app">Semper in cursus magna et eu varius \n nunc adipsiscing.Elementum justo, \n laoreet id sem. </string>
+    <string name="str_login">LOGIN</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <!--    <string name="googlemapkey">AIzaSyDx4bX2PBXd7Aj3q4cgTnl2ZTE41Ta-SxQ</string>-->
 </resources>

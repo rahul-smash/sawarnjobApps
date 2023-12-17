@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+        android:name="com.markrap.MyApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -14,17 +15,23 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SarwarajobsApp"
-        tools:targetApi="31">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".base.BaseActivity"
+            android:exported="false" />
+        <activity
+            android:exported="true"
+            android:name=".splash.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".login.LoginActivity" />
+        <activity android:name=".dashboard.MainActivity" />
     </application>
 
 </manifest>

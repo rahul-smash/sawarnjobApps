@@ -9,8 +9,8 @@ import android.content.SharedPreferences;
  */
 public class PrefHelper {
 
-    public static final String MyPREFERENCES = BuildConfig.APPLICATION_ID + ".PREF";
-    public static final String DEVICE_TOKEN = BuildConfig.APPLICATION_ID + ".DEVICE_TOKEN";
+    public static final String MyPREFERENCES =  ".PREF";
+    public static final String DEVICE_TOKEN =  ".DEVICE_TOKEN";
 
     public static PrefHelper cInstance;
     private Context _ctx;

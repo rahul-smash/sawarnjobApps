@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "565316116435",
+    "project_id": "sarwarajobsapp",
+    "storage_bucket": "sarwarajobsapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:565316116435:android:a61f8a1f68b5eadf911926",
+        "android_client_info": {
+          "package_name": "com.sarwarajobsapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAH6pWfd1f5OyNgqzZ6CTQ79UqTBOgMqnw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
