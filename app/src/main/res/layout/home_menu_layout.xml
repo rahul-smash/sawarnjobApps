@@ -6,6 +6,8 @@
 
 
     <LinearLayout
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:id="@+id/MainLinearView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,61 +15,103 @@
         android:background="@color/colorWhite"
         android:orientation="vertical">
 
-        <LinearLayout
 
-            android:id="@+id/linearHome_btn"
+
+            <LinearLayout
+                android:id="@+id/llPersonalInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+
+                <ImageView
+                    android:layout_gravity="center|left"
+                    android:id="@+id/iv_p_info"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/txtPersonInfo"
+                    android:src="@drawable/calendericon"/>
+                <TextView
+                    android:id="@+id/txtPersonInfo"
+                    style="@style/EditText.Login"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/colorWhite"
+                    android:gravity="center|left"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true"
+                    android:text="Personal Information" />
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llCandidateList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/menu_linearlayout"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
+            android:layout_marginTop="10dp"
+
+            android:orientation="horizontal"
+            android:weightSum="1">
 
 
+            <ImageView
+                android:layout_gravity="center|left"
+                android:id="@+id/iv_C_list"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/txtPersonInfo"
+                android:src="@drawable/calendericon"/>
             <TextView
-
-                android:id="@+id/home_btn"
+                android:id="@+id/txtCandidateLsit"
+                style="@style/EditText.Login"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_gravity="center"
+                android:layout_height="50dp"
+                android:background="@color/colorWhite"
                 android:gravity="center|left"
-                android:paddingLeft="30dp"
-                android:text="Home"
-                android:textAllCaps="false"
-                android:textColor="@color/color_black"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:singleLine="true"
+                android:text="Candidate List" />
 
-                android:textSize="@dimen/text_size_normal" />
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height=".5dp"
-            android:background="@color/linecolor"
-
-            ></View>
-
-
         <LinearLayout
-
             android:id="@+id/llLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/linearChhoseanystartWork"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
+            android:layout_marginTop="10dp"
+
+            android:orientation="horizontal"
+            android:weightSum="1">
 
 
+            <ImageView
+                android:layout_gravity="center|left"
+                android:id="@+id/iv_logout"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/txtPersonInfo"
+                android:src="@drawable/calendericon"/>
             <TextView
-                android:id="@+id/btnLogout"
+                android:id="@+id/txtLogout"
+                style="@style/EditText.Login"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="50dp"
+                android:background="@color/colorWhite"
                 android:gravity="center|left"
-                android:paddingLeft="30dp"
-                android:text="Logout"
-                android:textAllCaps="false"
-                android:textColor="@color/color_black"
-                android:textSize="@dimen/text_size_normal" />
-        </LinearLayout>
-    </LinearLayout>
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:singleLine="true"
+                android:text="Logout" />
 
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
 
 </RelativeLayout>
