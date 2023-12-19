@@ -174,7 +174,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         fragmentTransaction.commit();
     }
     public void setupHomeFragment() {
-        txtToolbartext.setText("Personal Information");
+        txtToolbartext.setText("Personal Info");
         imgICBack.setVisibility(View.GONE);
         showFragment(PersonInfoActivity.newInstance(this), PersonInfoActivity.TAG);
 

@@ -49,7 +49,7 @@ public class PersonInfoActivity extends Fragment implements View.OnClickListener
     Calendar bookDateAndTime;
     private DatePickerDialog toDatePickerDialog;
     private DatePickerDialog EndtoDatePickerDialog;
-
+LinearLayout llAccount;
 
     public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
@@ -83,6 +83,7 @@ public class PersonInfoActivity extends Fragment implements View.OnClickListener
     }
 
     private void initView() {
+        llAccount = rootView.findViewById(R.id.llAccount);
         txtInputFirstName = rootView.findViewById(R.id.txtInputFirstName);
         txtInputLastName = rootView.findViewById(R.id.txtInputLastName);
         txtInputEmail = rootView.findViewById(R.id.txtInputEmail);

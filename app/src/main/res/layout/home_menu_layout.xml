@@ -14,6 +14,26 @@
         android:layout_marginTop="16dp"
         android:background="@color/colorWhite"
         android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/llAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtAccount"
+                style="@style/EditText.Login"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/colorWhite"
+                android:gravity="center|left"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:singleLine="true"
+                android:text="Account" />
+
+        </LinearLayout>
 
 
 
