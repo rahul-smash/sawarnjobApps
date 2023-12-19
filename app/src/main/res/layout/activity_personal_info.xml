@@ -25,17 +25,17 @@
             android:visibility="visible">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtTile"
+                android:id="@+id/txtInputFirstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bottom_line"
+                android:layout_marginTop="10dp"
+
                 android:hint="First Name"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
-                    android:id="@+id/txtUsername"
-                    style="@style/EditText.Login"
+                    android:id="@+id/etFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
@@ -49,17 +49,17 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtLAstNAme"
+                android:id="@+id/txtInputLastName"
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content"
-                android:background="@drawable/bottom_line"
-                android:hint="First Name"
+                android:layout_marginTop="10dp"
+                android:hint="Last Name"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
-                    android:id="@+id/txtLAstName"
-                    style="@style/EditText.Login"
+                    android:id="@+id/etLastName"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
@@ -72,18 +72,17 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtEmail"
+                android:id="@+id/txtInputEmail"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bottom_line"
+                android:layout_marginTop="10dp"
                 android:hint="Email"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
-                    android:id="@+id/txtEmailValue"
-                    style="@style/EditText.Login"
+                    android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
@@ -95,18 +94,17 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtPhonenumber"
+                android:id="@+id/txtInputPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bottom_line"
+                android:layout_marginTop="10dp"
+
                 android:hint="Phone"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
-                    android:id="@+id/txtPhone"
-                    style="@style/EditText.Login"
+                    android:id="@+id/etPhone"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
@@ -118,75 +116,74 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputStartDate"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edittext_bg"
-                android:orientation="horizontal">
+                android:layout_marginTop="10dp"
+
+                android:hint="Start Date"
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none">
 
                 <EditText
-                    android:id="@+id/txtSelectYourPhoto"
-                    style="@style/EditText.Login"
+                    android:id="@+id/etStartDate"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+
                     android:background="@drawable/edittext_bg"
                     android:drawableEnd="@drawable/calendericon"
+                    android:editable="false"
                     android:gravity="center|left"
-                    android:hint="Start Date"
+
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
-                    android:singleLine="true"
-                    android:textColorHint="@color/color_light_gray" />
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-            </LinearLayout>
-
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputEndDate"
                 android:layout_width="match_parent"
-
-
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edittext_bg"
-                android:orientation="horizontal">
+                android:layout_marginTop="10dp"
+
+                android:hint="End Date"
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none">
 
                 <EditText
-                    android:id="@+id/txtEOD"
-                    style="@style/EditText.Login"
-                    android:layout_width="0dp"
-
+                    android:id="@+id/etEOD"
+                    android:layout_width="match_parent"
 
                     android:layout_height="50dp"
-                    android:layout_weight="1.4"
+
                     android:background="@drawable/edittext_bg"
                     android:drawableEnd="@drawable/calendericon"
+                    android:editable="false"
                     android:gravity="center|left"
 
-                    android:hint="End Date"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:singleLine="true" />
 
 
-            </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtLocations"
+                android:id="@+id/txtInputLocation"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bottom_line"
+                android:layout_marginTop="10dp"
+
                 android:hint="Location"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
-                    android:id="@+id/txtLocation"
-                    style="@style/EditText.Login"
+                    android:id="@+id/etLocation"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:background="@drawable/edittext_bg"
@@ -200,7 +197,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_sign_in"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
+
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -219,13 +217,14 @@
 
             </RelativeLayout>
 
-            <fontspackageForTextView.Regular
+            <TextView
                 android:id="@+id/verify_btn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="right"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
+
                 android:background="@drawable/edittext_bg"
 
                 android:gravity="center"
@@ -235,7 +234,7 @@
                 android:textSize="@dimen/text_size_normal"
                 android:visibility="visible" />
 
-            <fontspackageForTextView.Regular
+            <TextView
                 android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"

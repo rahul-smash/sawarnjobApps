@@ -9,7 +9,10 @@ import com.app.preferences.SavePreferences;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sarwarajobsapp.R;
 import com.sarwarajobsapp.base.BaseActivity;
+import com.sarwarajobsapp.communication.CallBack;
+import com.sarwarajobsapp.communication.ServerHandler;
 import com.sarwarajobsapp.dashboard.MainActivity;
+import com.sarwarajobsapp.utility.AppConstants;
 
 
 import org.json.JSONObject;
@@ -56,9 +59,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     showErrorDialog("Enter Password");
                     return;
                 } else {
-                   // login(textinputUsername.getEditText().getText().toString(), textPassword.getEditText().getText().toString());
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
+                   login(textinputUsername.getEditText().getText().toString(), textPassword.getEditText().getText().toString());
+                   // startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    //finish();
                 }
             }
 
@@ -67,7 +70,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
 
-   /* public void login(String username,String password)
+    public void login(String username,String password)
     {
         LinkedHashMap<String, String> m = new LinkedHashMap<>();
         m.put("username", username);
@@ -75,25 +78,27 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 
         Map<String, String> headerMap = new HashMap<>();
-        System.out.println("Login===="+AppConstants.apiUlr+"login"+m);
+        System.out.println("Login===="+ AppConstants.apiUlr+"login"+m);
 
-        new ServerHandler().sendToServer(this, AppConstants.apiUlr+"login", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
+        new ServerHandler().sendToServer(this, AppConstants.apiUlr+"user/login", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
             @Override
             public void getRespone(String dta, ArrayList<Object> respons) {
                 try {
                     System.out.println("Login===="+dta);
                     JSONObject obj = new JSONObject(dta);
-                    if (obj.getInt("result")>0)
+                    System.out.println("obj===="+obj.toString());
+                    System.out.println("obj==1=="+obj.getString("message").toString());
+                    if (obj.getString("message").equalsIgnoreCase("User Found"))
                     {
                         new SavePreferences().savePreferencesData(LoginActivity.this,obj.getString("data"),AppConstants.logindata);
 //
-                        startActivity(new Intent(LoginActivity.this, BookingFormActivity.class));
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
 
                     }
                     else
                     {
-                        showErrorDialog(obj.getString("msg"));
+                        showErrorDialog(obj.getString("message"));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -101,5 +106,5 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             }
         });
-    }*/
+    }
 }

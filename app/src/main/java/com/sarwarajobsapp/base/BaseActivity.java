@@ -36,6 +36,7 @@ import androidx.core.content.FileProvider;
 
 import com.app.preferences.SavePreferences;
 import com.google.android.material.snackbar.Snackbar;
+
 import com.sarwarajobsapp.R;
 import com.sarwarajobsapp.communication.CallBack;
 import com.sarwarajobsapp.communication.ImageAttendanceCallBack;
@@ -99,13 +100,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void showSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+       /* Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
                 message, Snackbar.LENGTH_SHORT);
         View sbView = snackbar.getView();
         TextView textView = sbView
                 .findViewById(R.id.snackbar_text);
         textView.setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
-        snackbar.show();
+        snackbar.show();*/
     }
 
     public void onError(String message) {

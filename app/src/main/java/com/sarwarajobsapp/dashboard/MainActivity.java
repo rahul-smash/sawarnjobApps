@@ -27,6 +27,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.app.preferences.SavePreferences;
 import com.sarwarajobsapp.R;
+import com.sarwarajobsapp.activity.PersonInfoActivity;
 import com.sarwarajobsapp.base.BaseActivity;
 import com.sarwarajobsapp.splash.SplashActivity;
 import com.sarwarajobsapp.utility.AppConstants;
@@ -41,7 +42,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ImageButton menuBtn;
     public  static TextView txtToolbartext;
     public  static ImageView imgICBack;
-    private LinearLayout llDayworkPlan,linearHome_btn,linearAttendance,linearTaskList,linearMAnageOrder,linearMyPoints,linearSamriddhiDashboard,linearNotification,linearChangePasswords,llLogout,linearPrivacyPolicy,linearChhoseanystartWork;
+    private LinearLayout llPersonalInfo,linearHome_btn,linearAttendance,linearTaskList,linearMAnageOrder,linearMyPoints,linearSamriddhiDashboard,linearNotification,linearChangePasswords,llLogout,linearPrivacyPolicy,linearChhoseanystartWork;
     TextView btnDatWorkPla, btn_samriddhiDashboards,home_btn,btn_attendance,btn_taskList,btn_manageOrder,btnMyPoints,btnNotification,btnChangePassword,btnMyOrders,btnLogout,btnPrivacyPolicy,btnChhossestartAnyWork;
     private boolean doubleBackToExitPressedOnce;
 
@@ -67,10 +68,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initView() {
+        txtToolbartext =findViewById(R.id.txtToolbartext);
+        imgICBack=(ImageView)findViewById(R.id.imgICBack);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         menuBtn = (ImageButton) findViewById(R.id.menu_btn);
-
+        llPersonalInfo=(LinearLayout) findViewById(R.id.llPersonalInfo);
 
 
 
@@ -88,7 +91,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     private void initListners() {
-
+        menuBtn.setOnClickListener(this);
+        llPersonalInfo.setOnClickListener(this);
     }
 
 
@@ -96,8 +100,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View view) {
 
         switch (view.getId()) {
-//
+            case R.id.menu_btn:
+//                it will check drawer state
+                checkDrawerState();
+                break;
+            case R.id.llPersonalInfo:
+//                it will check drawer state
+                checkDrawerState();
+//                this function will inflate the My payment screen
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        setupHomeFragment();
+                    }
+                }, drawerCloseTime);
 
+                break;
 
     }
 
@@ -156,6 +174,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         fragmentTransaction.commit();
     }
     public void setupHomeFragment() {
+        txtToolbartext.setText("Personal Information");
+        imgICBack.setVisibility(View.GONE);
+        showFragment(PersonInfoActivity.newInstance(this), PersonInfoActivity.TAG);
 
 
     }
