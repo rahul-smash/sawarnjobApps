@@ -200,7 +200,7 @@ public class ServerHandler {
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(lp);
 
-        progressdlg.getWindow().setBackgroundDrawableResource(R.color.translucent_black);
+        progressdlg.getWindow().setBackgroundDrawableResource(R.color.transuleant_black);
         progressdlg.getWindow().setDimAmount(0);
         progressdlg.show();
 

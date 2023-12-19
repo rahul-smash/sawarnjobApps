@@ -4,7 +4,7 @@ public class AppConstants {
 
     //Final base url
 
-    public static String apiUlr="https://neptunesolution.in/marketing/api/";
+    public static String apiUlr="https://sarwarajobs.com/api/v1/app/";
 
     public static  String logindata="logindata";
 

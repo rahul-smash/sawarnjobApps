@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.app.preferences.SavePreferences;
 import com.sarwarajobsapp.R;
 import com.sarwarajobsapp.base.BaseActivity;
+import com.sarwarajobsapp.dashboard.MainActivity;
 import com.sarwarajobsapp.login.LoginActivity;
 import com.sarwarajobsapp.utility.AppConstants;
 
@@ -98,6 +99,7 @@ public class SplashActivity extends BaseActivity {
     private void checkSession()
     {
         String data=new SavePreferences().reterivePreference(this, AppConstants.logindata).toString();
+        System.out.println("obj==1=="+data.toString());
 
         if(data.length()==0)
         {
@@ -105,7 +107,7 @@ public class SplashActivity extends BaseActivity {
         }
         else
         {
-         //   startActivity(new Intent(SplashActivity.this, SamraddhiActionaleActivity.class));
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
             finish();
         }
     }
