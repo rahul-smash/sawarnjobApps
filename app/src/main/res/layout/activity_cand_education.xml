@@ -48,7 +48,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <Spinner
+         <!--   <Spinner
                 android:id="@+id/txtSPinnerEmployeerType"
 
                 android:layout_width="match_parent"
@@ -60,10 +60,30 @@
                 android:layout_marginTop="10dp"
                 android:layout_toRightOf="@+id/txtMonths"
                 android:background="@drawable/spinner_background"
-                android:gravity="center"></Spinner>
+                android:gravity="center"></Spinner>-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputDegree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Degree"
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none">
 
+                <EditText
+                    android:id="@+id/txtDegree"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center|left"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:visibility="gone"
                 android:id="@+id/txtInputCompanyName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -85,6 +105,8 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:visibility="gone"
+
                 android:id="@+id/txtInputLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

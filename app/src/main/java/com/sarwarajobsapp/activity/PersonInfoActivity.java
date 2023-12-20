@@ -110,7 +110,7 @@ import java.util.Map;
         etStartDate.setOnClickListener(this);
        // etEndDate.setOnClickListener(this);
         verify_btn.setOnClickListener(this);
-        customeToolbartext.setText("Add New Position");
+        customeToolbartext.setText("Personal Info");
         findViewById(R.id.goback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

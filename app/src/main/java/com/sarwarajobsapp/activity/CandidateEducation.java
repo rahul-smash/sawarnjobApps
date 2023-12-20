@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -26,8 +27,11 @@ import com.sarwarajobsapp.dashboard.MainActivity;
 import com.sarwarajobsapp.utility.AppConstants;
 import com.sarwarajobsapp.utility.PrefHelper;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -39,16 +43,16 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
     public static final String TAG = "CandidateEducation";
     private MainActivity mainActivity;
     View rootView;
-    TextInputLayout txtInputTitle, txtInputCompanyName, txtInputLocation, txtInputStartDate, txtInputEODDate, txtInputJOB;
+    TextInputLayout txtInputTitle, txtInputDegree,txtInputCompanyName, txtInputLocation, txtInputStartDate, txtInputEODDate, txtInputJOB;
     TextView verify_btn;
-    Spinner txtDegree;
-    EditText txtSchool, txtFieldStudy, txtGradle, etStartDate, etEODDate, txtJobRpleDescritpion;
+    //Spinner txtDegree;
+    EditText txtDegree,txtSchool, txtFieldStudy, txtGradle, etStartDate, etEODDate, txtJobRpleDescritpion;
     Calendar bookDateAndTime;
     private DatePickerDialog toDatePickerDialog;
     private DatePickerDialog toDatePickerDialogEnd;
 
     LinearLayout llAccount;
-    String reformattedStr;
+    String reformattedStr,EndreformattedStr;
 
     /*public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
@@ -90,6 +94,8 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
     }
 
     private void initView() {
+       txtInputDegree=findViewById(R.id.txtInputDegree);
+       txtDegree=findViewById(R.id.txtDegree);
         txtInputTitle = findViewById(R.id.txtInputTitle);
         txtInputCompanyName = findViewById(R.id.txtInputCompanyName);
         txtInputLocation = findViewById(R.id.txtInputLocation);
@@ -118,15 +124,15 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-       if(v==verify_btn){
-           startActivity(new Intent(getApplicationContext(), NewPostionScreen.class));
-           finish();
-       }
-   /*     if (v == etStartDate) {
+
+        if (v == etStartDate) {
             //     setDateTimeField();
             toDatePickerDialog.show();
         }
-
+        if (v == etEODDate) {
+            //     setDateTimeField();
+            toDatePickerDialogEnd.show();
+        }
         if (v == verify_btn) {
             SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -136,50 +142,49 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            System.out.println("reformattedStr====" +reformattedStr);
+            SimpleDateFormat myFormatEnd = new SimpleDateFormat("yyyy-MM-dd");
 
-            if (etFirstName.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter First name", Toast.LENGTH_SHORT).show();
+            try {
+
+                EndreformattedStr = myFormat.format(myFormat.parse(etEODDate.getText().toString().trim()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            System.out.println("reformattedStr====" + reformattedStr);
+
+            if (txtSchool.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter School name", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (etLastName.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter Last name", Toast.LENGTH_SHORT).show();
-
-                return;
-            }
-            if (!Utility.checkValidEmail(etEmail.getText().toString())) {
-                etEmail.requestFocus();
-                Toast.makeText(getActivity(), "Enter valid email", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (etPhone.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter Phone", Toast.LENGTH_SHORT).show();
+            if (txtDegree.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter Degree name", Toast.LENGTH_SHORT).show();
 
                 return;
             }
+
+
             if (etStartDate.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter Start Date", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Enter Start Date", Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+            if (etEODDate.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter End Date", Toast.LENGTH_SHORT).show();
 
                 return;
             }
 
-            if (etLookingJobType.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter Looking JobType", Toast.LENGTH_SHORT).show();
 
-                return;
-            }
-
-            if (etLoction.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter Location", Toast.LENGTH_SHORT).show();
+            if (txtJobRpleDescritpion.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter Location", Toast.LENGTH_SHORT).show();
 
                 return;
             } else {
-                getPersonalInfoApi(getLoginData("id"), etFirstName.getText().toString().trim()
-                        ,  etLastName.getText().toString().trim(), etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
-                        reformattedStr, etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim());
-            }*/
-
+                getCandidateEducation(getLoginData("id"), txtSchool.getText().toString().trim()
+                        , txtDegree.getText().toString().trim(),
+                        reformattedStr,EndreformattedStr, txtJobRpleDescritpion.getText().toString().trim());
+            }
+        }
         //}
     }
 
@@ -195,7 +200,7 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
         return "";
     }
 
-    public void getCandidateEducation(String user_id, String school, String specialized, String email, String started_at,
+    public void getCandidateEducation(String user_id, String school, String specialized, String started_at,
                                    String ended_at,String description) {
 
         LinkedHashMap<String, String> m = new LinkedHashMap<>();
@@ -210,22 +215,19 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
 
 
         Map<String, String> headerMap = new HashMap<>();
-        System.out.println("getPersonalInfoApi====" + AppConstants.apiUlr + "candidate/education/add" + m);
+        System.out.println("getCandidateEducation====" + AppConstants.apiUlr + "candidate/education/add" + m);
 
         new ServerHandler().sendToServer(this, AppConstants.apiUlr + "candidate/education/add", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
             @Override
             public void getRespone(String dta, ArrayList<Object> respons) {
                 try {
-                    System.out.println("getPersonalInfoApi====" + dta);
                     JSONObject obj = new JSONObject(dta);
-                    JSONObject objPuser_id = obj.getJSONObject("data");
 
-                    System.out.println("getPersonalInfoApi====" + obj.toString());
-                    System.out.println("getPersonalInfoApi==1==" + obj.getString("message").toString());
-                    if (obj.getString("message").equalsIgnoreCase("Candidate Created")) {
-                        PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", objPuser_id.getString("user_id"));
-                        // startActivity(new Intent(getActivity(), MainActivity.class));
-                        //  getActivity().finish();
+                    System.out.println("getCandidateEducation====" + obj.toString());
+                    if (obj.getString("message").equalsIgnoreCase("User Education Added")) {
+                       Toast.makeText(getApplicationContext(), obj.getString("message"),Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), NewPostionScreen.class));
+                          finish();
 
                     } else {
                         showErrorDialog(obj.getString("message"));

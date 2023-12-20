@@ -12,7 +12,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:src="@drawable/logosarwarajobs" />
 
     <TextView
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="80dp"
         android:layout_marginRight="20dp"
         android:gravity="center"
         android:padding="14dp"
@@ -31,7 +31,6 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="30dp"
@@ -41,15 +40,15 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:theme="@style/TextInputLayoutStyle"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:id="@+id/textinputUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:hint="Enter Email"
             android:imeOptions="actionNext"
+            android:theme="@style/TextInputLayoutStyle"
             app:boxBackgroundMode="none"
             app:hintAnimationEnabled="false">
 
@@ -62,19 +61,19 @@
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"
                 android:singleLine="true"
-                app:hintAnimationEnabled="false"/>
+                app:hintAnimationEnabled="false" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:background="@drawable/bottom_line"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:id="@+id/textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/bottom_line"
             android:hint="Enter Password"
             android:imeOptions="actionNext"
             app:boxBackgroundMode="none"
@@ -96,26 +95,28 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_gravity="right"
+
             android:id="@+id/txtForgotPAssword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_gravity="right"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
             android:gravity="center"
             android:text="Forget Password ?"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_normal"
-            android:visibility="visible" />
+            android:visibility="gone" />
+
         <TextView
-            android:layout_marginBottom="20dp"
-            android:layout_gravity="center"
             android:id="@+id/verify_btn"
             android:layout_width="100dp"
             android:layout_height="40dp"
+            android:layout_gravity="center"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
             android:background="@color/colorPrimary"
             android:gravity="center"
             android:text="Login"

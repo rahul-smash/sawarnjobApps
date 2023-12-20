@@ -35,7 +35,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void init() {
-        verify_btn=(TextView) findViewById(R.id.verify_btn);
+        verify_btn = (TextView) findViewById(R.id.verify_btn);
         verify_btn.setOnClickListener(this);
     }
 
@@ -59,8 +59,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     showErrorDialog("Enter Password");
                     return;
                 } else {
-                   login(textinputUsername.getEditText().getText().toString(), textPassword.getEditText().getText().toString());
-                   // startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    login(textinputUsername.getEditText().getText().toString(), textPassword.getEditText().getText().toString());
+                    // startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     //finish();
                 }
             }
@@ -70,34 +70,30 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
 
-    public void login(String username,String password)
-    {
+    public void login(String username, String password) {
         LinkedHashMap<String, String> m = new LinkedHashMap<>();
         m.put("username", username);
         m.put("password", password);
 
 
         Map<String, String> headerMap = new HashMap<>();
-        System.out.println("Login===="+ AppConstants.apiUlr+"login"+m);
+        System.out.println("Login====" + AppConstants.apiUlr + "login" + m);
 
-        new ServerHandler().sendToServer(this, AppConstants.apiUlr+"user/login", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
+        new ServerHandler().sendToServer(this, AppConstants.apiUlr + "user/login", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
             @Override
             public void getRespone(String dta, ArrayList<Object> respons) {
                 try {
-                    System.out.println("Login===="+dta);
+                    System.out.println("Login====" + dta);
                     JSONObject obj = new JSONObject(dta);
-                    System.out.println("obj===="+obj.toString());
-                    System.out.println("obj==1=="+obj.getString("message").toString());
-                    if (obj.getString("message").equalsIgnoreCase("User Found"))
-                    {
-                        new SavePreferences().savePreferencesData(LoginActivity.this,obj.getString("data"),AppConstants.logindata);
+                    System.out.println("obj====" + obj.toString());
+                    System.out.println("obj==1==" + obj.getString("message").toString());
+                    if (obj.getString("message").equalsIgnoreCase("User Found")) {
+                        new SavePreferences().savePreferencesData(LoginActivity.this, obj.getString("data"), AppConstants.logindata);
 //
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
 
-                    }
-                    else
-                    {
+                    } else {
                         showErrorDialog(obj.getString("message"));
                     }
                 } catch (Exception e) {

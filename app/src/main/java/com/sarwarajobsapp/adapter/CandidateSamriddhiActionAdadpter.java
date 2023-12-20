@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,7 +29,7 @@ public class CandidateSamriddhiActionAdadpter extends RecyclerView.Adapter<Candi
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtSrNo, txtName, txtDateOFBirth, txtState, txtCity;
+        TextView txtSrNo, txtName, txtDateOFBirth, txtState, txtEdit,txtView;
 
         public MyViewHolder(View view) {
             super(view);
@@ -37,6 +38,8 @@ public class CandidateSamriddhiActionAdadpter extends RecyclerView.Adapter<Candi
             txtName = view.findViewById(R.id.txtName);
             txtDateOFBirth = view.findViewById(R.id.txtDateOFBirth);
             txtState = view.findViewById(R.id.txtState);
+            txtView = view.findViewById(R.id.txtView);
+            txtEdit = view.findViewById(R.id.txtEdit);
 
         }
     }
@@ -74,7 +77,20 @@ holder.txtSrNo.setText(jsonObject.getString("first_name"));
                 holder.txtDateOFBirth.setText(jsonObject.getString("dob"));
 
                 holder.txtState.setText(jsonObject.getString("looking_job_type"));
+                holder.txtEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "Pending",Toast.LENGTH_SHORT).show();
 
+                    }
+                });
+                holder.txtView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "Pending",Toast.LENGTH_SHORT).show();
+
+                    }
+                });
             } else {
                 holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
 
@@ -87,6 +103,20 @@ holder.txtSrNo.setText(jsonObject.getString("first_name"));
                 holder.txtDateOFBirth.setText(jsonObject.getString("dob"));
 
                 holder.txtState.setText(jsonObject.getString("looking_job_type"));
+                holder.txtEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "Pending",Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+                holder.txtView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "Pending",Toast.LENGTH_SHORT).show();
+
+                    }
+                });
             }
 
 
