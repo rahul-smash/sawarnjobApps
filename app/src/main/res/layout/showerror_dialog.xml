@@ -14,7 +14,7 @@
 
 
 
-    <fontspackageForTextView.BoldMedium
+    <TextView
 
         android:singleLine="true"
         android:layout_marginLeft="30dp"
@@ -26,11 +26,11 @@
         android:gravity="center"
         android:textColor="@color/color_black"
 
-        ></fontspackageForTextView.BoldMedium>
+        ></TextView>
 
 
 
-    <fontspackageForTextView.Regular
+    <TextView
         android:id="@+id/txtError"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
@@ -40,11 +40,11 @@
         android:gravity="center"
         android:textColor="@color/color_black"
 
-        ></fontspackageForTextView.Regular>
+        ></TextView>
 
 
 
-    <fontspackageForTextView.Regular
+    <TextView
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:layout_gravity="center"
@@ -59,7 +59,7 @@
         android:gravity="center"
         android:padding="10dp"
 
-        android:textAllCaps="true"></fontspackageForTextView.Regular>
+        android:textAllCaps="true"></TextView>
 
 
 

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/MainLinearView"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+    <LinearLayout
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:weightSum="4"
+        >
+        <View
+            android:visibility="gone"
+            android:layout_height="match_parent"
+            android:layout_width=".5dp"
+            android:background="@color/color_black"
+            ></View>
+       <TextView
+            android:maxLines="2"
+            android:id="@+id/txtSrNo"
+            android:textColor="@color/color_black"
+android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Sr. No. "
+            android:textSize="11sp"
+            android:gravity="center"
+            >  </TextView>
+
+        <View
+            android:visibility="gone"
+
+            android:layout_height="match_parent"
+            android:layout_width=".5dp"
+            android:background="@color/color_black"
+            ></View>
+        <TextView
+            android:id="@+id/txtName"
+            android:textColor="@color/color_black"
+            android:maxLines="2"
+            android:layout_gravity="center"
+
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Name"
+            android:textSize="11sp"
+            android:gravity="center"
+            ></TextView>
+
+
+        <View
+            android:visibility="gone"
+
+            android:layout_height="match_parent"
+            android:layout_width=".5dp"
+            android:background="@color/color_black"
+            ></View>
+
+
+        <TextView
+            android:id="@+id/txtDateOFBirth"
+            android:textColor="@color/color_black"
+            android:maxLines="2"
+            android:layout_gravity="center"
+
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="DOB"
+            android:textSize="11sp"
+            android:gravity="center"
+            ></TextView>
+
+
+
+        <View
+            android:visibility="gone"
+
+            android:layout_height="match_parent"
+            android:layout_width=".5dp"
+            android:background="@color/color_black"
+            ></View>
+
+        <TextView
+            android:id="@+id/txtState"
+            android:textColor="@color/color_black"
+            android:maxLines="2"
+            android:layout_gravity="center"
+
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="State"
+            android:textSize="11sp"
+            android:gravity="center"
+            ></TextView>
+
+        <View
+            android:visibility="gone"
+
+            android:layout_height="match_parent"
+            android:layout_width=".5dp"
+            android:background="@color/color_black"
+            ></View>
+
+
+        <View
+            android:visibility="gone"
+
+            android:layout_height="match_parent"
+            android:layout_width=".5dp"
+            android:background="@color/color_black"
+            ></View>
+    </LinearLayout>
+
+    <View
+        android:visibility="gone"
+        android:layout_height=".5dp"
+        android:layout_width="match_parent"
+        android:background="@color/color_black"
+        ></View>
+
+</LinearLayout>
+
+    <View
+
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="@color/color_light_gray"
+        ></View>
+</LinearLayout>

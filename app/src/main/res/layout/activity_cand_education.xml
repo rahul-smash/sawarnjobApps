@@ -28,12 +28,12 @@
                 android:id="@+id/txtInputTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Title"
+                android:hint="School"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
-                    android:id="@+id/txtTitle"
+                    android:id="@+id/txtSchool"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
@@ -47,7 +47,7 @@
 
 
             <Spinner
-                android:id="@+id/txtDegree"
+                android:id="@+id/txtSPinnerEmployeerType"
 
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -66,12 +66,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Company Name"
+                android:hint="Field of Study"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
-                    android:id="@+id/txtCompanyName"
+                    android:id="@+id/txtFieldStudy"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
@@ -87,12 +87,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Location"
+                android:hint="Gradle"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
-                    android:id="@+id/txtLocation"
+                    android:id="@+id/txtGradle"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
@@ -164,7 +164,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Job Role Description "
+                android:hint="Description "
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
@@ -207,7 +207,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
-                android:layout_gravity="right"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/edittext_bg"
 

@@ -2,7 +2,6 @@ package com.sarwarajobsapp.activity;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,46 +12,44 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.app.preferences.SavePreferences;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sarwarajobsapp.R;
-import com.sarwarajobsapp.base.BaseActivity;
 import com.sarwarajobsapp.communication.CallBack;
 import com.sarwarajobsapp.communication.ServerHandler;
 import com.sarwarajobsapp.dashboard.MainActivity;
-import com.sarwarajobsapp.util.Utility;
 import com.sarwarajobsapp.utility.AppConstants;
 import com.sarwarajobsapp.utility.PrefHelper;
 
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class NewPostionScreen extends Fragment implements View.OnClickListener {
+public class CandidateEducation extends Fragment implements View.OnClickListener {
     public static final String TAG = "NewPostionScreen";
     private MainActivity mainActivity;
     View rootView;
     TextInputLayout txtInputTitle, txtInputCompanyName, txtInputLocation, txtInputStartDate, txtInputEODDate, txtInputJOB;
     TextView verify_btn;
-    Spinner txtSPinnerEmployeerType;
-    EditText txtTitle, txtCompanyName, txtLocation, etStartDate, etEODDate, txtJobRpleDescritpion;
+    Spinner txtDegree;
+    EditText txtSchool, txtFieldStudy, txtGradle, etStartDate, etEODDate, txtJobRpleDescritpion;
     Calendar bookDateAndTime;
     private DatePickerDialog toDatePickerDialog;
+    private DatePickerDialog toDatePickerDialogEnd;
+
     LinearLayout llAccount;
     String reformattedStr;
+
     public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
-                NewPostionScreen.class.getName());
+                CandidateEducation.class.getName());
     }
 
     @Override
@@ -63,11 +60,12 @@ public class NewPostionScreen extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.activity_new_position, container, false);
+        rootView = inflater.inflate(R.layout.activity_cand_education, container, false);
         mainActivity = (MainActivity) getActivity();
 
         initView();
         setStartDateTimeField();
+        setEndDateTimeField();
         return rootView;
     }
 
@@ -86,9 +84,9 @@ public class NewPostionScreen extends Fragment implements View.OnClickListener {
         txtInputEODDate = rootView.findViewById(R.id.txtInputEODDate);
         txtInputJOB = rootView.findViewById(R.id.txtInputJOB);
         verify_btn = rootView.findViewById(R.id.verify_btn);
-        txtTitle = rootView.findViewById(R.id.txtTitle);
-        txtCompanyName = rootView.findViewById(R.id.txtCompanyName);
-        txtLocation = rootView.findViewById(R.id.txtLocation);
+        txtSchool = rootView.findViewById(R.id.txtSchool);
+        txtFieldStudy = rootView.findViewById(R.id.txtFieldStudy);
+        txtGradle = rootView.findViewById(R.id.txtGradle);
         etStartDate = rootView.findViewById(R.id.etStartDate);
         etEODDate = rootView.findViewById(R.id.etEODDate);
         txtJobRpleDescritpion = rootView.findViewById(R.id.txtJobRpleDescritpion);
@@ -173,50 +171,48 @@ public class NewPostionScreen extends Fragment implements View.OnClickListener {
         return "";
     }
 
-    public void getNewPosition(String admin_user_id, String first_name, String last_name, String email, String phone,
-                                     String sdob, String etLookingJobType, String location) {
+    public void getCandidateEducation(String user_id, String school, String specialized, String email, String started_at,
+                                   String ended_at,String description) {
 
-    LinkedHashMap<String, String> m = new LinkedHashMap<>();
+        LinkedHashMap<String, String> m = new LinkedHashMap<>();
 
-    //   m.put("admin_user_id", getLoginData("id"));
-    m.put("admin_user_id", admin_user_id);
-    m.put("first_name", first_name);
-    m.put("last_name", last_name);
-    m.put("email", email);
-    m.put("phone", phone);
-    m.put("dob", sdob);
-    m.put("looking_job_type", etLookingJobType);
-    m.put("address", location);
+        //   m.put("admin_user_id", getLoginData("id"));
+        m.put("user_id", user_id);
+        m.put("school", school);
+        m.put("specialized", specialized);
+        m.put("started_at", started_at);
+        m.put("ended_at", ended_at);
+        m.put("description", description);
 
 
-    Map<String, String> headerMap = new HashMap<>();
-    System.out.println("getPersonalInfoApi====" + AppConstants.apiUlr + "candidate/add" + m);
+        Map<String, String> headerMap = new HashMap<>();
+        System.out.println("getPersonalInfoApi====" + AppConstants.apiUlr + "candidate/education/add" + m);
 
-    new ServerHandler().sendToServer(getActivity(), AppConstants.apiUlr + "candidate/add", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
-        @Override
-        public void getRespone(String dta, ArrayList<Object> respons) {
-            try {
-                System.out.println("getPersonalInfoApi====" + dta);
-                JSONObject obj = new JSONObject(dta);
-                JSONObject objPuser_id =obj.getJSONObject("data");
+        new ServerHandler().sendToServer(getActivity(), AppConstants.apiUlr + "candidate/education/add", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
+            @Override
+            public void getRespone(String dta, ArrayList<Object> respons) {
+                try {
+                    System.out.println("getPersonalInfoApi====" + dta);
+                    JSONObject obj = new JSONObject(dta);
+                    JSONObject objPuser_id = obj.getJSONObject("data");
 
-                System.out.println("getPersonalInfoApi====" + obj.toString());
-                System.out.println("getPersonalInfoApi==1==" + obj.getString("message").toString());
-                if (obj.getString("message").equalsIgnoreCase("Candidate Created")) {
-                    PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", objPuser_id.getString("user_id"));
-                    // startActivity(new Intent(getActivity(), MainActivity.class));
-                    //  getActivity().finish();
+                    System.out.println("getPersonalInfoApi====" + obj.toString());
+                    System.out.println("getPersonalInfoApi==1==" + obj.getString("message").toString());
+                    if (obj.getString("message").equalsIgnoreCase("Candidate Created")) {
+                        PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", objPuser_id.getString("user_id"));
+                        // startActivity(new Intent(getActivity(), MainActivity.class));
+                        //  getActivity().finish();
 
-                } else {
-                    ((MainActivity) getActivity()).showErrorDialog(obj.getString("message"));
+                    } else {
+                        ((MainActivity) getActivity()).showErrorDialog(obj.getString("message"));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
-        }
-    });
-}
+            }
+        });
+    }
 
     private void setStartDateTimeField() {
         Calendar newCalendar = Calendar.getInstance();
@@ -231,6 +227,26 @@ public class NewPostionScreen extends Fragment implements View.OnClickListener {
                         // date to our edit text.
                         String dat = (dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                         etStartDate.setText(dat);
+                    }
+                }, newCalendar.get(Calendar.YEAR),
+                newCalendar.get(Calendar.MONTH),
+                newCalendar.get(Calendar.DAY_OF_MONTH));
+
+
+    }
+    private void setEndDateTimeField() {
+        Calendar newCalendar = Calendar.getInstance();
+
+        toDatePickerDialogEnd = new DatePickerDialog(getActivity(),
+                new DatePickerDialog.OnDateSetListener() {
+
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        bookDateAndTime = Calendar.getInstance();
+                        bookDateAndTime.set(year, monthOfYear, dayOfMonth);
+                        // date to our edit text.
+                        String dat = (dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        etEODDate.setText(dat);
                     }
                 }, newCalendar.get(Calendar.YEAR),
                 newCalendar.get(Calendar.MONTH),

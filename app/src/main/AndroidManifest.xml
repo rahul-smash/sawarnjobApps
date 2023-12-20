@@ -36,7 +36,6 @@
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".dashboard.MainActivity" />
         <activity android:name=".activity.ThanksActivity" />
-        <activity android:name=".activity.NewPostionScreen" />
     </application>
 
 </manifest>
