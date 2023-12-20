@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ThanksActivity"
+            android:name=".activity.ThanksActivity"
             android:exported="false" />
         <activity
             android:name=".base.BaseActivity"
@@ -35,7 +35,6 @@
         </activity>
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".dashboard.MainActivity" />
-        <activity android:name=".activity.ThanksActivity" />
         <activity android:name=".activity.CandidateEducation" />
         <activity android:name=".activity.NewPostionScreen" />
         <activity android:name=".activity.PersonInfoActivity" />

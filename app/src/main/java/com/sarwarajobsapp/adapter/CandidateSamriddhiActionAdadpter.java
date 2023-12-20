@@ -2,6 +2,7 @@ package com.sarwarajobsapp.adapter;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.sarwarajobsapp.R;
+import com.sarwarajobsapp.activity.PersonInfoActivity;
 import com.sarwarajobsapp.candidateList.CandidateListActionaleActivity;
 
 import org.json.JSONArray;
@@ -81,6 +83,7 @@ holder.txtSrNo.setText(jsonObject.getString("first_name"));
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(mContext, "Pending",Toast.LENGTH_SHORT).show();
+                        mContext.startActivity(new Intent(mContext, PersonInfoActivity.class));
 
                     }
                 });
@@ -107,6 +110,7 @@ holder.txtSrNo.setText(jsonObject.getString("first_name"));
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(mContext, "Pending",Toast.LENGTH_SHORT).show();
+                        mContext.startActivity(new Intent(mContext, PersonInfoActivity.class));
 
                     }
                 });
