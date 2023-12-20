@@ -48,12 +48,13 @@
                 <ImageView
                     android:layout_gravity="center|left"
                     android:id="@+id/iv_p_info"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:src="@drawable/usericon"/>
                 <TextView
                     android:textColor="@color/colorWhite"
-
+android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
                     android:id="@+id/txtPersonInfo"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -77,13 +78,14 @@
             <ImageView
                 android:layout_gravity="center|left"
                 android:id="@+id/iv_C_list"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_toLeftOf="@+id/txtPersonInfo"
                 android:src="@drawable/candidateicon"/>
             <TextView
                 android:textColor="@color/colorWhite"
-
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
                 android:id="@+id/txtCandidateLsit"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -107,13 +109,14 @@
             <ImageView
                 android:layout_gravity="center|left"
                 android:id="@+id/iv_logout"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_toLeftOf="@+id/txtPersonInfo"
                 android:src="@drawable/logouticon"/>
             <TextView
                 android:textColor="@color/colorWhite"
-
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
                 android:id="@+id/txtLogout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"

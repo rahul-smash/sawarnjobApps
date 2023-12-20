@@ -42,14 +42,15 @@ import java.util.Map;
 public class NewPostionScreen extends BaseActivity implements View.OnClickListener {
 
     public static final String TAG = "NewPostionScreen";
-    TextInputLayout txtInputTitle, txtInputCompanyName, txtInputLocation, txtInputStartDate, txtInputEODDate, txtInputJOB;
+    TextInputLayout txtInputEmployeeType, txtInputTitle, txtInputCompanyName, txtInputLocation, txtInputStartDate, txtInputEODDate, txtInputJOB;
     TextView verify_btn,customeToolbartext;
     Spinner txtSPinnerEmployeerType;
-    EditText txtTitle, txtCompanyName, txtLocation, etStartDate, etEODDate, txtJobRpleDescritpion;
+    EditText txtEmployeeType,txtTitle, txtCompanyName, txtLocation, etStartDate, etEODDate, txtJobRpleDescritpion;
     Calendar bookDateAndTime;
-    private DatePickerDialog toDatePickerDialog;
+     DatePickerDialog toDatePickerDialog;
+     DatePickerDialog toDatePickerDialogEnd;
     LinearLayout llAccount;
-    String reformattedStr;
+    String reformattedStr,EndreformattedStr;
   /*  public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
                 NewPostionScreen.class.getName());
@@ -65,6 +66,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
     protected void setUp() {
         initView();
         setStartDateTimeField();
+        setEndDateTimeField();
     }
 
     @Override
@@ -99,6 +101,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
         txtInputJOB = findViewById(R.id.txtInputJOB);
         verify_btn = findViewById(R.id.verify_btn);
         txtTitle = findViewById(R.id.txtTitle);
+        txtEmployeeType=findViewById(R.id.txtEmployeeType);
         txtCompanyName = findViewById(R.id.txtCompanyName);
         txtLocation = findViewById(R.id.txtLocation);
         etStartDate = findViewById(R.id.etStartDate);
@@ -108,6 +111,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
         findViewById(R.id.goback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 finish();
             }
         });
@@ -119,11 +123,14 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-   /*     if (v == etStartDate) {
+        if (v == etStartDate) {
             //     setDateTimeField();
             toDatePickerDialog.show();
         }
-
+        if (v == etEODDate) {
+            //     setDateTimeField();
+            toDatePickerDialogEnd.show();
+        }
         if (v == verify_btn) {
             SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -133,51 +140,55 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+            SimpleDateFormat myFormatEnd = new SimpleDateFormat("yyyy-MM-dd");
+
+            try {
+
+                EndreformattedStr = myFormatEnd.format(myFormatEnd.parse(etEODDate.getText().toString().trim()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             System.out.println("reformattedStr====" +reformattedStr);
 
-            if (etFirstName.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter First name", Toast.LENGTH_SHORT).show();
+          /*  if (txtTitle.getText().toString().length() <= 0) {
+                Toast.makeText(this,"Enter Title", Toast.LENGTH_SHORT).show();
                 return;
-            }
-            if (etLastName.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter Last name", Toast.LENGTH_SHORT).show();
-
-                return;
-            }
-            if (!Utility.checkValidEmail(etEmail.getText().toString())) {
-                etEmail.requestFocus();
-                Toast.makeText(getActivity(), "Enter valid email", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (etPhone.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter Phone", Toast.LENGTH_SHORT).show();
-
-                return;
-            }
-            if (etStartDate.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter Start Date", Toast.LENGTH_SHORT).show();
-
-                return;
-            }
-
-            if (etLookingJobType.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter Looking JobType", Toast.LENGTH_SHORT).show();
-
-                return;
-            }
-
-            if (etLoction.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter Location", Toast.LENGTH_SHORT).show();
-
-                return;
-            } else {
-                getPersonalInfoApi(getLoginData("id"), etFirstName.getText().toString().trim()
-                        ,  etLastName.getText().toString().trim(), etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
-                        reformattedStr, etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim());
             }*/
+            if (txtEmployeeType.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter Employee Type", Toast.LENGTH_SHORT).show();
 
-        //}
+                return;
+            }
+
+            if (txtCompanyName.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter Company Name", Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+
+            if (etStartDate.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter Start Date", Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+
+            if (etEODDate.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter Looking JobType", Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+            if (txtJobRpleDescritpion.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter Job Description", Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+            else {
+                getPostionDataTypeApi(getLoginData("id"),
+                        txtCompanyName.getText().toString().trim(),  txtEmployeeType.getText().toString().trim(),
+                        reformattedStr, EndreformattedStr, txtJobRpleDescritpion.getText().toString().trim());
+            }
+
+        }
     }
 
     public String getLoginData(String dataType) {
@@ -192,51 +203,45 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
         return "";
     }
 
-    public void getNewPosition(String admin_user_id, String first_name, String last_name, String email, String phone,
-                                     String sdob, String etLookingJobType, String location) {
 
-    LinkedHashMap<String, String> m = new LinkedHashMap<>();
+    public void getPostionDataTypeApi(String user_id, String company, String position, String started_at,
+                                      String ended_at,String description) {
 
-    //   m.put("admin_user_id", getLoginData("id"));
-    m.put("admin_user_id", admin_user_id);
-    m.put("first_name", first_name);
-    m.put("last_name", last_name);
-    m.put("email", email);
-    m.put("phone", phone);
-    m.put("dob", sdob);
-    m.put("looking_job_type", etLookingJobType);
-    m.put("address", location);
+        LinkedHashMap<String, String> m = new LinkedHashMap<>();
+
+        m.put("user_id", user_id);
+        m.put("company", company);
+        m.put("position", position);
+        m.put("started_at", started_at);
+        m.put("ended_at", ended_at);
+        m.put("description", description);
 
 
-    Map<String, String> headerMap = new HashMap<>();
-    System.out.println("getPersonalInfoApi====" + AppConstants.apiUlr + "candidate/add" + m);
+        Map<String, String> headerMap = new HashMap<>();
+        System.out.println("getPostionDataTypeApi====" + AppConstants.apiUlr + "candidate/experience/add" + m);
 
-    new ServerHandler().sendToServer(this, AppConstants.apiUlr + "candidate/add", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
-        @Override
-        public void getRespone(String dta, ArrayList<Object> respons) {
-            try {
-                System.out.println("getPersonalInfoApi====" + dta);
-                JSONObject obj = new JSONObject(dta);
-                JSONObject objPuser_id =obj.getJSONObject("data");
+        new ServerHandler().sendToServer(this, AppConstants.apiUlr + "candidate/experience/add", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
+            @Override
+            public void getRespone(String dta, ArrayList<Object> respons) {
+                try {
+                    JSONObject obj = new JSONObject(dta);
 
-                System.out.println("getPersonalInfoApi====" + obj.toString());
-                System.out.println("getPersonalInfoApi==1==" + obj.getString("message").toString());
-                if (obj.getString("message").equalsIgnoreCase("Candidate Created")) {
-                    PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", objPuser_id.getString("user_id"));
-                    // startActivity(new Intent(getActivity(), MainActivity.class));
-                    //  getActivity().finish();
+                    System.out.println("getPostionDataTypeApi====" + obj.toString());
+                    if (obj.getString("message").equalsIgnoreCase("User Experience Added")) {
+                        Toast.makeText(getApplicationContext(), obj.getString("message"),Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
 
-                } else {
-                 showErrorDialog(obj.getString("message"));
+                    } else {
+                        showErrorDialog(obj.getString("message"));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+
             }
-
-        }
-    });
-}
-
+        });
+    }
     private void setStartDateTimeField() {
         Calendar newCalendar = Calendar.getInstance();
 
@@ -257,6 +262,25 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
 
 
     }
+    private void setEndDateTimeField() {
+        Calendar newCalendar = Calendar.getInstance();
 
+        toDatePickerDialogEnd = new DatePickerDialog(NewPostionScreen.this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        bookDateAndTime = Calendar.getInstance();
+                        bookDateAndTime.set(year, monthOfYear, dayOfMonth);
+                        // date to our edit text.
+                        String dat = (dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        etEODDate.setText(dat);
+                    }
+                }, newCalendar.get(Calendar.YEAR),
+                newCalendar.get(Calendar.MONTH),
+                newCalendar.get(Calendar.DAY_OF_MONTH));
+
+
+    }
 
 }

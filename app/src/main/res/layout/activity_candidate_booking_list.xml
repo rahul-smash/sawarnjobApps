@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:orientation="horizontal"
-                android:weightSum="4">
+                android:weightSum="5">
 
                 <View
                     android:layout_width=".5dp"
@@ -68,7 +68,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:maxLines="2"
-                    android:text="first_name"
+                    android:text="First Name"
                     android:textColor="@color/color_black"
                     android:textSize="11sp"
                     android:textStyle="bold"></TextView>
@@ -88,7 +88,7 @@
 
                     android:gravity="center"
                     android:maxLines="2"
-                    android:text="last_name"
+                    android:text="Last Name"
                     android:textColor="@color/color_black"
                     android:textSize="11sp"
                     android:textStyle="bold">  </TextView>
@@ -132,7 +132,7 @@
 
                     android:gravity="center"
                     android:maxLines="2"
-                    android:text="JobType"
+                    android:text="Job Type"
                     android:textColor="@color/color_black"
                     android:textSize="11sp"
                     android:textStyle="bold">  </TextView>
@@ -145,7 +145,18 @@
                     android:visibility="gone"></View>
 
 
+                <TextView
+                    android:id="@+id/txtActionPerformed"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
 
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text=""
+                    android:textColor="@color/color_black"
+                    android:textSize="11sp"
+                    android:textStyle="bold">  </TextView>
 
             </LinearLayout>
 

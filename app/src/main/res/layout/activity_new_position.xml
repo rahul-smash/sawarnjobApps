@@ -27,6 +27,7 @@
             android:visibility="visible">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:visibility="gone"
                 android:id="@+id/txtInputTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,6 +50,7 @@
 
 
             <Spinner
+                android:visibility="gone"
                 android:id="@+id/txtDegree"
 
                 android:layout_width="match_parent"
@@ -61,7 +63,26 @@
                 android:layout_toRightOf="@+id/txtMonths"
                 android:background="@drawable/spinner_background"
                 android:gravity="center"></Spinner>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputEmployeeType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Employee Type"
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none">
 
+                <EditText
+                    android:id="@+id/txtEmployeeType"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center|left"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtInputCompanyName"
@@ -85,6 +106,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:visibility="gone"
                 android:id="@+id/txtInputLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
