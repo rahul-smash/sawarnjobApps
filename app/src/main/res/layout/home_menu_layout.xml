@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite">
+    android:background="@color/colorPrimary">
 
 
     <LinearLayout
@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@color/colorWhite"
         android:orientation="vertical">
         <LinearLayout
             android:id="@+id/llAccount"
@@ -22,11 +21,10 @@
             android:orientation="horizontal">
 
             <TextView
+                android:textColor="@color/colorWhite"
                 android:id="@+id/txtAccount"
-                style="@style/EditText.Login"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:background="@color/colorWhite"
                 android:gravity="center|left"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"
@@ -41,25 +39,24 @@
                 android:id="@+id/llPersonalInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
 
                 android:orientation="horizontal"
-                android:weightSum="1">
+               >
 
 
                 <ImageView
                     android:layout_gravity="center|left"
                     android:id="@+id/iv_p_info"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/txtPersonInfo"
-                    android:src="@drawable/calendericon"/>
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/usericon"/>
                 <TextView
+                    android:textColor="@color/colorWhite"
+
                     android:id="@+id/txtPersonInfo"
-                    style="@style/EditText.Login"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@color/colorWhite"
+                    android:layout_height="40dp"
                     android:gravity="center|left"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
@@ -73,24 +70,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-
             android:orientation="horizontal"
-            android:weightSum="1">
+          >
 
 
             <ImageView
                 android:layout_gravity="center|left"
                 android:id="@+id/iv_C_list"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_toLeftOf="@+id/txtPersonInfo"
-                android:src="@drawable/calendericon"/>
+                android:src="@drawable/candidateicon"/>
             <TextView
+                android:textColor="@color/colorWhite"
+
                 android:id="@+id/txtCandidateLsit"
-                style="@style/EditText.Login"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/colorWhite"
+                android:layout_height="40dp"
                 android:gravity="center|left"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"
@@ -105,22 +101,22 @@
             android:layout_marginTop="10dp"
 
             android:orientation="horizontal"
-            android:weightSum="1">
+          >
 
 
             <ImageView
                 android:layout_gravity="center|left"
                 android:id="@+id/iv_logout"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_toLeftOf="@+id/txtPersonInfo"
-                android:src="@drawable/calendericon"/>
+                android:src="@drawable/logouticon"/>
             <TextView
+                android:textColor="@color/colorWhite"
+
                 android:id="@+id/txtLogout"
-                style="@style/EditText.Login"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/colorWhite"
+                android:layout_height="40dp"
                 android:gravity="center|left"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"

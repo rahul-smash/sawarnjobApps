@@ -27,8 +27,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.app.preferences.SavePreferences;
 import com.sarwarajobsapp.R;
+import com.sarwarajobsapp.activity.NewPostionScreen;
 import com.sarwarajobsapp.activity.PersonInfoActivity;
 import com.sarwarajobsapp.base.BaseActivity;
+import com.sarwarajobsapp.candidateList.CandidateSamraddhiActionaleActivity;
+import com.sarwarajobsapp.login.LoginActivity;
 import com.sarwarajobsapp.splash.SplashActivity;
 import com.sarwarajobsapp.utility.AppConstants;
 
@@ -42,8 +45,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ImageButton menuBtn;
     public  static TextView txtToolbartext;
     public  static ImageView imgICBack;
-    private LinearLayout llPersonalInfo,linearHome_btn,linearAttendance,linearTaskList,linearMAnageOrder,linearMyPoints,linearSamriddhiDashboard,linearNotification,linearChangePasswords,llLogout,linearPrivacyPolicy,linearChhoseanystartWork;
-    TextView btnDatWorkPla, btn_samriddhiDashboards,home_btn,btn_attendance,btn_taskList,btn_manageOrder,btnMyPoints,btnNotification,btnChangePassword,btnMyOrders,btnLogout,btnPrivacyPolicy,btnChhossestartAnyWork;
+     LinearLayout llPersonalInfo,llCandidateList,llLogout,linearTaskList,linearMAnageOrder,linearMyPoints,linearSamriddhiDashboard,linearNotification,linearChangePasswords,linearPrivacyPolicy,linearChhoseanystartWork;
+    TextView txtCandidateLsit, btn_samriddhiDashboards,home_btn,btn_attendance,btn_taskList,btn_manageOrder,btnMyPoints,btnNotification,btnChangePassword,btnMyOrders,txtLogout,btnPrivacyPolicy,btnChhossestartAnyWork;
     private boolean doubleBackToExitPressedOnce;
 
     public static Intent getIntent(Context context) {
@@ -74,9 +77,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         menuBtn = (ImageButton) findViewById(R.id.menu_btn);
         llPersonalInfo=(LinearLayout) findViewById(R.id.llPersonalInfo);
-
-
-
+        llLogout=(LinearLayout) findViewById(R.id.llLogout);
+        txtLogout=(TextView) findViewById(R.id.txtLogout);
+        llCandidateList=(LinearLayout) findViewById(R.id.llCandidateList);
+        txtCandidateLsit=(TextView) findViewById(R.id.txtCandidateLsit);
     }
 
     @Override
@@ -93,6 +97,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void initListners() {
         menuBtn.setOnClickListener(this);
         llPersonalInfo.setOnClickListener(this);
+        llLogout.setOnClickListener(this);
+        txtLogout.setOnClickListener(this);
+        llCandidateList.setOnClickListener(this);
+        txtCandidateLsit.setOnClickListener(this);
     }
 
 
@@ -116,7 +124,53 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }, drawerCloseTime);
 
                 break;
+            case R.id.llLogout:
+//                it will check drawer state
+                checkDrawerState();
+//                this function will inflate the My payment screen
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        logoutDialog();
+                    }
+                }, drawerCloseTime);
+                break;
 
+            case R.id.txtLogout:
+//                it will check drawer state
+                checkDrawerState();
+//                this function will inflate the My payment screen
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        logoutDialog();
+                    }
+                }, drawerCloseTime);
+                break;
+
+            case R.id.llCandidateList:
+//                it will check drawer state
+                checkDrawerState();
+//                this function will inflate the My payment screen
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        setUpCandidateLits();
+                    }
+                }, drawerCloseTime);
+                break;
+
+            case R.id.txtCandidateLsit:
+//                it will check drawer state
+                checkDrawerState();
+//                this function will inflate the My payment screen
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        setUpCandidateLits();
+                    }
+                }, drawerCloseTime);
+                break;
     }
 
 
@@ -180,22 +234,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     }
-    private void setupAttendanceFragment() {
+    private void setUpCandidateLits() {
 
 
 
-
-        /*Intent in =new Intent(getApplicationContext(), AttendanceActivity.class);
-        startActivity(in);*/
-
-    }
-    private void setupTaskListFragment() {
+        txtToolbartext.setText("Candidate Info");
+        imgICBack.setVisibility(View.GONE);
+        showFragment(CandidateSamraddhiActionaleActivity.newInstance(this), CandidateSamraddhiActionaleActivity.TAG);
 
     }
-    private void setUPSamriddhiDashboard() {
 
-
-    }
 
 
     private void logoutDialog() {

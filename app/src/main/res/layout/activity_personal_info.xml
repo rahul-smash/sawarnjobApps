@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
 
-                android:hint="Start Date"
+                android:hint="Date Of Birth"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
@@ -134,6 +134,7 @@
                     android:background="@drawable/edittext_bg"
                     android:drawableEnd="@drawable/calendericon"
                     android:editable="false"
+                    android:focusable="false"
                     android:gravity="center|left"
 
                     android:paddingTop="0dp"
@@ -148,19 +149,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
 
-                android:hint="End Date"
+                android:hint="Looking For Job Type"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
-                    android:id="@+id/etEOD"
+                    android:id="@+id/etLookingJobType"
                     android:layout_width="match_parent"
 
                     android:layout_height="50dp"
 
                     android:background="@drawable/edittext_bg"
-                    android:drawableEnd="@drawable/calendericon"
-                    android:editable="false"
                     android:gravity="center|left"
 
                     android:paddingTop="0dp"
