@@ -6,8 +6,10 @@
     android:background="@color/colorPrimary"
     android:orientation="vertical">
 
-
+    <include layout="@layout/custom_tool_bar"
+        android:id="@+id/toolar"/>
     <ScrollView
+        android:layout_below="@+id/toolar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">

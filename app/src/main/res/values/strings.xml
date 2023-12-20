@@ -13,4 +13,7 @@
     <string name="str_login">LOGIN</string>
 
     <string name="str_thanks">Thank you \n for visit our site.</string>
+
+    <string name="str_addneweductaion">Add New Education</string>
+
 </resources>

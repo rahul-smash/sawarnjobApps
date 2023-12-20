@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.sarwarajobsapp.R;
-import com.sarwarajobsapp.candidateList.CandidateSamraddhiActionaleActivity;
+import com.sarwarajobsapp.candidateList.CandidateListActionaleActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,7 +22,7 @@ import org.json.JSONObject;
 
 public class CandidateSamriddhiActionAdadpter extends RecyclerView.Adapter<CandidateSamriddhiActionAdadpter.MyViewHolder> {
 
-    private CandidateSamraddhiActionaleActivity ira1;
+    private CandidateListActionaleActivity ira1;
     private JSONArray moviesList;
     Context mContext;
 
@@ -41,7 +41,7 @@ public class CandidateSamriddhiActionAdadpter extends RecyclerView.Adapter<Candi
         }
     }
 
-    public CandidateSamriddhiActionAdadpter(JSONArray moviesList, CandidateSamraddhiActionaleActivity ira) {
+    public CandidateSamriddhiActionAdadpter(JSONArray moviesList, CandidateListActionaleActivity ira) {
         this.moviesList = moviesList;
         ira1 = ira;
 

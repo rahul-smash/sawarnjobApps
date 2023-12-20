@@ -2,6 +2,7 @@ package com.sarwarajobsapp.activity;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.app.preferences.SavePreferences;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sarwarajobsapp.R;
+import com.sarwarajobsapp.base.BaseActivity;
 import com.sarwarajobsapp.communication.CallBack;
 import com.sarwarajobsapp.communication.ServerHandler;
 import com.sarwarajobsapp.dashboard.MainActivity;
@@ -32,8 +34,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class CandidateEducation extends Fragment implements View.OnClickListener {
-    public static final String TAG = "NewPostionScreen";
+//public class CandidateEducation extends Fragment implements View.OnClickListener {
+public class CandidateEducation extends BaseActivity implements View.OnClickListener {
+    public static final String TAG = "CandidateEducation";
     private MainActivity mainActivity;
     View rootView;
     TextInputLayout txtInputTitle, txtInputCompanyName, txtInputLocation, txtInputStartDate, txtInputEODDate, txtInputJOB;
@@ -47,10 +50,10 @@ public class CandidateEducation extends Fragment implements View.OnClickListener
     LinearLayout llAccount;
     String reformattedStr;
 
-    public static Fragment newInstance(Context context) {
+    /*public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
                 CandidateEducation.class.getName());
-    }
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,7 @@ public class CandidateEducation extends Fragment implements View.OnClickListener
 
     }
 
-    @Override
+   /* @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.activity_cand_education, container, false);
         mainActivity = (MainActivity) getActivity();
@@ -67,8 +70,18 @@ public class CandidateEducation extends Fragment implements View.OnClickListener
         setStartDateTimeField();
         setEndDateTimeField();
         return rootView;
-    }
+    }*/
+   @Override
+   protected void setUp() {
+       initView();
+       setStartDateTimeField();
+       setEndDateTimeField();
 
+   }
+    @Override
+    protected int setLayout() {
+        return R.layout.activity_cand_education;
+    }
     @Override
     public void onResume() {
         super.onResume();
@@ -77,27 +90,38 @@ public class CandidateEducation extends Fragment implements View.OnClickListener
     }
 
     private void initView() {
-        txtInputTitle = rootView.findViewById(R.id.txtInputTitle);
-        txtInputCompanyName = rootView.findViewById(R.id.txtInputCompanyName);
-        txtInputLocation = rootView.findViewById(R.id.txtInputLocation);
-        txtInputStartDate = rootView.findViewById(R.id.txtInputStartDate);
-        txtInputEODDate = rootView.findViewById(R.id.txtInputEODDate);
-        txtInputJOB = rootView.findViewById(R.id.txtInputJOB);
-        verify_btn = rootView.findViewById(R.id.verify_btn);
-        txtSchool = rootView.findViewById(R.id.txtSchool);
-        txtFieldStudy = rootView.findViewById(R.id.txtFieldStudy);
-        txtGradle = rootView.findViewById(R.id.txtGradle);
-        etStartDate = rootView.findViewById(R.id.etStartDate);
-        etEODDate = rootView.findViewById(R.id.etEODDate);
-        txtJobRpleDescritpion = rootView.findViewById(R.id.txtJobRpleDescritpion);
+        txtInputTitle = findViewById(R.id.txtInputTitle);
+        txtInputCompanyName = findViewById(R.id.txtInputCompanyName);
+        txtInputLocation = findViewById(R.id.txtInputLocation);
+        txtInputStartDate = findViewById(R.id.txtInputStartDate);
+        txtInputEODDate =findViewById(R.id.txtInputEODDate);
+        txtInputJOB = findViewById(R.id.txtInputJOB);
+        verify_btn = findViewById(R.id.verify_btn);
+        txtSchool = findViewById(R.id.txtSchool);
+        txtFieldStudy = findViewById(R.id.txtFieldStudy);
+        txtGradle = findViewById(R.id.txtGradle);
+        etStartDate = findViewById(R.id.etStartDate);
+        etEODDate = findViewById(R.id.etEODDate);
+        txtJobRpleDescritpion = findViewById(R.id.txtJobRpleDescritpion);
         etStartDate.setOnClickListener(this);
         etEODDate.setOnClickListener(this);
         verify_btn.setOnClickListener(this);
+        findViewById(R.id.goback).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 
 
     @Override
     public void onClick(View v) {
+       if(v==verify_btn){
+           startActivity(new Intent(getApplicationContext(), NewPostionScreen.class));
+           finish();
+       }
    /*     if (v == etStartDate) {
             //     setDateTimeField();
             toDatePickerDialog.show();
@@ -161,7 +185,7 @@ public class CandidateEducation extends Fragment implements View.OnClickListener
 
     public String getLoginData(String dataType) {
         try {
-            JSONObject data = new JSONObject(new SavePreferences().reterivePreference(getActivity(), AppConstants.logindata).toString());
+            JSONObject data = new JSONObject(new SavePreferences().reterivePreference(this, AppConstants.logindata).toString());
             return data.getString(dataType);
 
         } catch (Exception e) {
@@ -188,7 +212,7 @@ public class CandidateEducation extends Fragment implements View.OnClickListener
         Map<String, String> headerMap = new HashMap<>();
         System.out.println("getPersonalInfoApi====" + AppConstants.apiUlr + "candidate/education/add" + m);
 
-        new ServerHandler().sendToServer(getActivity(), AppConstants.apiUlr + "candidate/education/add", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
+        new ServerHandler().sendToServer(this, AppConstants.apiUlr + "candidate/education/add", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
             @Override
             public void getRespone(String dta, ArrayList<Object> respons) {
                 try {
@@ -204,7 +228,7 @@ public class CandidateEducation extends Fragment implements View.OnClickListener
                         //  getActivity().finish();
 
                     } else {
-                        ((MainActivity) getActivity()).showErrorDialog(obj.getString("message"));
+                        showErrorDialog(obj.getString("message"));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -217,7 +241,7 @@ public class CandidateEducation extends Fragment implements View.OnClickListener
     private void setStartDateTimeField() {
         Calendar newCalendar = Calendar.getInstance();
 
-        toDatePickerDialog = new DatePickerDialog(getActivity(),
+        toDatePickerDialog = new DatePickerDialog(CandidateEducation.this,
                 new DatePickerDialog.OnDateSetListener() {
 
                     public void onDateSet(DatePicker view, int year,
@@ -237,7 +261,7 @@ public class CandidateEducation extends Fragment implements View.OnClickListener
     private void setEndDateTimeField() {
         Calendar newCalendar = Calendar.getInstance();
 
-        toDatePickerDialogEnd = new DatePickerDialog(getActivity(),
+        toDatePickerDialogEnd = new DatePickerDialog(CandidateEducation.this,
                 new DatePickerDialog.OnDateSetListener() {
 
                     public void onDateSet(DatePicker view, int year,
