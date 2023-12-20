@@ -8,20 +8,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.preferences.SavePreferences;
 import com.google.android.material.textfield.TextInputLayout;
@@ -30,38 +23,36 @@ import com.sarwarajobsapp.base.BaseActivity;
 import com.sarwarajobsapp.communication.CallBack;
 import com.sarwarajobsapp.communication.ServerHandler;
 import com.sarwarajobsapp.dashboard.MainActivity;
-import com.sarwarajobsapp.login.LoginActivity;
 import com.sarwarajobsapp.util.Utility;
 import com.sarwarajobsapp.utility.AppConstants;
 import com.sarwarajobsapp.utility.PrefHelper;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class PersonInfoActivity extends Fragment implements View.OnClickListener {
+    public class PersonInfoActivity extends BaseActivity implements View.OnClickListener {
+
     public static final String TAG = "PersonInfoActivity";
     private MainActivity mainActivity;
     View rootView;
     TextInputLayout txtInputFirstName, txtInputLastName, txtInputEmail, txtInputPhone, txtInputStartDate, txtInputEndDate, txtInputLocation;
-    TextView verify_btn;
+    TextView verify_btn,customeToolbartext;
     EditText etFirstName, etLastName, etEmail, etPhone, etStartDate, etLookingJobType, etLoction;
     Calendar bookDateAndTime;
     private DatePickerDialog toDatePickerDialog;
     LinearLayout llAccount;
     String reformattedStr;
-    public static Fragment newInstance(Context context) {
+  /*  public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
                 PersonInfoActivity.class.getName());
-    }
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,16 +61,27 @@ public class PersonInfoActivity extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected void setUp() {
+        initView();
+        setStartDateTimeField();
+    }
+
+    @Override
+    protected int setLayout() {
+        return R.layout.activity_personal_info_duplicate;
+    }
+
+  //  @Override
+  /*  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.activity_personal_info, container, false);
         mainActivity = (MainActivity) getActivity();
 
         initView();
         setStartDateTimeField();
         return rootView;
-    }
+    }*/
 
-    @Override
+  //  @Override
     public void onResume() {
         super.onResume();
         Log.i("@@PersonInfoActivity", "onResume---");
@@ -87,25 +89,34 @@ public class PersonInfoActivity extends Fragment implements View.OnClickListener
     }
 
     private void initView() {
-        llAccount = rootView.findViewById(R.id.llAccount);
-        txtInputFirstName = rootView.findViewById(R.id.txtInputFirstName);
-        txtInputLastName = rootView.findViewById(R.id.txtInputLastName);
-        txtInputEmail = rootView.findViewById(R.id.txtInputEmail);
-        txtInputPhone = rootView.findViewById(R.id.txtInputPhone);
-        txtInputStartDate = rootView.findViewById(R.id.txtInputStartDate);
-        txtInputEndDate = rootView.findViewById(R.id.txtInputEndDate);
-        txtInputLocation = rootView.findViewById(R.id.txtInputLocation);
-        verify_btn = rootView.findViewById(R.id.verify_btn);
-        etFirstName = rootView.findViewById(R.id.etFirstName);
-        etLastName = rootView.findViewById(R.id.etLastName);
-        etEmail = rootView.findViewById(R.id.etEmail);
-        etPhone = rootView.findViewById(R.id.etPhone);
-        etStartDate = rootView.findViewById(R.id.etStartDate);
-        etLookingJobType = rootView.findViewById(R.id.etLookingJobType);
-        etLoction = rootView.findViewById(R.id.etLocation);
+        customeToolbartext=findViewById(R.id.customeToolbartext);
+
+        llAccount = findViewById(R.id.llAccount);
+        txtInputFirstName = findViewById(R.id.txtInputFirstName);
+        txtInputLastName = findViewById(R.id.txtInputLastName);
+        txtInputEmail = findViewById(R.id.txtInputEmail);
+        txtInputPhone = findViewById(R.id.txtInputPhone);
+        txtInputStartDate = findViewById(R.id.txtInputStartDate);
+        txtInputEndDate = findViewById(R.id.txtInputEndDate);
+        txtInputLocation = findViewById(R.id.txtInputLocation);
+        verify_btn = findViewById(R.id.verify_btn);
+        etFirstName = findViewById(R.id.etFirstName);
+        etLastName = findViewById(R.id.etLastName);
+        etEmail = findViewById(R.id.etEmail);
+        etPhone = findViewById(R.id.etPhone);
+        etStartDate = findViewById(R.id.etStartDate);
+        etLookingJobType = findViewById(R.id.etLookingJobType);
+        etLoction = findViewById(R.id.etLocation);
         etStartDate.setOnClickListener(this);
        // etEndDate.setOnClickListener(this);
         verify_btn.setOnClickListener(this);
+        customeToolbartext.setText("Add New Position");
+        findViewById(R.id.goback).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 
@@ -128,39 +139,39 @@ public class PersonInfoActivity extends Fragment implements View.OnClickListener
             System.out.println("reformattedStr====" +reformattedStr);
 
             if (etFirstName.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter First name", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Enter First name", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (etLastName.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter Last name", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Enter Last name", Toast.LENGTH_SHORT).show();
 
                 return;
             }
             if (!Utility.checkValidEmail(etEmail.getText().toString())) {
                 etEmail.requestFocus();
-                Toast.makeText(getActivity(), "Enter valid email", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Enter valid email", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             if (etPhone.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter Phone", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Enter Phone", Toast.LENGTH_SHORT).show();
 
                 return;
             }
             if (etStartDate.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter Start Date", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Enter Start Date", Toast.LENGTH_SHORT).show();
 
                 return;
             }
 
             if (etLookingJobType.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter Looking JobType", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Enter Looking JobType", Toast.LENGTH_SHORT).show();
 
                 return;
             }
 
             if (etLoction.getText().toString().length() <= 0) {
-                Toast.makeText(getActivity(), "Enter Location", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Enter Location", Toast.LENGTH_SHORT).show();
 
                 return;
             } else {
@@ -174,7 +185,7 @@ public class PersonInfoActivity extends Fragment implements View.OnClickListener
 
     public String getLoginData(String dataType) {
         try {
-            JSONObject data = new JSONObject(new SavePreferences().reterivePreference(getActivity(), AppConstants.logindata).toString());
+            JSONObject data = new JSONObject(new SavePreferences().reterivePreference(getApplicationContext(), AppConstants.logindata).toString());
             return data.getString(dataType);
 
         } catch (Exception e) {
@@ -203,7 +214,7 @@ public class PersonInfoActivity extends Fragment implements View.OnClickListener
         Map<String, String> headerMap = new HashMap<>();
         System.out.println("getPersonalInfoApi====" + AppConstants.apiUlr + "candidate/add" + m);
 
-        new ServerHandler().sendToServer(getActivity(), AppConstants.apiUlr + "candidate/add", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
+        new ServerHandler().sendToServer(this, AppConstants.apiUlr + "candidate/add", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
             @Override
             public void getRespone(String dta, ArrayList<Object> respons) {
                 try {
@@ -215,11 +226,12 @@ public class PersonInfoActivity extends Fragment implements View.OnClickListener
                     System.out.println("getPersonalInfoApi==1==" + obj.getString("message").toString());
                     if (obj.getString("message").equalsIgnoreCase("Candidate Created")) {
                         PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", objPuser_id.getString("user_id"));
-                       // startActivity(new Intent(getActivity(), MainActivity.class));
-                      //  getActivity().finish();
+                        startActivity(new Intent(getApplicationContext(), CandidateEducation.class));
+
+                       finish();
 
                     } else {
-                        ((MainActivity) getActivity()).showErrorDialog(obj.getString("message"));
+                        showErrorDialog(obj.getString("message"));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -232,7 +244,7 @@ public class PersonInfoActivity extends Fragment implements View.OnClickListener
     private void setStartDateTimeField() {
         Calendar newCalendar = Calendar.getInstance();
 
-        toDatePickerDialog = new DatePickerDialog(getActivity(),
+        toDatePickerDialog = new DatePickerDialog(PersonInfoActivity.this,
                 new DatePickerDialog.OnDateSetListener() {
 
                     public void onDateSet(DatePicker view, int year,

@@ -1,17 +1,12 @@
 package com.sarwarajobsapp.dashboard;
 
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,12 +22,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.app.preferences.SavePreferences;
 import com.sarwarajobsapp.R;
-import com.sarwarajobsapp.activity.NewPostionScreen;
-import com.sarwarajobsapp.activity.PersonInfoActivity;
+import com.sarwarajobsapp.activity.PersonInfoFragment;
+import com.sarwarajobsapp.activity.ThanksActivity;
 import com.sarwarajobsapp.base.BaseActivity;
-import com.sarwarajobsapp.candidateList.CandidateSamraddhiActionaleActivity;
-import com.sarwarajobsapp.login.LoginActivity;
-import com.sarwarajobsapp.splash.SplashActivity;
+import com.sarwarajobsapp.candidateList.CandidateListActionaleActivity;
 import com.sarwarajobsapp.utility.AppConstants;
 
 
@@ -230,7 +223,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void setupHomeFragment() {
         txtToolbartext.setText("Personal Info");
         imgICBack.setVisibility(View.GONE);
-        showFragment(PersonInfoActivity.newInstance(this), PersonInfoActivity.TAG);
+        showFragment(PersonInfoFragment.newInstance(this), PersonInfoFragment.TAG);
 
 
     }
@@ -240,7 +233,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         txtToolbartext.setText("Candidate Info");
         imgICBack.setVisibility(View.GONE);
-        showFragment(CandidateSamraddhiActionaleActivity.newInstance(this), CandidateSamraddhiActionaleActivity.TAG);
+        showFragment(CandidateListActionaleActivity.newInstance(this), CandidateListActionaleActivity.TAG);
 
     }
 
@@ -258,8 +251,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 new SavePreferences().savePreferencesData(MainActivity.this, "", AppConstants.logindata);
-                startActivity(new Intent(MainActivity.this, SplashActivity.class));
-                finishAffinity();
+                startActivity(new Intent(MainActivity.this, ThanksActivity.class));
+                finish();
 
             }
         });

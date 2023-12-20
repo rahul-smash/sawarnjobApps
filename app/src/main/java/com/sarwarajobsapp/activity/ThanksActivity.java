@@ -38,9 +38,6 @@ public class ThanksActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
 
-   /*     if (v == verify_btn) {
 
-
-        }*/
     }
 }

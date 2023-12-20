@@ -1,11 +1,8 @@
 package com.sarwarajobsapp.candidateList;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.preferences.SavePreferences;
 import com.sarwarajobsapp.R;
+import com.sarwarajobsapp.activity.PersonInfoActivity;
+import com.sarwarajobsapp.activity.PersonInfoFragment;
 import com.sarwarajobsapp.adapter.CandidateSamriddhiActionAdadpter;
 import com.sarwarajobsapp.communication.CallBack;
 import com.sarwarajobsapp.communication.ServerHandler;
@@ -38,18 +35,18 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class CandidateSamraddhiActionaleActivity extends Fragment implements View.OnClickListener {
+public class CandidateListActionaleActivity extends Fragment implements View.OnClickListener {
     View rootView;
     public static final String TAG = "CandidateSamraddhiActionaleActivity";
     private ImageView back_btn;
      CandidateSamriddhiActionAdadpter candidateSamriddhiActionAdadpter;
-     CandidateSamraddhiActionaleActivity candidateSamraddhiActionaleActivity;
+     CandidateListActionaleActivity candidateSamraddhiActionaleActivity;
     private TextView txtSignOut,txtAddUSer;
      MainActivity mainActivity;
 
     public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
-                CandidateSamraddhiActionaleActivity.class.getName());
+                CandidateListActionaleActivity.class.getName());
     }
 
     @Override
@@ -100,8 +97,9 @@ public class CandidateSamraddhiActionaleActivity extends Fragment implements Vie
     public void onClick(View v) {
 
         if (v == txtAddUSer) {
-         //   startActivity(new Intent(CandidateSamraddhiActionaleActivity.this, CandidateBookingFormActivity.class));
-          //  finish();
+            startActivity(new Intent(getActivity(), PersonInfoActivity.class));
+          //  showFragment(ChangePassword.newInstance(this), ChangePassword.TAG);
+            getActivity().finish();
         }
     }
 

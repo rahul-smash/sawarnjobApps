@@ -6,6 +6,8 @@
     android:background="@color/colorPrimary"
     android:orientation="vertical">
 
+
+
     <include layout="@layout/custom_tool_bar"
         android:id="@+id/toolar"/>
     <ScrollView
@@ -27,15 +29,17 @@
             android:visibility="visible">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtInputTitle"
+                android:id="@+id/txtInputFirstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="School"
+                android:layout_marginTop="10dp"
+
+                android:hint="First Name"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
-                    android:id="@+id/txtSchool"
+                    android:id="@+id/etFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
@@ -48,32 +52,41 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <Spinner
-                android:id="@+id/txtSPinnerEmployeerType"
-
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-
-                android:layout_centerInParent="true"
-
-                android:layout_gravity="top"
-                android:layout_marginTop="10dp"
-                android:layout_toRightOf="@+id/txtMonths"
-                android:background="@drawable/spinner_background"
-                android:gravity="center"></Spinner>
-
-
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtInputCompanyName"
+                android:id="@+id/txtInputLastName"
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Field of Study"
+                android:hint="Last Name"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
-                    android:id="@+id/txtFieldStudy"
+                    android:id="@+id/etLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center|left"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputEmail"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Email"
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none">
+
+                <EditText
+                    android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
@@ -85,16 +98,17 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtInputLocation"
+                android:id="@+id/txtInputPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Gradle"
+
+                android:hint="Phone"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
-                    android:id="@+id/txtGradle"
+                    android:id="@+id/etPhone"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
@@ -134,48 +148,49 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtInputEODDate"
+                android:id="@+id/txtInputEndDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
 
-                android:hint="Date Of Birth"
+                android:hint="Looking For Job Type"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
-                    android:id="@+id/etEODDate"
+                    android:id="@+id/etLookingJobType"
                     android:layout_width="match_parent"
+
                     android:layout_height="50dp"
 
                     android:background="@drawable/edittext_bg"
-                    android:drawableEnd="@drawable/calendericon"
-                    android:editable="false"
-                    android:focusable="false"
                     android:gravity="center|left"
 
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:singleLine="true" />
+
+
             </com.google.android.material.textfield.TextInputLayout>
 
 
-
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtInputJOB"
+                android:id="@+id/txtInputLocation"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Description "
+
+                android:hint="Location"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
-                    android:id="@+id/txtJobRpleDescritpion"
+                    android:id="@+id/etLocation"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:background="@drawable/edittext_bg"
-                    android:gravity="left|top"
+                    android:gravity="left"
                     android:singleLine="true" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -185,7 +200,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_sign_in"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
+
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -207,14 +223,16 @@
             <TextView
                 android:id="@+id/verify_btn"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+
                 android:background="@drawable/edittext_bg"
 
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Next"
+                android:text="Save Changes"
                 android:textColor="@color/color_black"
                 android:textSize="@dimen/text_size_normal"
                 android:visibility="visible" />

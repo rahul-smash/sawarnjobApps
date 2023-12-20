@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +19,6 @@ import androidx.fragment.app.Fragment;
 import com.app.preferences.SavePreferences;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sarwarajobsapp.R;
-import com.sarwarajobsapp.base.BaseActivity;
 import com.sarwarajobsapp.communication.CallBack;
 import com.sarwarajobsapp.communication.ServerHandler;
 import com.sarwarajobsapp.dashboard.MainActivity;
@@ -38,22 +36,21 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-//public class NewPostionScreen extends Fragment implements View.OnClickListener {
-public class NewPostionScreen extends BaseActivity implements View.OnClickListener {
-
-    public static final String TAG = "NewPostionScreen";
-    TextInputLayout txtInputTitle, txtInputCompanyName, txtInputLocation, txtInputStartDate, txtInputEODDate, txtInputJOB;
-    TextView verify_btn,customeToolbartext;
-    Spinner txtSPinnerEmployeerType;
-    EditText txtTitle, txtCompanyName, txtLocation, etStartDate, etEODDate, txtJobRpleDescritpion;
+public class PersonInfoFragment extends Fragment implements View.OnClickListener {
+    public static final String TAG = "PersonInfoActivity";
+    private MainActivity mainActivity;
+    View rootView;
+    TextInputLayout txtInputFirstName, txtInputLastName, txtInputEmail, txtInputPhone, txtInputStartDate, txtInputEndDate, txtInputLocation;
+    TextView verify_btn;
+    EditText etFirstName, etLastName, etEmail, etPhone, etStartDate, etLookingJobType, etLoction;
     Calendar bookDateAndTime;
     private DatePickerDialog toDatePickerDialog;
     LinearLayout llAccount;
     String reformattedStr;
-  /*  public static Fragment newInstance(Context context) {
+    public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
-                NewPostionScreen.class.getName());
-    }*/
+                PersonInfoFragment.class.getName());
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,64 +59,48 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    protected void setUp() {
-        initView();
-        setStartDateTimeField();
-    }
-
-    @Override
-    protected int setLayout() {
-        return R.layout.activity_new_position;
-    }
-
-    @Override
-/*    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.activity_new_position, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.activity_personal_info, container, false);
         mainActivity = (MainActivity) getActivity();
 
         initView();
         setStartDateTimeField();
         return rootView;
-    }*/
+    }
 
+    @Override
     public void onResume() {
         super.onResume();
         Log.i("@@PersonInfoActivity", "onResume---");
 
     }
 
-
     private void initView() {
-        customeToolbartext=findViewById(R.id.customeToolbartext);
-        txtInputTitle = findViewById(R.id.txtInputTitle);
-        txtInputCompanyName = findViewById(R.id.txtInputCompanyName);
-        txtInputLocation = findViewById(R.id.txtInputLocation);
-        txtInputStartDate = findViewById(R.id.txtInputStartDate);
-        txtInputEODDate = findViewById(R.id.txtInputEODDate);
-        txtInputJOB = findViewById(R.id.txtInputJOB);
-        verify_btn = findViewById(R.id.verify_btn);
-        txtTitle = findViewById(R.id.txtTitle);
-        txtCompanyName = findViewById(R.id.txtCompanyName);
-        txtLocation = findViewById(R.id.txtLocation);
-        etStartDate = findViewById(R.id.etStartDate);
-        etEODDate = findViewById(R.id.etEODDate);
-        txtJobRpleDescritpion = findViewById(R.id.txtJobRpleDescritpion);
-        customeToolbartext.setText("Add New Position");
-        findViewById(R.id.goback).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        llAccount = rootView.findViewById(R.id.llAccount);
+        txtInputFirstName = rootView.findViewById(R.id.txtInputFirstName);
+        txtInputLastName = rootView.findViewById(R.id.txtInputLastName);
+        txtInputEmail = rootView.findViewById(R.id.txtInputEmail);
+        txtInputPhone = rootView.findViewById(R.id.txtInputPhone);
+        txtInputStartDate = rootView.findViewById(R.id.txtInputStartDate);
+        txtInputEndDate = rootView.findViewById(R.id.txtInputEndDate);
+        txtInputLocation = rootView.findViewById(R.id.txtInputLocation);
+        verify_btn = rootView.findViewById(R.id.verify_btn);
+        etFirstName = rootView.findViewById(R.id.etFirstName);
+        etLastName = rootView.findViewById(R.id.etLastName);
+        etEmail = rootView.findViewById(R.id.etEmail);
+        etPhone = rootView.findViewById(R.id.etPhone);
+        etStartDate = rootView.findViewById(R.id.etStartDate);
+        etLookingJobType = rootView.findViewById(R.id.etLookingJobType);
+        etLoction = rootView.findViewById(R.id.etLocation);
         etStartDate.setOnClickListener(this);
-        etEODDate.setOnClickListener(this);
+       // etEndDate.setOnClickListener(this);
         verify_btn.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View v) {
-   /*     if (v == etStartDate) {
+        if (v == etStartDate) {
             //     setDateTimeField();
             toDatePickerDialog.show();
         }
@@ -129,7 +110,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
 
             try {
 
-                reformattedStr = myFormat.format(myFormat.parse(etStartDate.getText().toString().trim()));
+                 reformattedStr = myFormat.format(myFormat.parse(etStartDate.getText().toString().trim()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -175,14 +156,14 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
                 getPersonalInfoApi(getLoginData("id"), etFirstName.getText().toString().trim()
                         ,  etLastName.getText().toString().trim(), etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
                         reformattedStr, etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim());
-            }*/
+            }
 
-        //}
+        }
     }
 
     public String getLoginData(String dataType) {
         try {
-            JSONObject data = new JSONObject(new SavePreferences().reterivePreference(this, AppConstants.logindata).toString());
+            JSONObject data = new JSONObject(new SavePreferences().reterivePreference(getActivity(), AppConstants.logindata).toString());
             return data.getString(dataType);
 
         } catch (Exception e) {
@@ -192,55 +173,56 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
         return "";
     }
 
-    public void getNewPosition(String admin_user_id, String first_name, String last_name, String email, String phone,
-                                     String sdob, String etLookingJobType, String location) {
+    public void getPersonalInfoApi(String admin_user_id, String first_name, String last_name, String email, String phone,
+                                   String sdob, String etLookingJobType, String location) {
 
-    LinkedHashMap<String, String> m = new LinkedHashMap<>();
+        LinkedHashMap<String, String> m = new LinkedHashMap<>();
 
-    //   m.put("admin_user_id", getLoginData("id"));
-    m.put("admin_user_id", admin_user_id);
-    m.put("first_name", first_name);
-    m.put("last_name", last_name);
-    m.put("email", email);
-    m.put("phone", phone);
-    m.put("dob", sdob);
-    m.put("looking_job_type", etLookingJobType);
-    m.put("address", location);
+        //   m.put("admin_user_id", getLoginData("id"));
+        m.put("admin_user_id", admin_user_id);
+        m.put("first_name", first_name);
+        m.put("last_name", last_name);
+        m.put("email", email);
+        m.put("phone", phone);
+        m.put("dob", sdob);
+        m.put("looking_job_type", etLookingJobType);
+        m.put("address", location);
 
 
-    Map<String, String> headerMap = new HashMap<>();
-    System.out.println("getPersonalInfoApi====" + AppConstants.apiUlr + "candidate/add" + m);
+        Map<String, String> headerMap = new HashMap<>();
+        System.out.println("getPersonalInfoApi====" + AppConstants.apiUlr + "candidate/add" + m);
 
-    new ServerHandler().sendToServer(this, AppConstants.apiUlr + "candidate/add", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
-        @Override
-        public void getRespone(String dta, ArrayList<Object> respons) {
-            try {
-                System.out.println("getPersonalInfoApi====" + dta);
-                JSONObject obj = new JSONObject(dta);
-                JSONObject objPuser_id =obj.getJSONObject("data");
+        new ServerHandler().sendToServer(getActivity(), AppConstants.apiUlr + "candidate/add", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
+            @Override
+            public void getRespone(String dta, ArrayList<Object> respons) {
+                try {
+                    System.out.println("getPersonalInfoApi====" + dta);
+                    JSONObject obj = new JSONObject(dta);
+                    JSONObject objPuser_id =obj.getJSONObject("data");
+                    
+                    System.out.println("getPersonalInfoApi====" + obj.toString());
+                    System.out.println("getPersonalInfoApi==1==" + obj.getString("message").toString());
+                    if (obj.getString("message").equalsIgnoreCase("Candidate Created")) {
+                        PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", objPuser_id.getString("user_id"));
+                        startActivity(new Intent(getActivity(), CandidateEducation.class));
 
-                System.out.println("getPersonalInfoApi====" + obj.toString());
-                System.out.println("getPersonalInfoApi==1==" + obj.getString("message").toString());
-                if (obj.getString("message").equalsIgnoreCase("Candidate Created")) {
-                    PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", objPuser_id.getString("user_id"));
-                    // startActivity(new Intent(getActivity(), MainActivity.class));
-                    //  getActivity().finish();
+                       getActivity().finish();
 
-                } else {
-                 showErrorDialog(obj.getString("message"));
+                    } else {
+                        ((MainActivity) getActivity()).showErrorDialog(obj.getString("message"));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
-        }
-    });
-}
+            }
+        });
+    }
 
     private void setStartDateTimeField() {
         Calendar newCalendar = Calendar.getInstance();
 
-        toDatePickerDialog = new DatePickerDialog(NewPostionScreen.this,
+        toDatePickerDialog = new DatePickerDialog(getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
 
                     public void onDateSet(DatePicker view, int year,
