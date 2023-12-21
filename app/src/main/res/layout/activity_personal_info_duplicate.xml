@@ -7,13 +7,14 @@
     android:orientation="vertical">
 
 
+    <include
+        android:id="@+id/toolar"
+        layout="@layout/custom_tool_bar" />
 
-    <include layout="@layout/custom_tool_bar"
-        android:id="@+id/toolar"/>
     <ScrollView
-        android:layout_below="@+id/toolar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/toolar"
         android:orientation="vertical">
 
 
@@ -33,10 +34,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-
-                android:hint="First Name"
                 android:imeOptions="actionNext"
-                app:boxBackgroundMode="none">
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
 
                 <EditText
                     android:id="@+id/etFirstName"
@@ -44,9 +44,11 @@
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
                     android:gravity="center|left"
+                    android:hint="First Name"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
 
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -58,9 +60,9 @@
 
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Last Name"
                 android:imeOptions="actionNext"
-                app:boxBackgroundMode="none">
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
 
                 <EditText
                     android:id="@+id/etLastName"
@@ -68,9 +70,11 @@
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
                     android:gravity="center|left"
+                    android:hint="Last Name"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
 
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -81,9 +85,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Email"
                 android:imeOptions="actionNext"
-                app:boxBackgroundMode="none">
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
 
                 <EditText
                     android:id="@+id/etEmail"
@@ -91,9 +95,11 @@
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
                     android:gravity="center|left"
+                    android:hint="Email"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -102,10 +108,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-
-                android:hint="Phone"
                 android:imeOptions="actionNext"
-                app:boxBackgroundMode="none">
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
 
                 <EditText
                     android:id="@+id/etPhone"
@@ -113,10 +118,12 @@
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
                     android:gravity="center|left"
+                    android:hint="Phone"
                     android:inputType="number"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -125,25 +132,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-
-                android:hint="Date Of Birth"
                 android:imeOptions="actionNext"
-                app:boxBackgroundMode="none">
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
 
                 <EditText
                     android:id="@+id/etStartDate"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-
                     android:background="@drawable/edittext_bg"
                     android:drawableEnd="@drawable/calendericon"
+
                     android:editable="false"
                     android:focusable="false"
                     android:gravity="center|left"
-
+                    android:hint="Date Of Birth"
                     android:paddingTop="0dp"
+
                     android:paddingBottom="0dp"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -152,23 +160,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-
-                android:hint="Looking For Job Type"
                 android:imeOptions="actionNext"
-                app:boxBackgroundMode="none">
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
 
                 <EditText
                     android:id="@+id/etLookingJobType"
                     android:layout_width="match_parent"
-
                     android:layout_height="50dp"
-
                     android:background="@drawable/edittext_bg"
                     android:gravity="center|left"
 
+                    android:hint="Looking For Job Type"
                     android:paddingTop="0dp"
+
                     android:paddingBottom="0dp"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
 
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -180,10 +188,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-
-                android:hint="Location"
                 android:imeOptions="actionNext"
-                app:boxBackgroundMode="none">
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
 
                 <EditText
                     android:id="@+id/etLocation"
@@ -191,7 +198,9 @@
                     android:layout_height="100dp"
                     android:background="@drawable/edittext_bg"
                     android:gravity="left"
-                    android:singleLine="true" />
+                    android:hint="Location"
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

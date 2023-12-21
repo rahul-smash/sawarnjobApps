@@ -1,8 +1,11 @@
 package com.sarwarajobsapp.activity;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -174,7 +177,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     }
 
     public void getPersonalInfoApi(String admin_user_id, String first_name, String last_name, String email, String phone,
-                                   String sdob, String etLookingJobType, String location) {
+                                   String sdob, String etLookingJobTypes, String location) {
 
         LinkedHashMap<String, String> m = new LinkedHashMap<>();
 
@@ -185,7 +188,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         m.put("email", email);
         m.put("phone", phone);
         m.put("dob", sdob);
-        m.put("looking_job_type", etLookingJobType);
+        m.put("looking_job_type", etLookingJobTypes);
         m.put("address", location);
 
 
@@ -198,18 +201,35 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 try {
                     System.out.println("getPersonalInfoApi====" + dta);
                     JSONObject obj = new JSONObject(dta);
-                    JSONObject objPuser_id =obj.getJSONObject("data");
-                    
-                    System.out.println("getPersonalInfoApi====" + obj.toString());
-                    System.out.println("getPersonalInfoApi==1==" + obj.getString("message").toString());
-                    if (obj.getString("message").equalsIgnoreCase("Candidate Created")) {
-                        PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", objPuser_id.getString("user_id"));
-                        startActivity(new Intent(getActivity(), CandidateEducation.class));
+                    if(obj.getString("message").equalsIgnoreCase("Email already exist")){
+Toast.makeText(getActivity(),obj.getString("message"),Toast.LENGTH_SHORT).show();
+                    }else{
+                        JSONObject objPuser_id =obj.getJSONObject("data");
 
-                       getActivity().finish();
+                        System.out.println("getPersonalInfoApi====" + obj.toString());
+                        System.out.println("getPersonalInfoApi==1==" + obj.getString("message").toString());
+                        if (obj.getString("message").equalsIgnoreCase("Candidate Created")) {
+                            PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", objPuser_id.getString("user_id"));
+                            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref",MODE_PRIVATE);
 
-                    } else {
-                        ((MainActivity) getActivity()).showErrorDialog(obj.getString("message"));
+                            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+
+                            myEdit.putString("FirstName", etFirstName.getText().toString());
+                            myEdit.putString("LastName", etLastName.getText().toString());
+                            myEdit.putString("email", etEmail.getText().toString());
+                            myEdit.putString("phone", etPhone.getText().toString());
+                            myEdit.putString("dob", etStartDate.getText().toString());
+                            myEdit.putString("llokingJobType", etLookingJobType.getText().toString());
+                            myEdit.putString("location", etLoction.getText().toString());
+                            myEdit.commit();
+                            startActivity(new Intent(getActivity(), CandidateEducation.class));
+
+                            getActivity().finish();
+
+                        } else {
+                            ((MainActivity) getActivity()).showErrorDialog(obj.getString("message"));
+                        }
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

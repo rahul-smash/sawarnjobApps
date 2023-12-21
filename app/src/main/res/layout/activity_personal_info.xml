@@ -29,12 +29,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-
-                android:hint="First Name"
+app:hintEnabled="false"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
+                    android:hint="First Name"
+                    android:textColorHint="@color/color_dark_gray"
                     android:id="@+id/etFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -51,14 +52,15 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtInputLastName"
                 android:layout_width="match_parent"
-
+app:hintEnabled="false"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Last Name"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
+                    android:hint="Last Name"
+                    android:textColorHint="@color/color_dark_gray"
                     android:id="@+id/etLastName"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -73,15 +75,16 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtInputEmail"
-
+app:hintEnabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Email"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
+                    android:hint="Email"
+                    android:textColorHint="@color/color_dark_gray"
                     android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -98,12 +101,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-
-                android:hint="Phone"
+app:hintEnabled="false"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
+                    android:hint="Phone"
+                    android:textColorHint="@color/color_dark_gray"
                     android:id="@+id/etPhone"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -121,8 +125,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-
-                android:hint="Date Of Birth"
+app:hintEnabled="false"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
@@ -130,6 +133,8 @@
                     android:id="@+id/etStartDate"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:hint="Date Of Birth"
+                    android:textColorHint="@color/color_dark_gray"
 
                     android:background="@drawable/edittext_bg"
                     android:drawableEnd="@drawable/calendericon"
@@ -148,15 +153,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-
-                android:hint="Looking For Job Type"
+app:hintEnabled="false"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
                     android:id="@+id/etLookingJobType"
                     android:layout_width="match_parent"
-
+                    android:hint="Looking For Job Type"
+                    android:textColorHint="@color/color_dark_gray"
                     android:layout_height="50dp"
 
                     android:background="@drawable/edittext_bg"
@@ -176,12 +181,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-
-                android:hint="Location"
+app:hintEnabled="false"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
+                    android:hint="Description"
+                    android:textColorHint="@color/color_dark_gray"
                     android:id="@+id/etLocation"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"

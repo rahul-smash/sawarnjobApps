@@ -16,11 +16,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.app.preferences.SavePreferences;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sarwarajobsapp.R;
 import com.sarwarajobsapp.base.BaseActivity;
+import com.sarwarajobsapp.candidateList.CandidateListActionaleActivity;
 import com.sarwarajobsapp.communication.CallBack;
 import com.sarwarajobsapp.communication.ServerHandler;
 import com.sarwarajobsapp.dashboard.MainActivity;
@@ -42,10 +44,10 @@ import java.util.Map;
 public class NewPostionScreen extends BaseActivity implements View.OnClickListener {
 
     public static final String TAG = "NewPostionScreen";
-    TextInputLayout txtInputEmployeeType, txtInputTitle, txtInputCompanyName, txtInputLocation, txtInputStartDate, txtInputEODDate, txtInputJOB;
+    TextInputLayout txtInputEmployeeType,txtInputPostion, txtInputTitle, txtInputCompanyName, txtInputLocation, txtInputStartDate, txtInputEODDate, txtInputJOB;
     TextView verify_btn,customeToolbartext;
     Spinner txtSPinnerEmployeerType;
-    EditText txtEmployeeType,txtTitle, txtCompanyName, txtLocation, etStartDate, etEODDate, txtJobRpleDescritpion;
+    EditText txtEmployeeType,txtPosition,txtTitle, txtCompanyName, txtLocation, etStartDate, etEODDate, txtJobRpleDescritpion;
     Calendar bookDateAndTime;
      DatePickerDialog toDatePickerDialog;
      DatePickerDialog toDatePickerDialogEnd;
@@ -95,6 +97,8 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
         customeToolbartext=findViewById(R.id.customeToolbartext);
         txtInputTitle = findViewById(R.id.txtInputTitle);
         txtInputCompanyName = findViewById(R.id.txtInputCompanyName);
+        txtInputPostion= findViewById(R.id.txtInputPostion);
+        txtPosition= findViewById(R.id.txtPosition);
         txtInputLocation = findViewById(R.id.txtInputLocation);
         txtInputStartDate = findViewById(R.id.txtInputStartDate);
         txtInputEODDate = findViewById(R.id.txtInputEODDate);
@@ -107,12 +111,15 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
         etStartDate = findViewById(R.id.etStartDate);
         etEODDate = findViewById(R.id.etEODDate);
         txtJobRpleDescritpion = findViewById(R.id.txtJobRpleDescritpion);
-        customeToolbartext.setText("Add New Position");
+        customeToolbartext.setText("Add Previous Experience");
         findViewById(R.id.goback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 finish();
+              /*  Fragment fragment = new CandidateListActionaleActivity();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();*/
             }
         });
         etStartDate.setOnClickListener(this);
@@ -162,6 +169,11 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
 
             if (txtCompanyName.getText().toString().length() <= 0) {
                 Toast.makeText(this, "Enter Company Name", Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+            if (txtPosition.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter Position", Toast.LENGTH_SHORT).show();
 
                 return;
             }
