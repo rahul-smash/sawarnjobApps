@@ -22,10 +22,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.app.preferences.SavePreferences;
 import com.sarwarajobsapp.R;
+import com.sarwarajobsapp.activity.PersonInfoActivity;
 import com.sarwarajobsapp.activity.PersonInfoFragment;
 import com.sarwarajobsapp.activity.ThanksActivity;
 import com.sarwarajobsapp.base.BaseActivity;
 import com.sarwarajobsapp.candidateList.CandidateListActionaleActivity;
+import com.sarwarajobsapp.candidateList.CandidateListActionaleActivityConvert;
 import com.sarwarajobsapp.utility.AppConstants;
 
 
@@ -233,8 +235,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         txtToolbartext.setText("Candidate Info");
         imgICBack.setVisibility(View.GONE);
-        showFragment(CandidateListActionaleActivity.newInstance(this), CandidateListActionaleActivity.TAG);
-
+      //  showFragment(CandidateListActionaleActivity.newInstance(this), CandidateListActionaleActivity.TAG);
+        startActivity(new Intent(getApplicationContext(), CandidateListActionaleActivityConvert.class));
+        //  showFragment(ChangePassword.newInstance(this), ChangePassword.TAG);
     }
 
 

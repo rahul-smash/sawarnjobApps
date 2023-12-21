@@ -67,11 +67,13 @@
                 android:id="@+id/txtInputEmployeeType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Employee Type"
                 android:imeOptions="actionNext"
+                app:hintEnabled="false"
                 app:boxBackgroundMode="none">
 
                 <EditText
+                    android:hint="Employee Type"
+                    android:textColorHint="@color/color_dark_gray"
                     android:id="@+id/txtEmployeeType"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -89,11 +91,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Company Name"
                 android:imeOptions="actionNext"
+                app:hintEnabled="false"
                 app:boxBackgroundMode="none">
 
                 <EditText
+                    android:hint="Company Name"
+                    android:textColorHint="@color/color_dark_gray"
                     android:id="@+id/txtCompanyName"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -104,7 +108,28 @@
                     android:singleLine="true" />
 
             </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputPostion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:imeOptions="actionNext"
+                app:hintEnabled="false"
+                app:boxBackgroundMode="none">
 
+                <EditText
+                    android:hint="Position"
+                    android:textColorHint="@color/color_dark_gray"
+                    android:id="@+id/txtPosition"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center|left"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 android:visibility="gone"
                 android:id="@+id/txtInputLocation"
@@ -133,8 +158,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-
-                android:hint="Date Of Birth"
+app:hintEnabled="false"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
@@ -142,7 +166,8 @@
                     android:id="@+id/etStartDate"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-
+                    android:hint="Start Date"
+                    android:textColorHint="@color/color_dark_gray"
                     android:background="@drawable/edittext_bg"
                     android:drawableEnd="@drawable/calendericon"
                     android:editable="false"
@@ -160,8 +185,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-
-                android:hint="Date Of Birth"
+app:hintEnabled="false"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
@@ -169,7 +193,8 @@
                     android:id="@+id/etEODDate"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-
+                    android:hint="End Date"
+                    android:textColorHint="@color/color_dark_gray"
                     android:background="@drawable/edittext_bg"
                     android:drawableEnd="@drawable/calendericon"
                     android:editable="false"
@@ -188,11 +213,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Job Role Description "
+                app:hintEnabled="false"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
                 <EditText
+                    android:hint="Job Role Description "
+                    android:textColorHint="@color/color_dark_gray"
                     android:id="@+id/txtJobRpleDescritpion"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"

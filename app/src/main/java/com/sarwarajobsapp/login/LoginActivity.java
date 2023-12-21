@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     TextView verify_btn;
-
+    TextInputLayout textinputUsername,textPassword;
     public static Intent getIntent(Context context) {
         return new Intent(context, LoginActivity.class);
     }
@@ -36,6 +36,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void init() {
         verify_btn = (TextView) findViewById(R.id.verify_btn);
+         textinputUsername = findViewById(R.id.textinputUsername);
+         textPassword = findViewById(R.id.textPassword);
         verify_btn.setOnClickListener(this);
     }
 
@@ -48,8 +50,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         {
             if (verify_btn == v) {
-                TextInputLayout textinputUsername = findViewById(R.id.textinputUsername);
-                TextInputLayout textPassword = findViewById(R.id.textPassword);
+
 
                 if (textinputUsername.getEditText().getText().toString().length() <= 0) {
                     showErrorDialog("Enter Username");

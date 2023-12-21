@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+
+    <include
+        android:id="@+id/toolar"
+        layout="@layout/custom_tool_bar" />
+    <RelativeLayout
+        android:layout_below="@+id/toolar"
+        android:id="@+id/headerRelativeBooking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+      >
+
+
+        <TextView
+            android:id="@+id/txtAddUSer"
+
+            style="@style/EditText.Login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="Add New"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/MainLinearView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/headerRelativeBooking"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:background="@color/color_light_gray"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
+                <View
+                    android:layout_width=".5dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_black"
+                    android:visibility="gone"></View>
+
+                <TextView
+                    android:id="@+id/txtStkId"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="First Name"
+                    android:textColor="@color/color_black"
+                    android:textSize="11sp"
+                    android:textStyle="bold"></TextView>
+
+                <View
+                    android:layout_width=".5dp"
+
+                    android:layout_height="match_parent"
+                    android:background="@color/color_black"
+                    android:visibility="gone"></View>
+
+                <TextView
+                    android:id="@+id/txtStkName"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="Last Name"
+                    android:textColor="@color/color_black"
+                    android:textSize="11sp"
+                    android:textStyle="bold">  </TextView>
+
+
+                <View
+                    android:layout_width=".5dp"
+
+                    android:layout_height="match_parent"
+                    android:background="@color/color_black"
+                    android:visibility="gone"></View>
+
+
+                <TextView
+                    android:id="@+id/txtBgtTarget"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="DOB"
+                    android:textColor="@color/color_black"
+                    android:textSize="11sp"
+                    android:textStyle="bold">
+                </TextView>
+
+
+                <View
+                    android:layout_width=".5dp"
+
+                    android:layout_height="match_parent"
+                    android:background="@color/color_black"
+                    android:visibility="gone"></View>
+
+                <TextView
+                    android:id="@+id/txtThreshold"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="Job Type"
+                    android:textColor="@color/color_black"
+                    android:textSize="11sp"
+                    android:textStyle="bold">  </TextView>
+
+                <View
+                    android:layout_width=".5dp"
+
+                    android:layout_height="match_parent"
+                    android:background="@color/color_black"
+                    android:visibility="gone"></View>
+
+
+                <TextView
+                    android:id="@+id/txtActionPerformed"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text=""
+                    android:textColor="@color/color_black"
+                    android:textSize="11sp"
+                    android:textStyle="bold">  </TextView>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".5dp"
+                android:background="@color/color_light_gray"></View>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_light_gray"></View>
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_black"></View>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/samraddhiiRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/MainLinearView"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"></androidx.recyclerview.widget.RecyclerView>
+
+
+</RelativeLayout>

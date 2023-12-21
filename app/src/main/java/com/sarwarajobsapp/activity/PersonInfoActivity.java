@@ -3,6 +3,7 @@ package com.sarwarajobsapp.activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,11 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.app.preferences.SavePreferences;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sarwarajobsapp.R;
 import com.sarwarajobsapp.base.BaseActivity;
+import com.sarwarajobsapp.candidateList.CandidateListActionaleActivity;
+import com.sarwarajobsapp.candidateList.CandidateListActionaleActivityConvert;
 import com.sarwarajobsapp.communication.CallBack;
 import com.sarwarajobsapp.communication.ServerHandler;
 import com.sarwarajobsapp.dashboard.MainActivity;
@@ -49,10 +53,9 @@ import java.util.Map;
     private DatePickerDialog toDatePickerDialog;
     LinearLayout llAccount;
     String reformattedStr;
-  /*  public static Fragment newInstance(Context context) {
-        return Fragment.instantiate(context,
-                PersonInfoActivity.class.getName());
-    }*/
+        String FirstName,LastName,email,phone,dob,llokingJobType,location;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,16 @@ import java.util.Map;
 
     @Override
     protected void setUp() {
+        SharedPreferences sh = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
+
+         FirstName = sh.getString("FirstName", "");
+        LastName = sh.getString("LastName", "");
+         email = sh.getString("email", "");
+         phone = sh.getString("phone", "");
+         dob = sh.getString("dob", "");
+         llokingJobType = sh.getString("llokingJobType", "");
+         location = sh.getString("location", "");
+Log.i("@@@@@@@FirstName--",FirstName+LastName);
         initView();
         setStartDateTimeField();
     }
@@ -71,15 +84,6 @@ import java.util.Map;
         return R.layout.activity_personal_info_duplicate;
     }
 
-  //  @Override
-  /*  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.activity_personal_info, container, false);
-        mainActivity = (MainActivity) getActivity();
-
-        initView();
-        setStartDateTimeField();
-        return rootView;
-    }*/
 
   //  @Override
     public void onResume() {
@@ -111,12 +115,23 @@ import java.util.Map;
        // etEndDate.setOnClickListener(this);
         verify_btn.setOnClickListener(this);
         customeToolbartext.setText("Personal Info");
+       etFirstName.setText(FirstName);
+        etLastName.setText(LastName);
+        etEmail.setText(email);
+        etPhone.setText(phone);
+        etStartDate.setText(dob);
+        etLookingJobType.setText(llokingJobType);
+        etLoction.setText(location);
+
         findViewById(R.id.goback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), CandidateListActionaleActivityConvert.class));
 
                 finish();
+            /*    Fragment fragment = new CandidateListActionaleActivity();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();*/
             }
         });
     }
@@ -222,18 +237,22 @@ import java.util.Map;
                 try {
                     System.out.println("getPersonalInfoApi====" + dta);
                     JSONObject obj = new JSONObject(dta);
-                    JSONObject objPuser_id =obj.getJSONObject("data");
-                    
-                    System.out.println("getPersonalInfoApi====" + obj.toString());
-                    System.out.println("getPersonalInfoApi==1==" + obj.getString("message").toString());
-                    if (obj.getString("message").equalsIgnoreCase("Candidate Created")) {
-                        PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", objPuser_id.getString("user_id"));
-                        startActivity(new Intent(getApplicationContext(), CandidateEducation.class));
+                    if(obj.getString("message").equalsIgnoreCase("Email already exist")){
+                        Toast.makeText(getApplicationContext(),obj.getString("message"),Toast.LENGTH_SHORT).show();
+                    }else {
+                        JSONObject objPuser_id = obj.getJSONObject("data");
 
-                       finish();
+                        System.out.println("getPersonalInfoApi====" + obj.toString());
+                        System.out.println("getPersonalInfoApi==1==" + obj.getString("message").toString());
+                        if (obj.getString("message").equalsIgnoreCase("Candidate Created")) {
+                            PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", objPuser_id.getString("user_id"));
+                            startActivity(new Intent(getApplicationContext(), CandidateEducation.class));
 
-                    } else {
-                        showErrorDialog(obj.getString("message"));
+                            finish();
+
+                        } else {
+                            showErrorDialog(obj.getString("message"));
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
