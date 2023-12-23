@@ -34,10 +34,12 @@ public class ThanksActivity extends BaseActivity implements View.OnClickListener
                 // This method will be executed once the timer is over
                 // Start your app main activity
                 Intent i = new Intent(ThanksActivity.this, LoginActivity.class);
-                startActivity(i);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK );
 
-                // close this activity
+                startActivity(i);
                 finish();
+
+
             }
         }, thank_Screen_timout);
 
@@ -52,5 +54,11 @@ public class ThanksActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View v) {
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

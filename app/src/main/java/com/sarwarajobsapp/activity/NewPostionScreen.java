@@ -22,7 +22,6 @@ import com.app.preferences.SavePreferences;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sarwarajobsapp.R;
 import com.sarwarajobsapp.base.BaseActivity;
-import com.sarwarajobsapp.candidateList.CandidateListActionaleActivity;
 import com.sarwarajobsapp.candidateList.CandidateListActionaleActivityConvert;
 import com.sarwarajobsapp.communication.CallBack;
 import com.sarwarajobsapp.communication.ServerHandler;

@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.preferences.SavePreferences;
 import com.sarwarajobsapp.R;
 import com.sarwarajobsapp.activity.PersonInfoActivity;
-import com.sarwarajobsapp.adapter.CandidateSamriddhiActionAdadpter;
 import com.sarwarajobsapp.adapter.CandidateSamriddhiActionAdadpterConvert;
 import com.sarwarajobsapp.base.BaseActivity;
 import com.sarwarajobsapp.communication.CallBack;
@@ -123,7 +122,6 @@ public class CandidateListActionaleActivityConvert extends BaseActivity implemen
 
         if (v == txtAddUSer) {
             startActivity(new Intent(getApplicationContext(), PersonInfoActivity.class));
-          //  showFragment(ChangePassword.newInstance(this), ChangePassword.TAG);
             finish();
         }
     }

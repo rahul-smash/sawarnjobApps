@@ -2,6 +2,7 @@ package com.sarwarajobsapp.login;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -103,5 +104,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             }
         });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            this.finishAffinity();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
