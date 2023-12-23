@@ -65,7 +65,7 @@ import java.util.Map;
 
     @Override
     protected void setUp() {
-        SharedPreferences sh = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
+     /*   SharedPreferences sh = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
 
          FirstName = sh.getString("FirstName", "");
         LastName = sh.getString("LastName", "");
@@ -73,8 +73,9 @@ import java.util.Map;
          phone = sh.getString("phone", "");
          dob = sh.getString("dob", "");
          llokingJobType = sh.getString("llokingJobType", "");
-         location = sh.getString("location", "");
-Log.i("@@@@@@@FirstName--",FirstName+LastName);
+         location = sh.getString("location", "");*/
+
+Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().getStringExtra("LastName"));
         initView();
         setStartDateTimeField();
     }
@@ -115,13 +116,18 @@ Log.i("@@@@@@@FirstName--",FirstName+LastName);
        // etEndDate.setOnClickListener(this);
         verify_btn.setOnClickListener(this);
         customeToolbartext.setText("Personal Info");
-       etFirstName.setText(FirstName);
-        etLastName.setText(LastName);
-        etEmail.setText(email);
-        etPhone.setText(phone);
-        etStartDate.setText(dob);
-        etLookingJobType.setText(llokingJobType);
-        etLoction.setText(location);
+        try{
+            etFirstName.setText(getIntent().getStringExtra("first_name"));
+            etLastName.setText(getIntent().getStringExtra("last_name"));
+            etEmail.setText(getIntent().getStringExtra("email"));
+            etPhone.setText(getIntent().getStringExtra("phone"));
+            etStartDate.setText(getIntent().getStringExtra("dob"));
+            etLookingJobType.setText(getIntent().getStringExtra("looking_job_type"));
+            etLoction.setText(getIntent().getStringExtra("description"));
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         findViewById(R.id.goback).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -210,7 +210,7 @@ Toast.makeText(getActivity(),obj.getString("message"),Toast.LENGTH_SHORT).show()
                         System.out.println("getPersonalInfoApi==1==" + obj.getString("message").toString());
                         if (obj.getString("message").equalsIgnoreCase("Candidate Created")) {
                             PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", objPuser_id.getString("user_id"));
-                            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref",MODE_PRIVATE);
+                         /*   SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref",MODE_PRIVATE);
 
                             SharedPreferences.Editor myEdit = sharedPreferences.edit();
 
@@ -221,7 +221,7 @@ Toast.makeText(getActivity(),obj.getString("message"),Toast.LENGTH_SHORT).show()
                             myEdit.putString("dob", etStartDate.getText().toString());
                             myEdit.putString("llokingJobType", etLookingJobType.getText().toString());
                             myEdit.putString("location", etLoction.getText().toString());
-                            myEdit.commit();
+                            myEdit.commit();*/
                             startActivity(new Intent(getActivity(), CandidateEducation.class));
 
                             getActivity().finish();

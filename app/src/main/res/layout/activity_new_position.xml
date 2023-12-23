@@ -69,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 app:hintEnabled="false"
+                android:visibility="gone"
                 app:boxBackgroundMode="none">
 
                 <EditText
