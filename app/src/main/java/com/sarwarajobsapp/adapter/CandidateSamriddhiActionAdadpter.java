@@ -1,3 +1,4 @@
+/*
 package com.sarwarajobsapp.adapter;
 
 
@@ -17,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sarwarajobsapp.R;
 import com.sarwarajobsapp.activity.PersonInfoActivity;
-import com.sarwarajobsapp.candidateList.CandidateListActionaleActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -147,4 +147,4 @@ holder.txtSrNo.setText(jsonObject.getString("first_name"));
     }
 
 
-}
+}*/

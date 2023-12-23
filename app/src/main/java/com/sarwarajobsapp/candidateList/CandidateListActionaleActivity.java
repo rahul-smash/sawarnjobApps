@@ -1,3 +1,4 @@
+/*
 package com.sarwarajobsapp.candidateList;
 
 import android.content.Context;
@@ -146,4 +147,4 @@ public class CandidateListActionaleActivity extends Fragment implements View.OnC
     }
 
 
-}
+}*/

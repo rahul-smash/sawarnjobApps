@@ -26,7 +26,6 @@ import com.sarwarajobsapp.activity.PersonInfoActivity;
 import com.sarwarajobsapp.activity.PersonInfoFragment;
 import com.sarwarajobsapp.activity.ThanksActivity;
 import com.sarwarajobsapp.base.BaseActivity;
-import com.sarwarajobsapp.candidateList.CandidateListActionaleActivity;
 import com.sarwarajobsapp.candidateList.CandidateListActionaleActivityConvert;
 import com.sarwarajobsapp.utility.AppConstants;
 
@@ -211,6 +210,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
     }
 
     private void showFragment(Fragment fragment, String tag) {
@@ -238,6 +238,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
       //  showFragment(CandidateListActionaleActivity.newInstance(this), CandidateListActionaleActivity.TAG);
         startActivity(new Intent(getApplicationContext(), CandidateListActionaleActivityConvert.class));
         //  showFragment(ChangePassword.newInstance(this), ChangePassword.TAG);
+        finish();
     }
 
 
@@ -263,7 +264,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
      Dialog dialog;
-
 
 
 
