@@ -11,7 +11,7 @@
         android:layout_width="300dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="60dp"
         android:src="@drawable/logosarwarajobs" />
 
     <RelativeLayout
@@ -20,14 +20,14 @@
         android:layout_below="@+id/iv_logo"
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp">
+       >
 
         <TextView
             android:id="@+id/txtLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="65dp"
             android:layout_marginRight="20dp"
             android:gravity="center"
             android:padding="14dp"
@@ -38,38 +38,38 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtLogin"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:background="@drawable/botombackground"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textinputUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="5dp"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none"
-                app:hintEnabled="false"
-                app:hintAnimationEnabled="false">
+                app:hintAnimationEnabled="false"
+                app:hintEnabled="false">
 
                 <EditText
-                    android:hint="Enter Username"
-android:textColorHint="@color/color_dark_gray"
                     style="@style/EditText.Login"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/edittextdrawable"
                     android:gravity="center|left"
+                    android:hint="Enter Username"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray"
                     app:hintAnimationEnabled="false" />
 
 
@@ -80,28 +80,28 @@ android:textColorHint="@color/color_dark_gray"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textinputUsername"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="5dp"
                 android:background="@drawable/bottom_line"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none"
-                app:hintEnabled="false"
-                app:hintAnimationEnabled="false">
+                app:hintAnimationEnabled="false"
+                app:hintEnabled="false">
 
                 <EditText
-                    android:hint="Enter Password"
-                    android:textColorHint="@color/color_dark_gray"
-
                     style="@style/EditText.Login"
                     android:layout_width="match_parent"
+
                     android:layout_height="50dp"
                     android:background="@drawable/edittextdrawable"
                     android:gravity="center|left"
+                    android:hint="Enter Password"
                     android:inputType="textPassword"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray"
                     app:hintAnimationEnabled="false" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -129,9 +129,9 @@ android:textColorHint="@color/color_dark_gray"
                 android:layout_height="40dp"
                 android:layout_below="@+id/txtForgotPAssword"
                 android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="10dp"
+
                 android:background="@color/colorPrimary"
                 android:gravity="center"
                 android:text="Login"

@@ -4,34 +4,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/logosarwarajobs" />
 
     <ScrollView
+        android:layout_below="@+id/iv_logo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/iv_logo"
-                android:layout_width="300dp"
-                android:layout_height="100dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/logosarwarajobs" />
 
             <RelativeLayout
                 android:id="@+id/relaiveImageSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/iv_logo"
-                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
                 android:background="@color/colorPrimary">
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="270dp"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:src="@drawable/splash">
@@ -40,6 +41,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relaiveImageSet"

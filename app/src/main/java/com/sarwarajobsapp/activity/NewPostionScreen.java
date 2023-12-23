@@ -23,6 +23,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.sarwarajobsapp.R;
 import com.sarwarajobsapp.base.BaseActivity;
 import com.sarwarajobsapp.candidateList.CandidateListActionaleActivity;
+import com.sarwarajobsapp.candidateList.CandidateListActionaleActivityConvert;
 import com.sarwarajobsapp.communication.CallBack;
 import com.sarwarajobsapp.communication.ServerHandler;
 import com.sarwarajobsapp.dashboard.MainActivity;
@@ -161,11 +162,11 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
                 Toast.makeText(this,"Enter Title", Toast.LENGTH_SHORT).show();
                 return;
             }*/
-            if (txtEmployeeType.getText().toString().length() <= 0) {
+           /* if (txtEmployeeType.getText().toString().length() <= 0) {
                 Toast.makeText(this, "Enter Employee Type", Toast.LENGTH_SHORT).show();
 
                 return;
-            }
+            }*/
 
             if (txtCompanyName.getText().toString().length() <= 0) {
                 Toast.makeText(this, "Enter Company Name", Toast.LENGTH_SHORT).show();
@@ -196,7 +197,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
             }
             else {
                 getPostionDataTypeApi(getLoginData("id"),
-                        txtCompanyName.getText().toString().trim(),  txtEmployeeType.getText().toString().trim(),
+                        txtCompanyName.getText().toString().trim(),  txtPosition.getText().toString().trim(),
                         reformattedStr, EndreformattedStr, txtJobRpleDescritpion.getText().toString().trim());
             }
 
@@ -241,7 +242,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
                     System.out.println("getPostionDataTypeApi====" + obj.toString());
                     if (obj.getString("message").equalsIgnoreCase("User Experience Added")) {
                         Toast.makeText(getApplicationContext(), obj.getString("message"),Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        startActivity(new Intent(getApplicationContext(), CandidateListActionaleActivityConvert.class));
                         finish();
 
                     } else {
