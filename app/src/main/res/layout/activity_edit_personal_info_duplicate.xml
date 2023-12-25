@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+
+    <include
+        android:id="@+id/toolar"
+        layout="@layout/custom_tool_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolar"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+
+            android:id="@+id/ll_sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:visibility="visible">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputFirstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:id="@+id/etFirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center|left"
+                    android:hint="First Name"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputLastName"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:id="@+id/etLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center|left"
+                    android:hint="Last Name"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputEmail"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center|left"
+                    android:hint="Email"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:id="@+id/etPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center|left"
+                    android:hint="Phone"
+                    android:inputType="number"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputStartDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:id="@+id/etStartDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edittext_bg"
+                    android:drawableEnd="@drawable/calendericon"
+
+                    android:editable="false"
+                    android:focusable="false"
+                    android:gravity="center|left"
+                    android:hint="Date Of Birth"
+                    android:paddingTop="0dp"
+
+                    android:paddingBottom="0dp"
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:id="@+id/etAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center|left"
+                    android:hint="Address"
+                    android:inputType="number"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputEndDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:id="@+id/etLookingJobType"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="center|left"
+
+                    android:hint="Looking For Job Type"
+                    android:paddingTop="0dp"
+
+                    android:paddingBottom="0dp"
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputLocation"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:id="@+id/etLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@drawable/edittext_bg"
+                    android:gravity="left"
+                    android:hint="Location"
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_sign_in"
+                android:layout_marginTop="10dp"
+
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButtonRememberMe"
+                    style="@style/TextAppearance.AppCompat.Small"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:background="@android:color/transparent"
+                    android:checked="false"
+                    android:text="Remember me"
+                    android:textColor="@color/color_dark_gray"
+                    android:textSize="15dp"
+                    android:visibility="gone" />
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/verify_btn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+
+                android:background="@drawable/edittext_bg"
+
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Save Changes"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/text_size_normal"
+                android:visibility="visible" />
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="right"
+                android:layout_marginTop="20dp"
+                android:background="@color/goldencolor"
+                android:contentDescription=""
+                android:gravity="center"
+                android:minHeight="10dp"
+                android:padding="10dp"
+                android:text="Next"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_size_normal"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+
+    </ScrollView>
+</RelativeLayout>

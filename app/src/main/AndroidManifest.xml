@@ -39,6 +39,7 @@
         <activity android:name=".activity.NewPostionScreen" />
         <activity android:name=".activity.PersonInfoActivity" />
         <activity android:name=".candidateList.CandidateListActionaleActivityConvert" />
+        <activity android:name=".activity.EditPersonInfoActivity" />
     </application>
 
 </manifest>

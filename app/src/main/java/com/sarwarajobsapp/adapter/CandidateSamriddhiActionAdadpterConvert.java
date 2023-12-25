@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sarwarajobsapp.R;
+import com.sarwarajobsapp.activity.EditPersonInfoActivity;
 import com.sarwarajobsapp.activity.PersonInfoActivity;
 import com.sarwarajobsapp.candidateList.CandidateListActionaleActivityConvert;
 
@@ -102,7 +103,7 @@ holder.txtSrNo.setText(jsonObject.getString("first_name"));
                         myEdit.commit();*/
                         try {
                             JSONObject dataObj=new JSONObject(v.getTag().toString());
-                            Intent intent = new Intent(mContext, PersonInfoActivity.class);
+                            Intent intent = new Intent(mContext, EditPersonInfoActivity.class);
                             intent.putExtra("first_name", dataObj.getString("first_name"));
                             intent.putExtra("last_name", dataObj.getString("last_name"));
                             intent.putExtra("email", dataObj.getString("email"));
@@ -148,7 +149,7 @@ holder.txtSrNo.setText(jsonObject.getString("first_name"));
                     public void onClick(View v) {
                         try {
                             JSONObject dataObj=new JSONObject(v.getTag().toString());
-                            Intent intent = new Intent(mContext, PersonInfoActivity.class);
+                            Intent intent = new Intent(mContext, EditPersonInfoActivity.class);
                             intent.putExtra("first_name", dataObj.getString("first_name"));
                             intent.putExtra("last_name", dataObj.getString("last_name"));
                             intent.putExtra("email", dataObj.getString("email"));
