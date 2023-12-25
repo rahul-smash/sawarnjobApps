@@ -36,6 +36,7 @@ public class ThanksActivity extends BaseActivity implements View.OnClickListener
                 Intent i = new Intent(ThanksActivity.this, LoginActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK );
 
+
                 startActivity(i);
                 finish();
 
