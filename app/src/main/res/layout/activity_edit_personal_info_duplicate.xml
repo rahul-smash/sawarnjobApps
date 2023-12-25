@@ -169,7 +169,6 @@
                     android:background="@drawable/edittext_bg"
                     android:gravity="center|left"
                     android:hint="Address"
-                    android:inputType="number"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:singleLine="true"
