@@ -99,21 +99,21 @@ public abstract class BaseActivity extends AppCompatActivity {
         return mProgressDialog != null && mProgressDialog.isShowing();
     }
 
-    protected void showSnackBar(String message) {
-       /* Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+   /* protected void showSnackBar(String message) {
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
                 message, Snackbar.LENGTH_SHORT);
         View sbView = snackbar.getView();
         TextView textView = sbView
                 .findViewById(R.id.snackbar_text);
         textView.setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
-        snackbar.show();*/
-    }
+        snackbar.show();
+    }*/
 
     public void onError(String message) {
         if (message != null) {
-            showSnackBar(message);
+            //showSnackBar(message);
         } else {
-            showSnackBar(getString(R.string.some_error));
+            //showSnackBar(getString(R.string.some_error));
         }
     }
 
@@ -192,7 +192,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
 
-    public   void  confirmWithBack(String msg, CallBack callBack)
+    public   void  confirmWithBack(String msg,CallBack callBack)
     {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -360,7 +360,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             Log.i("@@resulturi",""+resultUri);
             if (resultUri != null && attendanceUserProfile!=null) {
                 imageAttendanceCallBack.getImageUri(resultUri);
-               /* Glide.with(this)
+              /*  Glide.with(this)
                         .load(resultUri)
                         .placeholder(R.drawable.side_image)
                         .centerCrop()

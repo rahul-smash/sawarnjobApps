@@ -204,6 +204,57 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_bg"
+                android:layout_marginTop="10dp"
+
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txtInputUploadAdhardCard"
+
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1.4"
+                    android:imeOptions="actionNext"
+                    app:boxBackgroundMode="none"
+                    app:hintEnabled="false">
+
+                    <EditText
+                        android:id="@+id/etUploadAdharCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/edittext_bg_use_imag"
+                        android:gravity="center|left"
+                        android:hint="Upload Aadhar Card"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="0dp"
+                        android:singleLine="true"
+                        android:textColorHint="@color/color_dark_gray" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/txtADDFile"
+                    style="@style/EditText.Login"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_toRightOf="@+id/etUploadAdharCard"
+                    android:layout_weight="0.6"
+                    android:background="@drawable/edittext_bg_golden_shade"
+                    android:gravity="center"
+                    android:focusable="false"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true"
+                    android:text="Add file"
+                    android:textColor="@color/color_dark_gray" />
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
