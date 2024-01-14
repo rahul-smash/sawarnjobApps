@@ -3,6 +3,7 @@ package com.sarwarajobsapp.activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ import com.sarwarajobsapp.utility.PrefHelper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,7 +46,7 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
     private MainActivity mainActivity;
     View rootView;
     TextInputLayout txtInputTitle, txtInputDegree,txtInputCompanyName, txtInputLocation, txtInputStartDate, txtInputEODDate, txtInputJOB;
-    TextView verify_btn;
+    TextView verify_btn,txtADDREsume;
     //Spinner txtDegree;
     EditText txtDegree,txtSchool, txtFieldStudy, txtGradle, etStartDate, etEODDate, txtJobRpleDescritpion;
     Calendar bookDateAndTime;
@@ -53,7 +55,13 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
 
     LinearLayout llAccount;
     String reformattedStr,EndreformattedStr;
-
+    private Uri imageFeatureUri;
+    public static final int IMAGE_REQUEST_GALLERY_register_adhar = 325;
+    public static final int IMAGE_REQUEST_CAMERA_register_adhar = 326;
+    Uri source;
+    EditText etResumeUpload;
+    String imagePathUrlAdhar;
+    File file1 ;
     /*public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
                 CandidateEducation.class.getName());
@@ -95,6 +103,8 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
 
     private void initView() {
        txtInputDegree=findViewById(R.id.txtInputDegree);
+        etResumeUpload=findViewById(R.id.etResumeUpload);
+        txtADDREsume=findViewById(R.id.txtADDREsume);
        txtDegree=findViewById(R.id.txtDegree);
         txtInputTitle = findViewById(R.id.txtInputTitle);
         txtInputCompanyName = findViewById(R.id.txtInputCompanyName);

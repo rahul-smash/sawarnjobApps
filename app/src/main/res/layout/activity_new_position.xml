@@ -8,10 +8,11 @@
 
     <include layout="@layout/custom_tool_bar"
         android:id="@+id/toolar"/>
+
     <ScrollView
-        android:layout_below="@+id/toolar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/toolar"
         android:orientation="vertical">
 
 
@@ -27,12 +28,12 @@
             android:visibility="visible">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:visibility="gone"
                 android:id="@+id/txtInputTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Title"
                 android:imeOptions="actionNext"
+                android:visibility="gone"
                 app:boxBackgroundMode="none">
 
                 <EditText
@@ -50,39 +51,40 @@
 
 
             <Spinner
-                android:visibility="gone"
                 android:id="@+id/txtDegree"
-
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
 
+                android:layout_height="50dp"
                 android:layout_centerInParent="true"
 
                 android:layout_gravity="top"
+
                 android:layout_marginTop="10dp"
                 android:layout_toRightOf="@+id/txtMonths"
                 android:background="@drawable/spinner_background"
-                android:gravity="center"></Spinner>
+                android:gravity="center"
+                android:visibility="gone"></Spinner>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtInputEmployeeType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
-                app:hintEnabled="false"
                 android:visibility="gone"
-                app:boxBackgroundMode="none">
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
 
                 <EditText
-                    android:hint="Employee Type"
-                    android:textColorHint="@color/color_dark_gray"
                     android:id="@+id/txtEmployeeType"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
                     android:gravity="center|left"
+                    android:hint="Employee Type"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
 
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -93,52 +95,54 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:imeOptions="actionNext"
-                app:hintEnabled="false"
-                app:boxBackgroundMode="none">
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
 
                 <EditText
-                    android:hint="Company Name"
-                    android:textColorHint="@color/color_dark_gray"
                     android:id="@+id/txtCompanyName"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
                     android:gravity="center|left"
+                    android:hint="Company Name"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtInputPostion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:imeOptions="actionNext"
-                app:hintEnabled="false"
-                app:boxBackgroundMode="none">
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
 
                 <EditText
-                    android:hint="Position"
-                    android:textColorHint="@color/color_dark_gray"
                     android:id="@+id/txtPosition"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
                     android:gravity="center|left"
+                    android:hint="Position"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
-                android:visibility="gone"
                 android:id="@+id/txtInputLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="Location"
                 android:imeOptions="actionNext"
+                android:visibility="gone"
                 app:boxBackgroundMode="none">
 
                 <EditText
@@ -159,25 +163,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-app:hintEnabled="false"
                 android:imeOptions="actionNext"
-                app:boxBackgroundMode="none">
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
 
                 <EditText
                     android:id="@+id/etStartDate"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:hint="Start Date"
-                    android:textColorHint="@color/color_dark_gray"
                     android:background="@drawable/edittext_bg"
                     android:drawableEnd="@drawable/calendericon"
                     android:editable="false"
                     android:focusable="false"
                     android:gravity="center|left"
-
+                    android:hint="Start Date"
                     android:paddingTop="0dp"
+
                     android:paddingBottom="0dp"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -186,27 +190,26 @@ app:hintEnabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-app:hintEnabled="false"
                 android:imeOptions="actionNext"
-                app:boxBackgroundMode="none">
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
 
                 <EditText
                     android:id="@+id/etEODDate"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:hint="End Date"
-                    android:textColorHint="@color/color_dark_gray"
                     android:background="@drawable/edittext_bg"
                     android:drawableEnd="@drawable/calendericon"
                     android:editable="false"
                     android:focusable="false"
                     android:gravity="center|left"
-
+                    android:hint="End Date"
                     android:paddingTop="0dp"
-                    android:paddingBottom="0dp"
-                    android:singleLine="true" />
-            </com.google.android.material.textfield.TextInputLayout>
 
+                    android:paddingBottom="0dp"
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -214,22 +217,73 @@ app:hintEnabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:hintEnabled="false"
                 android:imeOptions="actionNext"
-                app:boxBackgroundMode="none">
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
 
                 <EditText
-                    android:hint="Job Role Description "
-                    android:textColorHint="@color/color_dark_gray"
                     android:id="@+id/txtJobRpleDescritpion"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:background="@drawable/edittext_bg"
                     android:gravity="left|top"
-                    android:singleLine="true" />
+                    android:hint="Job Role Description "
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext_bg"
+
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txtInputUploadAdhardCard"
+
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1.4"
+                    android:imeOptions="actionNext"
+                    app:boxBackgroundMode="none"
+                    app:hintEnabled="false">
+
+                    <EditText
+                        android:id="@+id/etImageUSer"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/edittext_bg_use_imag"
+                        android:gravity="center|left"
+                        android:hint="User Image"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="0dp"
+                        android:singleLine="true"
+                        android:textColorHint="@color/color_dark_gray" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/txtADDImage"
+                    style="@style/EditText.Login"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_toRightOf="@+id/etUploadAdharCard"
+                    android:layout_weight="0.6"
+                    android:background="@drawable/edittext_bg_golden_shade"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true"
+                    android:text="Add Image"
+                    android:textColor="@color/color_dark_gray" />
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"

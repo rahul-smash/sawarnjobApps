@@ -1,4 +1,4 @@
-package com.markrap
+package com.sarwarajobsapp
 
 import android.app.Application
 import android.content.Context
@@ -15,7 +15,7 @@ import fontspackageForTextView.DefineYourAppFont
 class MyApp : Application() {
     companion object {
 
-        lateinit var mInstance :MyApp
+        lateinit var mInstance : MyApp
 
     }
 
@@ -40,7 +40,7 @@ class MyApp : Application() {
 
 
     @Synchronized
-    fun getInstance():MyApp? {
+    fun getInstance(): MyApp? {
         return mInstance
     }
 
