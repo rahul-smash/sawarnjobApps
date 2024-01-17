@@ -77,34 +77,35 @@ import okhttp3.RequestBody;
 
 public class EditPersonInfoActivity extends BaseActivity implements View.OnClickListener {
 
-public static final String TAG = "PersonInfoActivity";
-private MainActivity mainActivity;
-View rootView;
-TextInputLayout txtInputAddress,txtInputFirstName, txtInputLastName, txtInputEmail, txtInputPhone, txtInputStartDate, txtInputEndDate, txtInputLocation;
-TextView verify_btn,customeToolbartext,txtADDFile;
-EditText etFirstName, etLastName, etEmail, etPhone, etStartDate, etLookingJobType, etLoction,etAddress;
-Calendar bookDateAndTime;
-private DatePickerDialog toDatePickerDialog;
-LinearLayout llAccount;
-String reformattedStr;
-    String FirstName,LastName,email,phone,dob,llokingJobType,location;
+    public static final String TAG = "PersonInfoActivity";
+    private MainActivity mainActivity;
+    View rootView;
+    TextInputLayout txtInputAddress, txtInputFirstName, txtInputLastName, txtInputEmail, txtInputPhone, txtInputStartDate, txtInputEndDate, txtInputLocation;
+    TextView verify_btn, customeToolbartext, txtADDFile;
+    EditText etFirstName, etLastName, etEmail, etPhone, etStartDate, etLookingJobType, etLoction, etAddress;
+    Calendar bookDateAndTime;
+    private DatePickerDialog toDatePickerDialog;
+    LinearLayout llAccount;
+    String reformattedStr;
+    String FirstName, LastName, email, phone, dob, llokingJobType, location;
 
     EditText etUploadAdharCard;
     String imagePathUrlAdhar;
-    File file1 ;
+    File file1;
 
     Uri imageFeatureUri;
     public static final int IMAGE_REQUEST_GALLERY_register_adhar = 325;
     public static final int IMAGE_REQUEST_CAMERA_register_adhar = 326;
     Uri source;
-@Override
-public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
 
-}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-@Override
-protected void setUp() {
+    }
+
+    @Override
+    protected void setUp() {
  /*   SharedPreferences sh = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
 
      FirstName = sh.getString("FirstName", "");
@@ -115,328 +116,334 @@ protected void setUp() {
      llokingJobType = sh.getString("llokingJobType", "");
      location = sh.getString("location", "");*/
 
-Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().getStringExtra("LastName"));
-    initView();
-    setStartDateTimeField();
-}
-
-@Override
-protected int setLayout() {
-    return R.layout.activity_edit_personal_info_duplicate;
-}
-
-
-//  @Override
-public void onResume() {
-    super.onResume();
-    Log.i("@@PersonInfoActivity", "onResume---");
-
-}
-
-private void initView() {
-    customeToolbartext=findViewById(R.id.customeToolbartext);
-    etUploadAdharCard=findViewById(R.id.etUploadAdharCard);
-    txtADDFile=findViewById(R.id.txtADDFile);
-    llAccount = findViewById(R.id.llAccount);
-    txtInputFirstName = findViewById(R.id.txtInputFirstName);
-    txtInputLastName = findViewById(R.id.txtInputLastName);
-    txtInputEmail = findViewById(R.id.txtInputEmail);
-    txtInputPhone = findViewById(R.id.txtInputPhone);
-    txtInputStartDate = findViewById(R.id.txtInputStartDate);
-    txtInputAddress = findViewById(R.id.txtInputAddress);
-
-    txtInputEndDate = findViewById(R.id.txtInputEndDate);
-    txtInputLocation = findViewById(R.id.txtInputLocation);
-    verify_btn = findViewById(R.id.verify_btn);
-    etFirstName = findViewById(R.id.etFirstName);
-    etAddress = findViewById(R.id.etAddress);
-
-    etLastName = findViewById(R.id.etLastName);
-    etEmail = findViewById(R.id.etEmail);
-    etPhone = findViewById(R.id.etPhone);
-    etStartDate = findViewById(R.id.etStartDate);
-    etLookingJobType = findViewById(R.id.etLookingJobType);
-    etLoction = findViewById(R.id.etLocation);
-    etStartDate.setOnClickListener(this);
-   // etEndDate.setOnClickListener(this);
-    verify_btn.setOnClickListener(this);
-    txtADDFile.setOnClickListener(this);
-    customeToolbartext.setText("Personal Info");
-    try{
-        etFirstName.setText(getIntent().getStringExtra("first_name"));
-        etLastName.setText(getIntent().getStringExtra("last_name"));
-        etEmail.setText(getIntent().getStringExtra("email"));
-        etPhone.setText(getIntent().getStringExtra("phone"));
-        etStartDate.setText(getIntent().getStringExtra("dob"));
-        etAddress.setText(getIntent().getStringExtra("address"));
-        etLookingJobType.setText(getIntent().getStringExtra("looking_job_type"));
-        etLoction.setText(getIntent().getStringExtra("description"));
-        etUploadAdharCard.setText(getIntent().getStringExtra("aadhar"));
-
-    }catch (Exception e){
-        e.printStackTrace();
+        Log.i("@@@@@@@FirstName--", getIntent().getStringExtra("FirstName") + getIntent().getStringExtra("LastName"));
+        initView();
+        setStartDateTimeField();
     }
 
-    findViewById(R.id.goback).setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            startActivity(new Intent(getApplicationContext(), CandidateListActionaleActivityConvert.class));
+    @Override
+    protected int setLayout() {
+        return R.layout.activity_edit_personal_info_duplicate;
+    }
 
-            finish();
+
+    //  @Override
+    public void onResume() {
+        super.onResume();
+        Log.i("@@PersonInfoActivity", "onResume---");
+
+    }
+
+    private void initView() {
+        customeToolbartext = findViewById(R.id.customeToolbartext);
+        etUploadAdharCard = findViewById(R.id.etUploadAdharCard);
+        txtADDFile = findViewById(R.id.txtADDFile);
+        llAccount = findViewById(R.id.llAccount);
+        txtInputFirstName = findViewById(R.id.txtInputFirstName);
+        txtInputLastName = findViewById(R.id.txtInputLastName);
+        txtInputEmail = findViewById(R.id.txtInputEmail);
+        txtInputPhone = findViewById(R.id.txtInputPhone);
+        txtInputStartDate = findViewById(R.id.txtInputStartDate);
+        txtInputAddress = findViewById(R.id.txtInputAddress);
+
+        txtInputEndDate = findViewById(R.id.txtInputEndDate);
+        txtInputLocation = findViewById(R.id.txtInputLocation);
+        verify_btn = findViewById(R.id.verify_btn);
+        etFirstName = findViewById(R.id.etFirstName);
+        etAddress = findViewById(R.id.etAddress);
+
+        etLastName = findViewById(R.id.etLastName);
+        etEmail = findViewById(R.id.etEmail);
+        etPhone = findViewById(R.id.etPhone);
+        etStartDate = findViewById(R.id.etStartDate);
+        etLookingJobType = findViewById(R.id.etLookingJobType);
+        etLoction = findViewById(R.id.etLocation);
+        etStartDate.setOnClickListener(this);
+        // etEndDate.setOnClickListener(this);
+        verify_btn.setOnClickListener(this);
+        txtADDFile.setOnClickListener(this);
+        customeToolbartext.setText("Personal Info");
+        try {
+            etFirstName.setText(getIntent().getStringExtra("first_name"));
+            etLastName.setText(getIntent().getStringExtra("last_name"));
+            etEmail.setText(getIntent().getStringExtra("email"));
+            etPhone.setText(getIntent().getStringExtra("phone"));
+            etStartDate.setText(getIntent().getStringExtra("dob"));
+            etAddress.setText(getIntent().getStringExtra("address"));
+            etLookingJobType.setText(getIntent().getStringExtra("looking_job_type"));
+            etLoction.setText(getIntent().getStringExtra("description"));
+            etUploadAdharCard.setText(getIntent().getStringExtra("aadhar"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        findViewById(R.id.goback).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), CandidateListActionaleActivityConvert.class));
+
+                finish();
         /*    Fragment fragment = new CandidateListActionaleActivity();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();*/
+            }
+        });
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        if (v == txtADDFile) {
+            openDailogForImagePickOptionRegisterAdhar();
         }
-    });
-}
+        if (v == etStartDate) {
+            //     setDateTimeField();
+            toDatePickerDialog.show();
+        }
 
+        if (v == verify_btn) {
+            SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-@Override
-public void onClick(View v) {
-    if(v==txtADDFile){
-        openDailogForImagePickOptionRegisterAdhar();
+            try {
+
+                reformattedStr = myFormat.format(myFormat.parse(etStartDate.getText().toString().trim()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            System.out.println("reformattedStr====" + reformattedStr);
+
+            if (etFirstName.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter First name", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (etLastName.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter Last name", Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+            if (!Utility.checkValidEmail(etEmail.getText().toString())) {
+                etEmail.requestFocus();
+                Toast.makeText(this, "Enter valid email", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (etPhone.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter Phone", Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+            if (etStartDate.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter Start Date", Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+
+            if (etAddress.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter Address", Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+            if (etLookingJobType.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter Looking JobType", Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+
+            if (etLoction.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter Location", Toast.LENGTH_SHORT).show();
+
+                return;
+            } else {
+                getPersonalInfoApi(getLoginData("id"), etFirstName.getText().toString().trim()
+                        , etLastName.getText().toString().trim(), etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
+                        reformattedStr, etAddress.getText().toString().trim(), etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(), file1);
+            }
+
+        }
     }
-    if (v == etStartDate) {
-        //     setDateTimeField();
-        toDatePickerDialog.show();
-    }
 
-    if (v == verify_btn) {
-        SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+    public String getLoginData(String dataType) {
         try {
+            JSONObject data = new JSONObject(new SavePreferences().reterivePreference(getApplicationContext(), AppConstants.logindata).toString());
+            return data.getString(dataType);
 
-             reformattedStr = myFormat.format(myFormat.parse(etStartDate.getText().toString().trim()));
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("reformattedStr====" +reformattedStr);
 
-        if (etFirstName.getText().toString().length() <= 0) {
-            Toast.makeText(this, "Enter First name", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (etLastName.getText().toString().length() <= 0) {
-            Toast.makeText(this, "Enter Last name", Toast.LENGTH_SHORT).show();
+        return "";
+    }
 
-            return;
-        }
-        if (!Utility.checkValidEmail(etEmail.getText().toString())) {
-            etEmail.requestFocus();
-            Toast.makeText(this, "Enter valid email", Toast.LENGTH_SHORT).show();
-            return;
-        }
+    /*public void getPersonalInfoApi(String admin_user_id, String first_name, String last_name, String email, String phone,
+                                   String sdob,String address, String etLookingJobType, String location) {
 
-        if (etPhone.getText().toString().length() <= 0) {
-            Toast.makeText(this, "Enter Phone", Toast.LENGTH_SHORT).show();
+        LinkedHashMap<String, String> m = new LinkedHashMap<>();
 
-            return;
-        }
-        if (etStartDate.getText().toString().length() <= 0) {
-            Toast.makeText(this, "Enter Start Date", Toast.LENGTH_SHORT).show();
+        //   m.put("admin_user_id", getLoginData("id"));
+        m.put("user_id", admin_user_id);
+        m.put("first_name", first_name);
+        m.put("last_name", last_name);
+        m.put("email", email);
+        m.put("phone", phone);
+        m.put("dob", sdob);
+        m.put("address", address);
 
-            return;
-        }
+        m.put("looking_job_type", etLookingJobType);
+        m.put("address", location);
 
-        if (etAddress.getText().toString().length() <= 0) {
-            Toast.makeText(this, "Enter Address", Toast.LENGTH_SHORT).show();
 
-            return;
-        }
-        if (etLookingJobType.getText().toString().length() <= 0) {
-            Toast.makeText(this, "Enter Looking JobType", Toast.LENGTH_SHORT).show();
+        Map<String, String> headerMap = new HashMap<>();
+        System.out.println("@@EditgetPersonalInfoApi====" + AppConstants.apiUlr + "candidate/edit" + m);
 
-            return;
-        }
+        new ServerHandler().sendToServer(this, AppConstants.apiUlr + "candidate/edit", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
+            @Override
+            public void getRespone(String dta, ArrayList<Object> respons) {
+                try {
+                    System.out.println("@@EditgetPersonalInfoApi====" + dta);
+                    JSONObject obj = new JSONObject(dta);
+                    if(obj.getString("message").equalsIgnoreCase("Email already exist")){
+                        Toast.makeText(getApplicationContext(),obj.getString("message"),Toast.LENGTH_SHORT).show();
+                    }else {
+                        JSONArray jsonArray=obj.getJSONArray("data");
+                        JSONObject objPuser_id = jsonArray.getJSONObject(0);
 
-        if (etLoction.getText().toString().length() <= 0) {
-            Toast.makeText(this, "Enter Location", Toast.LENGTH_SHORT).show();
+                        System.out.println("getPersonalInfoApi====" + obj.toString());
+                        System.out.println("getPersonalInfoApi==1==" + obj.getString("message").toString());
+                        if (obj.getString("message").equalsIgnoreCase("Candidate Updated")) {
+                          //  PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", objPuser_id.getString("user_id"));
+                            startActivity(new Intent(getApplicationContext(), CandidateEducation.class));
 
-            return;
+                            finish();
+
+                        } else {
+                            showErrorDialog(obj.getString("message"));
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),"Need to update mail!",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+    }*/
+    public void getPersonalInfoApi(String admin_user_id, String first_name, String last_name, String email, String phone,
+                                   String dob, String etLookingJobTypes, String location, String description, File adhar) {
+        if (imagePathUrlAdhar == null) {
+            Toast.makeText(getApplicationContext(), "Need to Select Image!", Toast.LENGTH_SHORT).show();
         } else {
-            getPersonalInfoApi(getLoginData("id"), etFirstName.getText().toString().trim()
-                    ,  etLastName.getText().toString().trim(), etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
-                    reformattedStr, etAddress.getText().toString().trim(),etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(),file1);
-        }
+            BuildRequestParms buildRequestParms = new BuildRequestParms();
 
-    }
-}
+            AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
 
-public String getLoginData(String dataType) {
-    try {
-        JSONObject data = new JSONObject(new SavePreferences().reterivePreference(getApplicationContext(), AppConstants.logindata).toString());
-        return data.getString(dataType);
+            Log.i("@@11", "11");
 
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
+            Observable<CanddiateEditProfileModell> observable = null;
 
-    return "";
-}
+            File file = new File(imagePathUrlAdhar);
+            Log.i("@@file", file.toString());
+            Log.i("@@imagePathUrlAdhar-----", imagePathUrlAdhar.toString());
 
-/*public void getPersonalInfoApi(String admin_user_id, String first_name, String last_name, String email, String phone,
-                               String sdob,String address, String etLookingJobType, String location) {
+            RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("aadhar", file.getName(), requestBody);
 
-    LinkedHashMap<String, String> m = new LinkedHashMap<>();
-
-    //   m.put("admin_user_id", getLoginData("id"));
-    m.put("user_id", admin_user_id);
-    m.put("first_name", first_name);
-    m.put("last_name", last_name);
-    m.put("email", email);
-    m.put("phone", phone);
-    m.put("dob", sdob);
-    m.put("address", address);
-
-    m.put("looking_job_type", etLookingJobType);
-    m.put("address", location);
+            System.out.println("Body==" + body);
+            observable = apiParamsInterface.candidateedit(
+                    buildRequestParms.getRequestBody(admin_user_id),
+                    buildRequestParms.getRequestBody(first_name),
+                    buildRequestParms.getRequestBody(last_name),
+                    buildRequestParms.getRequestBody(email),
+                    buildRequestParms.getRequestBody(phone),
+                    buildRequestParms.getRequestBody(dob),
+                    buildRequestParms.getRequestBody(etLookingJobTypes),
+                    buildRequestParms.getRequestBody(location),
+                    buildRequestParms.getRequestBody(description),
+                    body
 
 
-    Map<String, String> headerMap = new HashMap<>();
-    System.out.println("@@EditgetPersonalInfoApi====" + AppConstants.apiUlr + "candidate/edit" + m);
+            );
 
-    new ServerHandler().sendToServer(this, AppConstants.apiUlr + "candidate/edit", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
-        @Override
-        public void getRespone(String dta, ArrayList<Object> respons) {
-            try {
-                System.out.println("@@EditgetPersonalInfoApi====" + dta);
-                JSONObject obj = new JSONObject(dta);
-                if(obj.getString("message").equalsIgnoreCase("Email already exist")){
-                    Toast.makeText(getApplicationContext(),obj.getString("message"),Toast.LENGTH_SHORT).show();
-                }else {
-                    JSONArray jsonArray=obj.getJSONArray("data");
-                    JSONObject objPuser_id = jsonArray.getJSONObject(0);
+            Log.i("@@candiateAdd", "candiateAdd");
 
-                    System.out.println("getPersonalInfoApi====" + obj.toString());
-                    System.out.println("getPersonalInfoApi==1==" + obj.getString("message").toString());
-                    if (obj.getString("message").equalsIgnoreCase("Candidate Updated")) {
-                      //  PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", objPuser_id.getString("user_id"));
-                        startActivity(new Intent(getApplicationContext(), CandidateEducation.class));
-
-                        finish();
-
-                    } else {
-                        showErrorDialog(obj.getString("message"));
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(getApplicationContext(),"Need to update mail!",Toast.LENGTH_SHORT).show();
-            }
-
-        }
-    });
-}*/
-public void getPersonalInfoApi(String admin_user_id, String first_name, String last_name, String email, String phone,
-                               String dob, String etLookingJobTypes, String location,  String description,File adhar) {
-    BuildRequestParms buildRequestParms = new BuildRequestParms();
-
-    AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
-
-    Log.i("@@11", "11");
-
-    Observable<CanddiateEditProfileModell> observable = null;
-
-    File file = new File(imagePathUrlAdhar);
-    Log.i("@@file", file.toString());
-    Log.i("@@imagePathUrlAdhar-----", imagePathUrlAdhar.toString());
-
-    RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
-    MultipartBody.Part body = MultipartBody.Part.createFormData("aadhar", file.getName(), requestBody);
-
-    System.out.println("Body==" + body);
-    observable = apiParamsInterface.candidateedit(
-            buildRequestParms.getRequestBody(admin_user_id),
-            buildRequestParms.getRequestBody(first_name),
-            buildRequestParms.getRequestBody(last_name),
-            buildRequestParms.getRequestBody(email),
-            buildRequestParms.getRequestBody(phone),
-            buildRequestParms.getRequestBody(dob),
-            buildRequestParms.getRequestBody(etLookingJobTypes),
-            buildRequestParms.getRequestBody(location),
-            buildRequestParms.getRequestBody(description),
-            body
+            final ProgressDialog mProgressDialog = new ProgressDialog(EditPersonInfoActivity.this);
+            mProgressDialog.show();
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.setTitle("Please wait..");
 
 
-    );
+            RxAPICallHelper.call(observable, new RxAPICallback<CanddiateEditProfileModell>() {
 
-    Log.i("@@candiateAdd", "candiateAdd");
-
-    final ProgressDialog mProgressDialog = new ProgressDialog(EditPersonInfoActivity.this);
-    mProgressDialog.show();
-    mProgressDialog.setCancelable(false);
-    mProgressDialog.setTitle("Please wait..");
-
-
-    RxAPICallHelper.call(observable, new RxAPICallback<CanddiateEditProfileModell>() {
-
-        @Override
-        public void onSuccess(CanddiateEditProfileModell uploadFileResponse) {
-            mProgressDialog.dismiss();
-            System.out.println("@@CanddiateEditProfileModell" + "CanddiateEditProfileModell");
-            //    Toast.makeText(getActivity(), uploadFileResponse.toString(), Toast.LENGTH_SHORT).show();
-            System.out.println("@@CanddiateEditProfileModell" + uploadFileResponse.toString());
-            try {
-                if (uploadFileResponse.getMsg().equalsIgnoreCase("Email already exist")) {
-                    Toast.makeText(getApplicationContext(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
-                    showErrorDialog(uploadFileResponse.getMsg());
-                } else {
-          //          System.out.println("@@AttendanceModell_2" + uploadFileResponse.getData().getId());
-                    if (uploadFileResponse.getMsg().equalsIgnoreCase("Candidate Updated")) {
-            //            PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", uploadFileResponse.getData().getId());
-                        startActivity(new Intent(getApplicationContext(), CandidateEducation.class));
+                @Override
+                public void onSuccess(CanddiateEditProfileModell uploadFileResponse) {
+                    mProgressDialog.dismiss();
+                    System.out.println("@@CanddiateEditProfileModell" + "CanddiateEditProfileModell");
+                    //    Toast.makeText(getActivity(), uploadFileResponse.toString(), Toast.LENGTH_SHORT).show();
+                    System.out.println("@@CanddiateEditProfileModell" + uploadFileResponse.toString());
+                    try {
+                        if (uploadFileResponse.getMsg().equalsIgnoreCase("Email already exist")) {
+                            Toast.makeText(getApplicationContext(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                            showErrorDialog(uploadFileResponse.getMsg());
+                        } else {
+                            //          System.out.println("@@AttendanceModell_2" + uploadFileResponse.getData().getId());
+                            if (uploadFileResponse.getMsg().equalsIgnoreCase("Candidate Updated")) {
+                                //            PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", uploadFileResponse.getData().getId());
+                                startActivity(new Intent(getApplicationContext(), CandidateEducation.class));
 
 
-                        finish();
+                                finish();
 
-                    } else {
+                            } else {
+                                showErrorDialog(uploadFileResponse.getMsg());
+                            }
+                        }
+                    } catch (Exception e) {
+                        mProgressDialog.dismiss();
                         showErrorDialog(uploadFileResponse.getMsg());
+                        e.printStackTrace();
                     }
+
+
                 }
-            } catch (Exception e) {
-                mProgressDialog.dismiss();
-                showErrorDialog(uploadFileResponse.getMsg());
-                e.printStackTrace();
-            }
+
+
+                @Override
+                public void onFailed(Throwable throwable) {
+                    System.out.println("error===" + throwable.getMessage());
+                    mProgressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "Email already exist!", Toast.LENGTH_SHORT).show();
+
+
+                }
+            });
 
 
         }
 
 
-        @Override
-        public void onFailed(Throwable throwable) {
-            System.out.println("error===" + throwable.getMessage());
-            mProgressDialog.dismiss();
-            Toast.makeText(getApplicationContext(),"Email already exist!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void setStartDateTimeField() {
+        Calendar newCalendar = Calendar.getInstance();
+
+        toDatePickerDialog = new DatePickerDialog(EditPersonInfoActivity.this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        bookDateAndTime = Calendar.getInstance();
+                        bookDateAndTime.set(year, monthOfYear, dayOfMonth);
+                        // date to our edit text.
+                        String dat = (dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        etStartDate.setText(dat);
+                    }
+                }, newCalendar.get(Calendar.YEAR),
+                newCalendar.get(Calendar.MONTH),
+                newCalendar.get(Calendar.DAY_OF_MONTH));
 
 
-        }
-    });
+    }
 
-
-
-
-}
-private void setStartDateTimeField() {
-    Calendar newCalendar = Calendar.getInstance();
-
-    toDatePickerDialog = new DatePickerDialog(EditPersonInfoActivity.this,
-            new DatePickerDialog.OnDateSetListener() {
-
-                public void onDateSet(DatePicker view, int year,
-                                      int monthOfYear, int dayOfMonth) {
-                    bookDateAndTime = Calendar.getInstance();
-                    bookDateAndTime.set(year, monthOfYear, dayOfMonth);
-                    // date to our edit text.
-                    String dat = (dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                    etStartDate.setText(dat);
-                }
-            }, newCalendar.get(Calendar.YEAR),
-            newCalendar.get(Calendar.MONTH),
-            newCalendar.get(Calendar.DAY_OF_MONTH));
-
-
-}
     public void openDailogForImagePickOptionRegisterAdhar() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = inflater.inflate(R.layout.layout_popup_image_option, null, false);
@@ -464,6 +471,7 @@ private void setStartDateTimeField() {
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
     }
+
     private void getImageFromCameraRegisterPicAdhar() {
 
 
@@ -476,12 +484,14 @@ private void setStartDateTimeField() {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFeatureUri);
         startActivityForResult(intent, IMAGE_REQUEST_CAMERA_register_adhar);
     }
+
     private void getImagefromGalleryRegisterIcAdhar() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_REQUEST_GALLERY_register_adhar);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -503,6 +513,7 @@ private void setStartDateTimeField() {
         }
 
     }
+
     ////Adhar
     class SaveCaputureImageTaskRegisterPlateAdhar extends AsyncTask<Void, Void, String> {
 
@@ -521,7 +532,7 @@ private void setStartDateTimeField() {
             // File scaledFile = FileUtil.getFile(getApplicationContext());
             file1 = FileUtil.getFile(EditPersonInfoActivity.this);
             imagePathUrlAdhar = file1.getAbsolutePath();
-            Log.i("@@FinallyGotSolution--",imagePathUrlAdhar);
+            Log.i("@@FinallyGotSolution--", imagePathUrlAdhar);
             try {
                 file1.createNewFile();
                 FileOutputStream ostream = new FileOutputStream(file1);
@@ -635,6 +646,7 @@ private void setStartDateTimeField() {
         }
 
     }
+
     public boolean checkPermissionREAD_EXTERNAL_STORAGE(
             final Context context) {
         int currentAPIVersion = Build.VERSION.SDK_INT;
@@ -663,6 +675,7 @@ private void setStartDateTimeField() {
             return true;
         }
     }
+
     private Bitmap decodeUri(String selectedImage) throws FileNotFoundException {
 
         // Decode image size
@@ -706,6 +719,7 @@ private void setStartDateTimeField() {
         return bitmap;
 
     }
+
     public void showDialog(final String msg, final Context context,
                            final String permission) {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
