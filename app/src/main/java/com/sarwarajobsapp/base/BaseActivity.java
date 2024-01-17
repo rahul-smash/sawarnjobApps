@@ -3,6 +3,7 @@ package com.sarwarajobsapp.base;
 import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -99,7 +100,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         return mProgressDialog != null && mProgressDialog.isShowing();
     }
 
-   /* protected void showSnackBar(String message) {
+/*    protected void showSnackBar(String message) {
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
                 message, Snackbar.LENGTH_SHORT);
         View sbView = snackbar.getView();
@@ -110,11 +111,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     }*/
 
     public void onError(String message) {
-        if (message != null) {
-            //showSnackBar(message);
+      /*  if (message != null) {
+            showSnackBar(message);
         } else {
-            //showSnackBar(getString(R.string.some_error));
-        }
+            showSnackBar(getString(R.string.some_error));
+        }*/
     }
 
     public void onError(@StringRes int resId) {
@@ -189,7 +190,30 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         dialog.show();
     }
+    public   void  showErrorDialogCheckIn(String msg)
+    {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.showerror_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
+        TextView txtError=dialog.findViewById(R.id.txtError);
+        txtError.setText(msg);
+
+        dialog.findViewById(R.id.txtNext).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+             /*   Intent in = new Intent(getApplicationContext(), ChooseAnyStartWorkActivity.class);
+
+//Add the bundle to the intent
+                startActivity(in);*/
+            }
+        });
+
+        dialog.show();
+    }
 
 
     public   void  confirmWithBack(String msg,CallBack callBack)
@@ -243,6 +267,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         relativeCheckOutimage.findViewById(R.id.relativeImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("@@CAmera1","baseActivity");
                 checkPermission(imageAttendanceCallBack);
             }
         });
@@ -297,16 +322,61 @@ public abstract class BaseActivity extends AppCompatActivity {
         return  "";
     }
 
-
     public void checkPermission(ImageAttendanceCallBack imageAttendanceCallBack)
     {
         this.imageAttendanceCallBack=imageAttendanceCallBack;
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
+
+                cameraIntent();
+            }
+            else {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_MEDIA_IMAGES}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+            }
+        } else {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                cameraIntent();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+            }
+        }
+
+
+     /*   if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
+
             cameraIntent();
         } else {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-        }
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_MEDIA_IMAGES}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+        }*/
     }
+  /*  public void checkPermission(ImageAttendanceCallBack imageAttendanceCallBack)
+    {                Log.i("@@CAmera2","baseActivity");
+
+        this.imageAttendanceCallBack=imageAttendanceCallBack;
+        if (ContextCompat.checkSelfPermission(this, String.valueOf(new String[]
+        {
+                Manifest.permission.CAMERA,
+            Manifest.permission.READ_MEDIA_IMAGES,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+
+
+
+        })) == PackageManager.PERMISSION_GRANTED) {
+            cameraIntent();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]
+                            {
+                                    Manifest.permission.READ_MEDIA_IMAGES,
+                                    android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+
+
+
+                }, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+          //  ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+        }
+    }*/
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -340,11 +410,22 @@ public abstract class BaseActivity extends AppCompatActivity {
 //        dialog.show();
 //    }
     private void cameraIntent() {
+        Log.i("@@CAmera4","cameraIntent");
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File fileCamera = new File(getExternalFilesDir("MarkApp"), System.currentTimeMillis()+"".concat(".jpeg"));
         cameraImageUri = FileProvider.getUriForFile(this, this.getPackageName() + ".provider", fileCamera);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, cameraImageUri);
-        startActivityForResult(cameraIntent, IMAGE_REQUEST_CAMERA);
+        Log.i("@@CAmera5","cameraIntent");
+
+        try {
+            Log.i("@@CAmera6","cameraIntent");
+
+            startActivityForResult(cameraIntent, IMAGE_REQUEST_CAMERA);
+        } catch (ActivityNotFoundException e) {
+            Log.i("@@CAmera7","cameraIntent");
+
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -352,6 +433,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMAGE_REQUEST_CAMERA) {
             if (resultCode == RESULT_OK) {
+
                 cropImage(cameraImageUri);
             }
 
@@ -360,12 +442,12 @@ public abstract class BaseActivity extends AppCompatActivity {
             Log.i("@@resulturi",""+resultUri);
             if (resultUri != null && attendanceUserProfile!=null) {
                 imageAttendanceCallBack.getImageUri(resultUri);
-              /*  Glide.with(this)
+             /*   Picasso.with(this)
                         .load(resultUri)
-                        .placeholder(R.drawable.side_image)
+                        .placeholder(R.drawable.side_image).resize(80, 80)
                         .centerCrop()
-                        .into(attendanceUserProfile);*/
-
+                        .into(attendanceUserProfile);
+*/
                 llShowbutton.setVisibility(View.VISIBLE);
                 imageAttendanceCallBack.getImageUri(resultUri);
 
@@ -383,9 +465,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         Uri outCamera = Uri.fromFile(fileCamera);
         UCrop.of(uri, outCamera)
                 .withAspectRatio(1, 1)
-                .withMaxResultSize(500, 500)
+                .withMaxResultSize(80, 80)
                 .start( this);
     }
 
-
+    public void logWtf(String msg) {
+        Log.wtf("GoldenEagle", msg);
+    }
+    public void logd(String msg) {
+        Log.d("GoldenEagle", msg);
+    }
 }

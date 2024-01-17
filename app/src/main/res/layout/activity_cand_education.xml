@@ -50,19 +50,19 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-         <!--   <Spinner
-                android:id="@+id/txtSPinnerEmployeerType"
+            <!--   <Spinner
+                   android:id="@+id/txtSPinnerEmployeerType"
 
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
+                   android:layout_width="match_parent"
+                   android:layout_height="50dp"
 
-                android:layout_centerInParent="true"
+                   android:layout_centerInParent="true"
 
-                android:layout_gravity="top"
-                android:layout_marginTop="10dp"
-                android:layout_toRightOf="@+id/txtMonths"
-                android:background="@drawable/spinner_background"
-                android:gravity="center"></Spinner>-->
+                   android:layout_gravity="top"
+                   android:layout_marginTop="10dp"
+                   android:layout_toRightOf="@+id/txtMonths"
+                   android:background="@drawable/spinner_background"
+                   android:gravity="center"></Spinner>-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtInputDegree"
                 android:layout_width="match_parent"
@@ -139,7 +139,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-app:hintEnabled="false"
+                app:hintEnabled="false"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
@@ -167,7 +167,7 @@ app:hintEnabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-app:hintEnabled="false"
+                app:hintEnabled="false"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
@@ -195,7 +195,7 @@ app:hintEnabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-               app:hintEnabled="false"
+                app:hintEnabled="false"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none">
 
@@ -232,7 +232,7 @@ app:hintEnabled="false"
                     app:hintEnabled="false">
 
                     <EditText
-                        android:id="@+id/etResumeUpload"
+                        android:id="@+id/txtUploadResume"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@drawable/edittext_bg_use_imag"
@@ -246,7 +246,7 @@ app:hintEnabled="false"
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/txtADDREsume"
+                    android:id="@+id/txtResume"
                     style="@style/EditText.Login"
                     android:layout_width="0dp"
                     android:layout_height="50dp"

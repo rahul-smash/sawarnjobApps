@@ -113,7 +113,7 @@ holder.txtSrNo.setText(jsonObject.getString("first_name"));
 
                             intent.putExtra("looking_job_type", dataObj.getString("looking_job_type"));
                             intent.putExtra("description", dataObj.getString("description"));
-
+                            intent.putExtra("aadhar", dataObj.getString("aadhar"));
                             mContext.startActivity(intent);
                           //  mContext.startActivity(new Intent(mContext, PersonInfoActivity.class));
 

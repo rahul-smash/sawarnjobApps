@@ -41,6 +41,7 @@ import androidx.fragment.app.Fragment;
 
 import com.app.preferences.SavePreferences;
 import com.google.android.material.textfield.TextInputLayout;
+import com.sarwarajobsapp.communication.ImageAttendanceCallBack;
 import com.sarwarajobsapp.modelattend.AttendanceModell;
 import com.sarwarajobsapp.R;
 import com.sarwarajobsapp.base.AppViewModel;
@@ -64,6 +65,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import Communication.BuildRequestParms;
@@ -77,7 +79,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     private MainActivity mainActivity;
     View rootView;
     TextInputLayout txtInputFirstName, txtInputLastName, txtInputEmail, txtInputPhone, txtInputStartDate, txtInputEndDate, txtInputLocation;
-    TextView verify_btn,txtADDFile;
+    TextView verify_btn, txtADDFile;
     EditText etFirstName, etLastName, etEmail, etPhone, etStartDate, etLookingJobType, etLoction;
     Calendar bookDateAndTime;
     private DatePickerDialog toDatePickerDialog;
@@ -89,7 +91,9 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     Uri source;
     EditText etUploadAdharCard;
     String imagePathUrlAdhar;
-    File file1 ;
+    File file1;
+    Uri imageUrli;
+
     public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
                 PersonInfoFragment.class.getName());
@@ -120,8 +124,8 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
     private void initView() {
         llAccount = rootView.findViewById(R.id.llAccount);
-        etUploadAdharCard=rootView.findViewById(R.id.etUploadAdharCard);
-        txtADDFile=rootView.findViewById(R.id.txtADDFile);
+        etUploadAdharCard = rootView.findViewById(R.id.etUploadAdharCard);
+        txtADDFile = rootView.findViewById(R.id.txtADDFile);
         txtInputFirstName = rootView.findViewById(R.id.txtInputFirstName);
         txtInputLastName = rootView.findViewById(R.id.txtInputLastName);
         txtInputEmail = rootView.findViewById(R.id.txtInputEmail);
@@ -138,9 +142,10 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         etLookingJobType = rootView.findViewById(R.id.etLookingJobType);
         etLoction = rootView.findViewById(R.id.etLocation);
         etStartDate.setOnClickListener(this);
-       // etEndDate.setOnClickListener(this);
+        // etEndDate.setOnClickListener(this);
         verify_btn.setOnClickListener(this);
         txtADDFile.setOnClickListener(this);
+
     }
 
 
@@ -159,11 +164,11 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
             try {
 
-                 reformattedStr = myFormat.format(myFormat.parse(etStartDate.getText().toString().trim()));
+                reformattedStr = myFormat.format(myFormat.parse(etStartDate.getText().toString().trim()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            System.out.println("reformattedStr====" +reformattedStr);
+            System.out.println("reformattedStr====" + reformattedStr);
 
             if (etFirstName.getText().toString().length() <= 0) {
                 Toast.makeText(getActivity(), "Enter First name", Toast.LENGTH_SHORT).show();
@@ -201,14 +206,14 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 Toast.makeText(getActivity(), "Enter Location", Toast.LENGTH_SHORT).show();
 
                 return;
-            } if (etUploadAdharCard.getText().toString().length() <= 0) {
+            }
+            if (etUploadAdharCard.getText().toString().length() <= 0) {
                 Toast.makeText(getActivity(), "Select AadharCard", Toast.LENGTH_SHORT).show();
                 return;
-            }
-            else {
+            } else {
                 getPersonalInfoApi(getLoginData("id"), etFirstName.getText().toString().trim()
-                        ,  etLastName.getText().toString().trim(), etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
-                        reformattedStr, etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(),file1);
+                        , etLastName.getText().toString().trim(), etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
+                        reformattedStr, etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(), file1);
             }
 
         }
@@ -226,164 +231,6 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         return "";
     }
 
-   /* public void getPersonalInfoApi(String admin_user_id, String first_name, String last_name, String email, String phone,
-                                   String sdob, String etLookingJobTypes, String location) {
-
-        LinkedHashMap<String, String> m = new LinkedHashMap<>();
-
-        //   m.put("admin_user_id", getLoginData("id"));
-        m.put("admin_user_id", admin_user_id);
-        m.put("first_name", first_name);
-        m.put("last_name", last_name);
-        m.put("email", email);
-        m.put("phone", phone);
-        m.put("dob", sdob);
-        m.put("looking_job_type", etLookingJobTypes);
-        m.put("address", location);
-
-
-        Map<String, String> headerMap = new HashMap<>();
-        System.out.println("getPersonalInfoApi====" + AppConstants.apiUlr + "candidate/add" + m);
-
-        new ServerHandler().sendToServer(getActivity(), AppConstants.apiUlr + "candidate/add", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
-            @Override
-            public void getRespone(String dta, ArrayList<Object> respons) {
-                try {
-                    System.out.println("getPersonalInfoApi====" + dta);
-                    JSONObject obj = new JSONObject(dta);
-                    if(obj.getString("message").equalsIgnoreCase("Email already exist")){
-Toast.makeText(getActivity(),obj.getString("message"),Toast.LENGTH_SHORT).show();
-                    }else{
-                        JSONObject objPuser_id =obj.getJSONObject("data");
-
-                        System.out.println("getPersonalInfoApi====" + obj.toString());
-                        System.out.println("getPersonalInfoApi==1==" + obj.getString("message").toString());
-                        if (obj.getString("message").equalsIgnoreCase("Candidate Created")) {
-                            PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", objPuser_id.getString("user_id"));
-                         *//*   SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MySharedPref",MODE_PRIVATE);
-
-                            SharedPreferences.Editor myEdit = sharedPreferences.edit();
-
-                            myEdit.putString("FirstName", etFirstName.getText().toString());
-                            myEdit.putString("LastName", etLastName.getText().toString());
-                            myEdit.putString("email", etEmail.getText().toString());
-                            myEdit.putString("phone", etPhone.getText().toString());
-                            myEdit.putString("dob", etStartDate.getText().toString());
-                            myEdit.putString("llokingJobType", etLookingJobType.getText().toString());
-                            myEdit.putString("location", etLoction.getText().toString());
-                            myEdit.commit();*//*
-                            startActivity(new Intent(getActivity(), CandidateEducation.class));
-
-                            getActivity().finish();
-
-                        } else {
-                            ((MainActivity) getActivity()).showErrorDialog(obj.getString("message"));
-                        }
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-    }*/
-////////////////////////////////////////////////////////////////////////
-public void getPersonalInfoApi(String admin_user_id, String first_name, String last_name, String email, String phone,
-                           String dob, String etLookingJobTypes, String location, File adhar) {
-    BuildRequestParms buildRequestParms = new BuildRequestParms();
-
-    AppViewModel apiParamsInterface = ApiProductionS.getInstance(mainActivity).provideService(AppViewModel.class);
-
-    Log.i("@@11", "11");
-
-    Observable<AttendanceModell> observable = null;
-//
-//        MultipartBody.Part body1 = (MultipartBody.Part) imageAr1.get(0);
-
-Log.i("@@imagePathUrlAdhar---",""+imagePathUrlAdhar);
-    File file = new File(imagePathUrlAdhar);
-    RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
-    MultipartBody.Part body = MultipartBody.Part.createFormData("aadhar", file.getName(), requestBody);
-
-
-
-
-    System.out.println("candiateAdd====" + body);
-    observable = apiParamsInterface.candiateAdd(
-            buildRequestParms.getRequestBody(admin_user_id),
-            buildRequestParms.getRequestBody(first_name),
-            buildRequestParms.getRequestBody(last_name),
-            buildRequestParms.getRequestBody(email),
-            buildRequestParms.getRequestBody(phone),
-            buildRequestParms.getRequestBody(dob),
-            buildRequestParms.getRequestBody(etLookingJobTypes),
-            buildRequestParms.getRequestBody(location),
-            body
-
-
-    );
-
-    Log.i("@@candiateAdd", "candiateAdd");
-
-    final ProgressDialog mProgressDialog = new ProgressDialog(getActivity());
-    mProgressDialog.show();
-    mProgressDialog.setCancelable(false);
-    mProgressDialog.setTitle("Please wait..");
-
-
-    RxAPICallHelper.call(observable, new RxAPICallback<AttendanceModell>() {
-
-        @Override
-        public void onSuccess(AttendanceModell uploadFileResponse) {
-            mProgressDialog.dismiss();
-            System.out.println("@@AttendanceModell_1" + "AttendanceModell");
-            //    Toast.makeText(getActivity(), uploadFileResponse.toString(), Toast.LENGTH_SHORT).show();
-            System.out.println("@@AttendanceModell_2" + uploadFileResponse.toString());
-            try {
-                if (uploadFileResponse.getMsg().equalsIgnoreCase("Email already exist")) {
-                    Toast.makeText(getActivity(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
-                } else {
-                    System.out.println("@@AttendanceModell_2" + uploadFileResponse.getData().getUserID());
-                    if (uploadFileResponse.getMsg().equalsIgnoreCase("Candidate Created")) {
-                        PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", uploadFileResponse.getData().getUserID());
-
-                        startActivity(new Intent(getActivity(), CandidateEducation.class));
-
-                        getActivity().finish();
-
-                    } else {
-                        ((MainActivity) getActivity()).showErrorDialog(uploadFileResponse.getMsg());
-                    }
-                }
-            } catch (Exception e) {
-                mProgressDialog.dismiss();
-                e.printStackTrace();
-            }
-
-
-        }
-
-
-        @Override
-        public void onFailed(Throwable throwable) {
-            System.out.println("error===" + throwable.getMessage());
-            mProgressDialog.dismiss();
-
-
-        }
-    });
-
-
-
-
-}
-
-
-
-
-
-    ////////////////////////////////////////////////////////////////////////////////
     private void setStartDateTimeField() {
         Calendar newCalendar = Calendar.getInstance();
 
@@ -406,33 +253,124 @@ Log.i("@@imagePathUrlAdhar---",""+imagePathUrlAdhar);
     }
 
 //for photo code
-public void openDailogForImagePickOptionRegisterAdhar() {
-    LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    View dialogView = inflater.inflate(R.layout.layout_popup_image_option, null, false);
-    final Dialog dialog = new Dialog(getActivity());
-    RelativeLayout relativeLayoutCamera = (RelativeLayout) dialogView.findViewById(R.id.relativeBlockCamera);
-    RelativeLayout relativeLayoutGallery = (RelativeLayout) dialogView.findViewById(R.id.relativeBlockGallery);
 
-    relativeLayoutCamera.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            getImageFromCameraRegisterPicAdhar();
-            dialog.dismiss();
-        }
-    });
-    relativeLayoutGallery.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            getImagefromGalleryRegisterIcAdhar();
-            dialog.dismiss();
-        }
-    });
-    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-    dialog.setContentView(dialogView);
-    dialog.setCanceledOnTouchOutside(true);
-    dialog.show();
-}
+
+    public void getPersonalInfoApi(String admin_user_id, String first_name, String last_name, String email, String phone,
+                                   String dob, String etLookingJobTypes, String location, File adhar) {
+        BuildRequestParms buildRequestParms = new BuildRequestParms();
+
+        AppViewModel apiParamsInterface = ApiProductionS.getInstance(mainActivity).provideService(AppViewModel.class);
+
+        Log.i("@@11", "11");
+
+        Observable<AttendanceModell> observable = null;
+        File file = new File(imagePathUrlAdhar);
+        Log.i("@@file", file.toString());
+        Log.i("@@imagePathUrlAdhar-----", imagePathUrlAdhar.toString());
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("aadhar", file.getName(), requestBody);
+
+
+        System.out.println("Body==" + body);
+
+
+        System.out.println("candiateAdd====" + body);
+        observable = apiParamsInterface.candiateAdd(
+                buildRequestParms.getRequestBody(admin_user_id),
+                buildRequestParms.getRequestBody(first_name),
+                buildRequestParms.getRequestBody(last_name),
+                buildRequestParms.getRequestBody(email),
+                buildRequestParms.getRequestBody(phone),
+                buildRequestParms.getRequestBody(dob),
+                buildRequestParms.getRequestBody(etLookingJobTypes),
+                buildRequestParms.getRequestBody(location),
+                body
+
+
+        );
+
+        Log.i("@@candiateAdd", "candiateAdd");
+
+        final ProgressDialog mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog.show();
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setTitle("Please wait..");
+
+
+        RxAPICallHelper.call(observable, new RxAPICallback<AttendanceModell>() {
+
+            @Override
+            public void onSuccess(AttendanceModell uploadFileResponse) {
+                mProgressDialog.dismiss();
+                System.out.println("@@AttendanceModell_1" + "AttendanceModell");
+                //    Toast.makeText(getActivity(), uploadFileResponse.toString(), Toast.LENGTH_SHORT).show();
+                System.out.println("@@AttendanceModell_2" + uploadFileResponse.toString());
+                try {
+                    if (uploadFileResponse.getMsg().equalsIgnoreCase("Email already exist")) {
+                        Toast.makeText(getActivity(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        System.out.println("@@AttendanceModell_2" + uploadFileResponse.getData().getUserID());
+                        if (uploadFileResponse.getMsg().equalsIgnoreCase("Candidate Created")) {
+                            PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", uploadFileResponse.getData().getUserID());
+
+                            startActivity(new Intent(getActivity(), CandidateEducation.class));
+
+                            getActivity().finish();
+
+                        } else {
+                            ((MainActivity) getActivity()).showErrorDialog(uploadFileResponse.getMsg());
+                        }
+                    }
+                } catch (Exception e) {
+                    mProgressDialog.dismiss();
+                    e.printStackTrace();
+                }
+
+
+            }
+
+
+            @Override
+            public void onFailed(Throwable throwable) {
+                System.out.println("error===" + throwable.getMessage());
+                mProgressDialog.dismiss();
+
+
+            }
+        });
+
+
+    }
+
+
+    public void openDailogForImagePickOptionRegisterAdhar() {
+        LayoutInflater inflater = (LayoutInflater)mainActivity. getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.layout_popup_image_option, null, false);
+        final Dialog dialog = new Dialog(getActivity());
+        RelativeLayout relativeLayoutCamera = (RelativeLayout) dialogView.findViewById(R.id.relativeBlockCamera);
+        RelativeLayout relativeLayoutGallery = (RelativeLayout) dialogView.findViewById(R.id.relativeBlockGallery);
+
+        relativeLayoutCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getImageFromCameraRegisterPicAdhar();
+                dialog.dismiss();
+            }
+        });
+        relativeLayoutGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getImagefromGalleryRegisterIcAdhar();
+                dialog.dismiss();
+            }
+        });
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(dialogView);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+    }
     private void getImageFromCameraRegisterPicAdhar() {
 
 
@@ -465,7 +403,7 @@ public void openDailogForImagePickOptionRegisterAdhar() {
 //                 performCrop(selectedImage);
                 if (checkPermissionREAD_EXTERNAL_STORAGE(getActivity())) {
                     // do your stuff..
-                 new SaveGalleryImageTaskRegisterPlateAdhar().execute(selectedImage);
+                    new SaveGalleryImageTaskRegisterPlateAdhar().execute(selectedImage);
 
                 }
             }
@@ -487,10 +425,13 @@ public void openDailogForImagePickOptionRegisterAdhar() {
                 e.printStackTrace();
             }
 
-            File scaledFile = FileUtil.getFile(getActivity());
+            // File scaledFile = FileUtil.getFile(getApplicationContext());
+            file1 = FileUtil.getFile(getActivity());
+            imagePathUrlAdhar = file1.getAbsolutePath();
+            Log.i("@@FinallyGotSolution--",imagePathUrlAdhar);
             try {
-                scaledFile.createNewFile();
-                FileOutputStream ostream = new FileOutputStream(scaledFile);
+                file1.createNewFile();
+                FileOutputStream ostream = new FileOutputStream(file1);
                 scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
                 ostream.close();
             } catch (Exception e) {
@@ -508,7 +449,7 @@ public void openDailogForImagePickOptionRegisterAdhar() {
                 e.printStackTrace();
             }
 
-            source = Uri.fromFile(scaledFile);
+            source = Uri.fromFile(file1);
             return source.toString();
         }
 
@@ -560,9 +501,7 @@ public void openDailogForImagePickOptionRegisterAdhar() {
             }
             bitMap = FileUtil.checkImageRotation(bitMap, path);
             file1 = FileUtil.getFile(getActivity());
-            assert file1 != null;
             imagePathUrlAdhar = file1.getAbsolutePath();
-            Log.i("@@imagePathUrlAdhar------",""+file1.getAbsolutePath().toString());
             //      txtSelectYourPhoto.setText(file1.getAbsolutePath().toString());
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             try {
