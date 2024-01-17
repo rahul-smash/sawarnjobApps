@@ -81,7 +81,7 @@ import okhttp3.RequestBody;
 public class PersonInfoActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String TAG = "PersonInfoActivity";
-    private MainActivity mainActivity;
+     MainActivity mainActivity;
     View rootView;
     TextInputLayout txtInputFirstName, txtInputLastName, txtInputEmail, txtInputPhone, txtInputStartDate, txtInputEndDate, txtInputLocation;
     TextView verify_btn,customeToolbartext,txtADDFile;
@@ -91,7 +91,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     LinearLayout llAccount;
     String reformattedStr;
         String FirstName,LastName,email,phone,dob,llokingJobType,location;
-        private Uri imageFeatureUri;
+         Uri imageFeatureUri;
         public static final int IMAGE_REQUEST_GALLERY_register_adhar = 325;
         public static final int IMAGE_REQUEST_CAMERA_register_adhar = 326;
         Uri source;
@@ -333,6 +333,9 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
 
 
        File file = new File(imagePathUrlAdhar);
+       Log.i("@@file", file.toString());
+       Log.i("@@imagePathUrlAdhar-----", imagePathUrlAdhar.toString());
+
        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
        MultipartBody.Part body = MultipartBody.Part.createFormData("aadhar", file.getName(), requestBody);
 
@@ -512,10 +515,13 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
                     e.printStackTrace();
                 }
 
-                File scaledFile = FileUtil.getFile(getApplicationContext());
+               // File scaledFile = FileUtil.getFile(getApplicationContext());
+                file1 = FileUtil.getFile(PersonInfoActivity.this);
+                imagePathUrlAdhar = file1.getAbsolutePath();
+                Log.i("@@FinallyGotSolution--",imagePathUrlAdhar);
                 try {
-                    scaledFile.createNewFile();
-                    FileOutputStream ostream = new FileOutputStream(scaledFile);
+                    file1.createNewFile();
+                    FileOutputStream ostream = new FileOutputStream(file1);
                     scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
                     ostream.close();
                 } catch (Exception e) {
@@ -533,7 +539,7 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
                     e.printStackTrace();
                 }
 
-                source = Uri.fromFile(scaledFile);
+                source = Uri.fromFile(file1);
                 return source.toString();
             }
 

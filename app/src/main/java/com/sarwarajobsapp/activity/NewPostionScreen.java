@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -39,17 +40,25 @@ import androidx.fragment.app.FragmentManager;
 import com.app.preferences.SavePreferences;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sarwarajobsapp.R;
+import com.sarwarajobsapp.base.AppViewModel;
 import com.sarwarajobsapp.base.BaseActivity;
 import com.sarwarajobsapp.candidateList.CandidateListActionaleActivityConvert;
+import com.sarwarajobsapp.communication.ApiProductionS;
 import com.sarwarajobsapp.communication.CallBack;
 import com.sarwarajobsapp.communication.ServerHandler;
 import com.sarwarajobsapp.dashboard.MainActivity;
+import com.sarwarajobsapp.modelattend.AttendanceModell;
+import com.sarwarajobsapp.modelattend.CanddiateAttendanceModell;
+import com.sarwarajobsapp.modelattend.NewPostionExperience;
 import com.sarwarajobsapp.util.DbBitmapUtility;
 import com.sarwarajobsapp.util.FileUtil;
+import com.sarwarajobsapp.util.FileUtilsss;
 import com.sarwarajobsapp.util.ProgressDialogUtil;
 import com.sarwarajobsapp.util.Utility;
 import com.sarwarajobsapp.utility.AppConstants;
 import com.sarwarajobsapp.utility.PrefHelper;
+import com.wallet.retrofitapi.api.RxAPICallHelper;
+import com.wallet.retrofitapi.api.RxAPICallback;
 
 import org.json.JSONObject;
 
@@ -66,6 +75,12 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import Communication.BuildRequestParms;
+import io.reactivex.Observable;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+
 //public class NewPostionScreen extends Fragment implements View.OnClickListener {
 public class NewPostionScreen extends BaseActivity implements View.OnClickListener {
 
@@ -79,7 +94,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
      DatePickerDialog toDatePickerDialogEnd;
     LinearLayout llAccount;
     String reformattedStr,EndreformattedStr;
-    private Uri imageFeatureUri;
+     Uri imageFeatureUri;
     public static final int IMAGE_REQUEST_GALLERY_register_adhar = 325;
     public static final int IMAGE_REQUEST_CAMERA_register_adhar = 326;
     Uri source;
@@ -236,7 +251,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
             else {
                 getPostionDataTypeApi(getLoginData("id"),
                         txtCompanyName.getText().toString().trim(),  txtPosition.getText().toString().trim(),
-                        reformattedStr, EndreformattedStr, txtJobRpleDescritpion.getText().toString().trim());
+                        reformattedStr, EndreformattedStr, txtJobRpleDescritpion.getText().toString().trim(),file1);
             }
 
         }
@@ -255,7 +270,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
     }
 
 
-    public void getPostionDataTypeApi(String user_id, String company, String position, String started_at,
+  /*  public void getPostionDataTypeApi(String user_id, String company, String position, String started_at,
                                       String ended_at,String description) {
 
         LinkedHashMap<String, String> m = new LinkedHashMap<>();
@@ -292,7 +307,84 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
 
             }
         });
-    }
+    }*/
+  public void getPostionDataTypeApi(String user_id, String company, String position, String started_at,
+                                    String ended_at,String description, File upload_file) {
+      BuildRequestParms buildRequestParms = new BuildRequestParms();
+
+      AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
+
+      Log.i("@@11", "11");
+
+      Observable<NewPostionExperience> observable = null;
+//
+
+
+      File file = new File(imagePathUrlAdhar);
+      Log.i("@@file", file.toString());
+      Log.i("@@NewPostionExperience--imagePathUrlAdhar-", imagePathUrlAdhar.toString());
+
+      RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+      MultipartBody.Part body = MultipartBody.Part.createFormData("upload_file", file.getName(), requestBody);
+
+
+
+
+      System.out.println("NewPostionExperience====" + body);
+      observable = apiParamsInterface.candidateExperienceAdd(
+              buildRequestParms.getRequestBody(user_id),
+              buildRequestParms.getRequestBody(company),
+              buildRequestParms.getRequestBody(position),
+              buildRequestParms.getRequestBody(started_at),
+              buildRequestParms.getRequestBody(ended_at),
+              buildRequestParms.getRequestBody(description),
+              body
+
+
+      );
+
+      Log.i("@@NewPostionExperience", "NewPostionExperience");
+
+      final ProgressDialog mProgressDialog = new ProgressDialog(NewPostionScreen.this);
+      mProgressDialog.show();
+      mProgressDialog.setCancelable(false);
+      mProgressDialog.setTitle("Please wait..");
+
+      RxAPICallHelper.call(observable, new RxAPICallback<NewPostionExperience>() {
+
+          @Override
+          public void onSuccess(NewPostionExperience uploadFileResponse) {
+
+
+              mProgressDialog.dismiss();
+              System.out.println("@@newEXperienceModel" + "newEXperienceModel");
+              //    Toast.makeText(getActivity(), uploadFileResponse.toString(), Toast.LENGTH_SHORT).show();
+              System.out.println("@@newEXperienceModel" + uploadFileResponse.toString());
+              try {
+                  if (uploadFileResponse.getMsg().equalsIgnoreCase("User Experience Added")) {
+                      Toast.makeText(getApplicationContext(), uploadFileResponse.getMsg(),Toast.LENGTH_SHORT).show();
+                      startActivity(new Intent(getApplicationContext(), CandidateListActionaleActivityConvert.class));
+                      finish();
+                  } else {
+                      showErrorDialog(uploadFileResponse.getMsg());
+                  }
+              } catch (Exception e) {
+                  e.printStackTrace();
+              }
+
+
+          }
+
+          @Override
+          public void onFailed(Throwable throwable) {
+              System.out.println("error===" + throwable.getMessage());
+              mProgressDialog.dismiss();
+
+          }
+
+
+      });
+  }
     private void setStartDateTimeField() {
         Calendar newCalendar = Calendar.getInstance();
 
@@ -384,7 +476,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
 
         if (requestCode == IMAGE_REQUEST_CAMERA_register_adhar) {
             if (resultCode == RESULT_OK) {
-                new NewPostionScreen.SaveCaputureImageTaskRegisterPlateAdhar().execute();
+                new SaveCaputureImageTaskRegisterPlateAdhar().execute();
             }
         } else if (requestCode == IMAGE_REQUEST_GALLERY_register_adhar) {
             if (resultCode == RESULT_OK) {
@@ -392,7 +484,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
 //                 performCrop(selectedImage);
                 if (checkPermissionREAD_EXTERNAL_STORAGE(NewPostionScreen.this)) {
                     // do your stuff..
-                    new NewPostionScreen.SaveGalleryImageTaskRegisterPlateAdhar().execute(selectedImage);
+                    new SaveGalleryImageTaskRegisterPlateAdhar().execute(selectedImage);
 
                 }
             }
@@ -414,10 +506,13 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
 
-            File scaledFile = FileUtil.getFile(getApplicationContext());
+            // File scaledFile = FileUtil.getFile(getApplicationContext());
+            file1 = FileUtil.getFile(NewPostionScreen.this);
+            imagePathUrlAdhar = file1.getAbsolutePath();
+            Log.i("@@FinallyGotSolution--",imagePathUrlAdhar);
             try {
-                scaledFile.createNewFile();
-                FileOutputStream ostream = new FileOutputStream(scaledFile);
+                file1.createNewFile();
+                FileOutputStream ostream = new FileOutputStream(file1);
                 scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
                 ostream.close();
             } catch (Exception e) {
@@ -435,7 +530,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
 
-            source = Uri.fromFile(scaledFile);
+            source = Uri.fromFile(file1);
             return source.toString();
         }
 
