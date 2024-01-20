@@ -97,7 +97,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
     public static final int IMAGE_REQUEST_GALLERY_register_adhar = 325;
     public static final int IMAGE_REQUEST_CAMERA_register_adhar = 326;
     Uri source;
-
+    String getClcikIDValue;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,17 +106,9 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
 
     @Override
     protected void setUp() {
- /*   SharedPreferences sh = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
 
-     FirstName = sh.getString("FirstName", "");
-    LastName = sh.getString("LastName", "");
-     email = sh.getString("email", "");
-     phone = sh.getString("phone", "");
-     dob = sh.getString("dob", "");
-     llokingJobType = sh.getString("llokingJobType", "");
-     location = sh.getString("location", "");*/
-
-        Log.i("@@@@@@@FirstName--", getIntent().getStringExtra("FirstName") + getIntent().getStringExtra("LastName"));
+ getClcikIDValue=PrefHelper.getInstance().getSharedValue("clickEditID");
+        Log.i("@@getClcikIDValue", getClcikIDValue);
         initView();
         setStartDateTimeField();
     }
@@ -255,7 +247,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
 
                 return;
             } else {
-                getPersonalInfoApi(getLoginData("id"), etFirstName.getText().toString().trim()
+                getPersonalInfoApi(getClcikIDValue, etFirstName.getText().toString().trim()
                         , etLastName.getText().toString().trim(), etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
                         reformattedStr, etAddress.getText().toString().trim(), etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(), file1);
             }
@@ -275,59 +267,6 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
         return "";
     }
 
-    /*public void getPersonalInfoApi(String admin_user_id, String first_name, String last_name, String email, String phone,
-                                   String sdob,String address, String etLookingJobType, String location) {
-
-        LinkedHashMap<String, String> m = new LinkedHashMap<>();
-
-        //   m.put("admin_user_id", getLoginData("id"));
-        m.put("user_id", admin_user_id);
-        m.put("first_name", first_name);
-        m.put("last_name", last_name);
-        m.put("email", email);
-        m.put("phone", phone);
-        m.put("dob", sdob);
-        m.put("address", address);
-
-        m.put("looking_job_type", etLookingJobType);
-        m.put("address", location);
-
-
-        Map<String, String> headerMap = new HashMap<>();
-        System.out.println("@@EditgetPersonalInfoApi====" + AppConstants.apiUlr + "candidate/edit" + m);
-
-        new ServerHandler().sendToServer(this, AppConstants.apiUlr + "candidate/edit", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
-            @Override
-            public void getRespone(String dta, ArrayList<Object> respons) {
-                try {
-                    System.out.println("@@EditgetPersonalInfoApi====" + dta);
-                    JSONObject obj = new JSONObject(dta);
-                    if(obj.getString("message").equalsIgnoreCase("Email already exist")){
-                        Toast.makeText(getApplicationContext(),obj.getString("message"),Toast.LENGTH_SHORT).show();
-                    }else {
-                        JSONArray jsonArray=obj.getJSONArray("data");
-                        JSONObject objPuser_id = jsonArray.getJSONObject(0);
-
-                        System.out.println("getPersonalInfoApi====" + obj.toString());
-                        System.out.println("getPersonalInfoApi==1==" + obj.getString("message").toString());
-                        if (obj.getString("message").equalsIgnoreCase("Candidate Updated")) {
-                          //  PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", objPuser_id.getString("user_id"));
-                            startActivity(new Intent(getApplicationContext(), CandidateEducation.class));
-
-                            finish();
-
-                        } else {
-                            showErrorDialog(obj.getString("message"));
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),"Need to update mail!",Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-    }*/
     public void getPersonalInfoApi(String admin_user_id, String first_name, String last_name, String email, String phone,
                                    String dob, String etLookingJobTypes, String location, String description, File adhar) {
         if (imagePathUrlAdhar == null) {
@@ -343,7 +282,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
 
             File file = new File(imagePathUrlAdhar);
             Log.i("@@file", file.toString());
-            Log.i("@@imagePathUrlAdhar-----", imagePathUrlAdhar.toString());
+            Log.i("@@imagePathUrlAdha", imagePathUrlAdhar.toString());
 
             RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
             MultipartBody.Part body = MultipartBody.Part.createFormData("aadhar", file.getName(), requestBody);
@@ -390,6 +329,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
                                 //            PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", uploadFileResponse.getData().getId());
                                 startActivity(new Intent(getApplicationContext(), CandidateEducation.class));
 
+                                Toast.makeText(getApplicationContext(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
 
                                 finish();
 

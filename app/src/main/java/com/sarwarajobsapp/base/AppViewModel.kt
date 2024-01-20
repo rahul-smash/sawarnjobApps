@@ -72,10 +72,6 @@ interface AppViewModel {
         @Part("description") description: RequestBody?,
 
 
-
-
-
-
         @Part aadhar: MultipartBody.Part?,
 
         ): Observable<CanddiateEditProfileModell>?

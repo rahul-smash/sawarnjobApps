@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.app.preferences.SavePreferences;
 import com.sarwarajobsapp.R;
@@ -34,7 +35,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class CandidateListActionaleActivityConvert extends BaseActivity implements View.OnClickListener {
+public class CandidateListActionaleActivityConvert extends BaseActivity implements View.OnClickListener ,SwipeRefreshLayout.OnRefreshListener {
     View rootView;
     public static final String TAG = "CandidateSamraddhiActionaleActivity";
     private ImageView back_btn;
@@ -43,6 +44,7 @@ public class CandidateListActionaleActivityConvert extends BaseActivity implemen
     private TextView txtSignOut,txtAddUSer;
      MainActivity mainActivity;
     TextView customeToolbartext;
+    private SwipeRefreshLayout srLayout;
 
     public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
@@ -88,6 +90,8 @@ public class CandidateListActionaleActivityConvert extends BaseActivity implemen
 
     private void init() {
         customeToolbartext=findViewById(R.id.customeToolbartext);
+        srLayout = findViewById(R.id.srLayout);
+        srLayout.setOnRefreshListener(this);
         txtAddUSer=(TextView)findViewById(R.id.txtAddUSer);
         txtAddUSer.setOnClickListener(this);
         customeToolbartext.setText("Candidate Info");
@@ -149,6 +153,8 @@ public class CandidateListActionaleActivityConvert extends BaseActivity implemen
 
             @Override
             public void getRespone(String dta, ArrayList<Object> respons) {
+                srLayout.setRefreshing(false);
+
                 try {
                     System.out.println("wdcodes====" + dta);
                     JSONObject obj = new JSONObject(dta);
@@ -159,6 +165,7 @@ public class CandidateListActionaleActivityConvert extends BaseActivity implemen
 
 
                     } else {
+                        srLayout.setRefreshing(false);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -169,4 +176,10 @@ public class CandidateListActionaleActivityConvert extends BaseActivity implemen
     }
 
 
+    @Override
+    public void onRefresh() {
+        srLayout.setRefreshing(true);
+
+        getMember();
+    }
 }

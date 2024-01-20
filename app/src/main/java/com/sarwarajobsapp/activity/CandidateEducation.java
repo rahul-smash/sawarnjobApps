@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,6 +13,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -315,6 +318,18 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
              }
          });
      }*/
+    public String getPDFPath(Uri uri){
+
+        final String id = DocumentsContract.getDocumentId(uri);
+        final Uri contentUri = ContentUris.withAppendedId(
+                Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(contentUri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
     public void getCandidateEducation(String user_id, String school, String specialized, String started_at,
                                       String ended_at,String description,File upload_file) {
         BuildRequestParms buildRequestParms = new BuildRequestParms();
@@ -328,7 +343,9 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
 
         //For Resume upload
        try{
-            File fileupload_resume = FileUtilsss.getFile(this,fileUriii);
+           Log.i("@@File!!",getPDFPath(fileUriii));
+
+           File fileupload_resume = new File(getPDFPath(fileUriii));
             RequestBody requestBodyfileupload_resume= RequestBody.create(MediaType.parse("*/*"), fileupload_resume);
             bodyAdharfileupload_resume = MultipartBody.Part.createFormData("upload_file", fileupload_resume.getName(), requestBodyfileupload_resume);
 
