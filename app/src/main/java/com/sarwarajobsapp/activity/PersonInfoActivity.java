@@ -334,7 +334,7 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
 
        File file = new File(imagePathUrlAdhar);
        Log.i("@@file", file.toString());
-       Log.i("@@imagePathUrlAdhar-----", imagePathUrlAdhar.toString());
+       Log.i("@@imagePa----", imagePathUrlAdhar.toString());
 
        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
        MultipartBody.Part body = MultipartBody.Part.createFormData("aadhar", file.getName(), requestBody);
@@ -386,11 +386,13 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
                            finish();
 
                        } else {
+
                          showErrorDialog(uploadFileResponse.getMsg());
                        }
                    }
                } catch (Exception e) {
                    mProgressDialog.dismiss();
+                   Toast.makeText(getApplicationContext(),"Email Already Exist!",Toast.LENGTH_SHORT).show();
                    e.printStackTrace();
                }
 

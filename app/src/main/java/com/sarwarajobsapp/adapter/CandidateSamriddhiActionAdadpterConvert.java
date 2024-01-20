@@ -22,6 +22,7 @@ import com.sarwarajobsapp.R;
 import com.sarwarajobsapp.activity.EditPersonInfoActivity;
 import com.sarwarajobsapp.activity.PersonInfoActivity;
 import com.sarwarajobsapp.candidateList.CandidateListActionaleActivityConvert;
+import com.sarwarajobsapp.utility.PrefHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,7 +72,7 @@ public class CandidateSamriddhiActionAdadpterConvert extends RecyclerView.Adapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        Log.i("---@@candidateSamriddhiActionAdadpter", "" + position);
+        Log.i("---@@candida", "" + position);
         JSONObject jsonObject = null;
         try {
             if (position % 2 == 1) {
@@ -88,22 +89,12 @@ holder.txtSrNo.setText(jsonObject.getString("first_name"));
                 holder.txtEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                   //     Toast.makeText(mContext, "Pending",Toast.LENGTH_SHORT).show();
-                     /*   SharedPreferences sharedPreferences = mContext.getSharedPreferences("MySharedPref",MODE_PRIVATE);
 
-                        SharedPreferences.Editor myEdit = sharedPreferences.edit();
-
-                        myEdit.putString("FirstName", etFirstName.getText().toString());
-                        myEdit.putString("LastName", etLastName.getText().toString());
-                        myEdit.putString("email", etEmail.getText().toString());
-                        myEdit.putString("phone", etPhone.getText().toString());
-                        myEdit.putString("dob", etStartDate.getText().toString());
-                        myEdit.putString("llokingJobType", etLookingJobType.getText().toString());
-                        myEdit.putString("location", etLoction.getText().toString());
-                        myEdit.commit();*/
                         try {
                             JSONObject dataObj=new JSONObject(v.getTag().toString());
                             Intent intent = new Intent(mContext, EditPersonInfoActivity.class);
+                            PrefHelper.getInstance().storeSharedValue("clickEditID", dataObj.getString("id"));
+
                             intent.putExtra("first_name", dataObj.getString("first_name"));
                             intent.putExtra("last_name", dataObj.getString("last_name"));
                             intent.putExtra("email", dataObj.getString("email"));
@@ -134,6 +125,8 @@ holder.txtSrNo.setText(jsonObject.getString("first_name"));
                 holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
 
                 jsonObject = moviesList.getJSONObject(position);
+                PrefHelper.getInstance().storeSharedValue("clickEditID", jsonObject.getString("id"));
+
                 Log.i("---@@jsonObject", "" + jsonObject.toString());
 
                 holder.txtSrNo.setText(jsonObject.getString("first_name"));
