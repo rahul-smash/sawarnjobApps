@@ -195,21 +195,43 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
         if (v == verify_btn) {
             SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-            try {
+          /*  try {
 
                 reformattedStr = myFormat.format(myFormat.parse(etStartDate.getText().toString().trim()));
             } catch (ParseException e) {
                 e.printStackTrace();
+            }*/
+            try {
+                String dateString=etStartDate.getText().toString().trim();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+                reformattedStr=sdf2.format(sdf.parse(dateString));
+                Log.i("@@@----",""+sdf2.format(sdf.parse(dateString)));
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
+
             SimpleDateFormat myFormatEnd = new SimpleDateFormat("yyyy-MM-dd");
 
-            try {
+          /*  try {
 
                 EndreformattedStr = myFormatEnd.format(myFormatEnd.parse(etEODDate.getText().toString().trim()));
             } catch (ParseException e) {
                 e.printStackTrace();
+            }*/
+            try {
+                String dateString2=etEODDate.getText().toString().trim();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+                EndreformattedStr=sdf2.format(sdf.parse(dateString2));
+                Log.i("@@@----",""+sdf2.format(sdf.parse(dateString2)));
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-            System.out.println("reformattedStr====" +reformattedStr);
+
+            System.out.println("EndreformattedStr====" +EndreformattedStr);
 
           /*  if (txtTitle.getText().toString().length() <= 0) {
                 Toast.makeText(this,"Enter Title", Toast.LENGTH_SHORT).show();

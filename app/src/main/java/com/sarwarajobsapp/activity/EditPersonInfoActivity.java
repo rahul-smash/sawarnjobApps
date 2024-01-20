@@ -197,13 +197,22 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
         if (v == verify_btn) {
             SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-            try {
+      /*      try {
 
                 reformattedStr = myFormat.format(myFormat.parse(etStartDate.getText().toString().trim()));
             } catch (ParseException e) {
                 e.printStackTrace();
+            }*/
+            try {
+                String dateString=etStartDate.getText().toString().trim();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+                reformattedStr=sdf2.format(sdf.parse(dateString));
+                Log.i("@@@----",""+sdf2.format(sdf.parse(dateString)));
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-            System.out.println("reformattedStr====" + reformattedStr);
 
             if (etFirstName.getText().toString().length() <= 0) {
                 Toast.makeText(this, "Enter First name", Toast.LENGTH_SHORT).show();

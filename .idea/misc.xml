@@ -4,11 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/activity_candidate_booking_list_convert.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/activity_personal_info.xml" value="0.1105072463768116" />
         <entry key="app/src/main/res/layout/custom_tool_bar.xml" value="0.14583333333333334" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_16" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17_PREVIEW" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

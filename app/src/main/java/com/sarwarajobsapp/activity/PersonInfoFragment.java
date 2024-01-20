@@ -67,6 +67,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import Communication.BuildRequestParms;
 import io.reactivex.Observable;
@@ -162,14 +163,23 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         if (v == verify_btn) {
             SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-            try {
+         /*   try {
 
                 reformattedStr = myFormat.format(myFormat.parse(etStartDate.getText().toString().trim()));
+         Log.i("@@reformattedStr----",""+reformattedStr.toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }*/
+            try {
+                String dateString=etStartDate.getText().toString().trim();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+                reformattedStr=sdf2.format(sdf.parse(dateString));
+                Log.i("@@@---Date-",""+sdf2.format(sdf.parse(dateString)));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            System.out.println("reformattedStr====" + reformattedStr);
-
             if (etFirstName.getText().toString().length() <= 0) {
                 Toast.makeText(getActivity(), "Enter First name", Toast.LENGTH_SHORT).show();
                 return;
@@ -334,6 +344,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             @Override
             public void onFailed(Throwable throwable) {
                 System.out.println("error===" + throwable.getMessage());
+                Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
                 mProgressDialog.dismiss();
 
 
@@ -342,7 +353,21 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
 
     }
+    private String getDate(String date) {
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd hh:mm:ss");
+        Date myDate = null;
+        try {
+            myDate = dateFormat.parse(date);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return timeFormat.format(myDate).toString();
+    }
 
     public void openDailogForImagePickOptionRegisterAdhar() {
         LayoutInflater inflater = (LayoutInflater)mainActivity. getSystemService(Context.LAYOUT_INFLATER_SERVICE);
