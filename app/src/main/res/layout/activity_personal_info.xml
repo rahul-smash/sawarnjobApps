@@ -137,7 +137,7 @@
                     android:drawableEnd="@drawable/calendericon"
 
                     android:editable="false"
-                    android:focusable="false"
+                    android:focusable="true"
                     android:gravity="center|left"
                     android:hint="Date Of Birth"
                     android:paddingTop="0dp"

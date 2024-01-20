@@ -87,7 +87,7 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     TextView verify_btn,customeToolbartext,txtADDFile;
     EditText etFirstName, etLastName, etEmail, etPhone, etStartDate, etLookingJobType, etLoction;
     Calendar bookDateAndTime;
-    private DatePickerDialog toDatePickerDialog;
+     DatePickerDialog toDatePickerDialog;
     LinearLayout llAccount;
     String reformattedStr;
         String FirstName,LastName,email,phone,dob,llokingJobType,location;
@@ -199,10 +199,20 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
 
         if (v == verify_btn) {
             SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+/*
             try {
 
                  reformattedStr = myFormat.format(myFormat.parse(etStartDate.getText().toString().trim()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }*/
+            try {
+                String dateString=etStartDate.getText().toString().trim();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+                reformattedStr=sdf2.format(sdf.parse(dateString));
+                Log.i("@@@----",""+sdf2.format(sdf.parse(dateString)));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
