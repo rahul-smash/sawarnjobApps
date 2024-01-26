@@ -130,8 +130,8 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
      }*/
     @Override
     protected void setUp() {
-        docPaths = new ArrayList<>();
-        verifyStoragePermissions(CandidateEducation.this);
+     //   docPaths = new ArrayList<>();
+       // verifyStoragePermissions(CandidateEducation.this);
         initView();
         setStartDateTimeField();
         setEndDateTimeField();
@@ -144,8 +144,8 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
     @Override
     public void onResume() {
         super.onResume();
-        Log.i("@@PersonInfoActivity", "onResume---");
-        verifyStoragePermissions(CandidateEducation.this);
+        Log.i("@@CanddiateActivity", "onResume---");
+        //verifyStoragePermissions(CandidateEducation.this);
 
     }
 

@@ -386,6 +386,8 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         relativeLayoutGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("@@GAlleryfileNameset", "1");
+
                 getImagefromGalleryRegisterIcAdhar();
                 dialog.dismiss();
             }
@@ -409,6 +411,8 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         startActivityForResult(intent, IMAGE_REQUEST_CAMERA_register_adhar);
     }
     private void getImagefromGalleryRegisterIcAdhar() {
+        Log.i("@@GAlleryfileNameset", "2");
+
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -425,12 +429,21 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         } else if (requestCode == IMAGE_REQUEST_GALLERY_register_adhar) {
             if (resultCode == RESULT_OK) {
                 final Uri selectedImage = data.getData();
+                Log.i("@@GAlleryfileNameset@@", "@@3"+selectedImage);
+
 //                 performCrop(selectedImage);
-                if (checkPermissionREAD_EXTERNAL_STORAGE(getActivity())) {
+              //  if (checkPermissionREAD_EXTERNAL_STORAGE(getActivity())) {
+                    Log.i("@@GAlleryfileNameset@@", "@@4  "+selectedImage);
+
                     // do your stuff..
+                try{
                     new SaveGalleryImageTaskRegisterPlateAdhar().execute(selectedImage);
 
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
+
+                //}
             }
         }
 
@@ -510,6 +523,8 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
         @Override
         protected String doInBackground(Uri... params) {
+            Log.i("@@GAlleryfileNameset__!","");
+
             Uri selectedImage = params[0];
             String path = null;
             path = FileUtil.getPath(getActivity(), selectedImage);
@@ -527,6 +542,8 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             bitMap = FileUtil.checkImageRotation(bitMap, path);
             file1 = FileUtil.getFile(getActivity());
             imagePathUrlAdhar = file1.getAbsolutePath();
+            Log.i("@@GAlleryfileNameset__!2",imagePathUrlAdhar);
+
             //      txtSelectYourPhoto.setText(file1.getAbsolutePath().toString());
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             try {
@@ -558,7 +575,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 /*Picasso.with(getActivity()).load(Uri.parse("file://" + picturePath)).
                         resize(100, 100).error(R.mipmap.ic_launcher).into(imageAddProfile);*/
                 String fileNameset = Uri.parse("file://" + picturePath).getLastPathSegment();
-                Log.e("fileNameset", fileNameset);
+                Log.i("@@GAlleryfileNameset", fileNameset);
                 etUploadAdharCard.setText(fileNameset.toString());
 
             } else {
@@ -570,7 +587,11 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     public boolean checkPermissionREAD_EXTERNAL_STORAGE(
             final Context context) {
         int currentAPIVersion = Build.VERSION.SDK_INT;
+        Log.i("@@GAlleryfileNameset@@", "@@4"+currentAPIVersion);
+
         if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
+            Log.i("@@GAlleryfileNameset@@", "@@5"+currentAPIVersion);
+
             if (ContextCompat.checkSelfPermission(context,
                     Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(
@@ -580,6 +601,17 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                             Manifest.permission.READ_EXTERNAL_STORAGE);
 
                 } else {
+                    Log.i("@@GAlleryfileNameset@@", "@@6"+currentAPIVersion);
+                /*    String[] PERMISSIONS = {
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_MEDIA_IMAGES
+                    };
+                    ActivityCompat.requestPermissions(getActivity(),
+                            PERMISSIONS,
+                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+*/
+
                     ActivityCompat
                             .requestPermissions(
                                     (Activity) context,

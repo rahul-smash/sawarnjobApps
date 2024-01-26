@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/layout/activity_cand_education.xml" value="0.1105072463768116" />
         <entry key="app/src/main/res/layout/activity_candidate_booking_list_convert.xml" value="0.14583333333333334" />
         <entry key="app/src/main/res/layout/activity_personal_info.xml" value="0.1105072463768116" />
         <entry key="app/src/main/res/layout/custom_tool_bar.xml" value="0.14583333333333334" />

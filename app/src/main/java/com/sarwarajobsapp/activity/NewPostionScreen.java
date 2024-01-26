@@ -504,11 +504,16 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
             if (resultCode == RESULT_OK) {
                 final Uri selectedImage = data.getData();
 //                 performCrop(selectedImage);
-                if (checkPermissionREAD_EXTERNAL_STORAGE(NewPostionScreen.this)) {
+               // if (checkPermissionREAD_EXTERNAL_STORAGE(NewPostionScreen.this)) {
                     // do your stuff..
+                try{
                     new SaveGalleryImageTaskRegisterPlateAdhar().execute(selectedImage);
 
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
+
+                //}
             }
         }
 

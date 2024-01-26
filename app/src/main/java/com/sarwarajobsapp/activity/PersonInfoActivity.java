@@ -503,11 +503,18 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
                 if (resultCode == RESULT_OK) {
                     final Uri selectedImage = data.getData();
 //                 performCrop(selectedImage);
-                    if (checkPermissionREAD_EXTERNAL_STORAGE(PersonInfoActivity.this)) {
+                  /*  if (checkPermissionREAD_EXTERNAL_STORAGE(PersonInfoActivity.this)) {
                         // do your stuff..
                         new SaveGalleryImageTaskRegisterPlateAdhar().execute(selectedImage);
 
+                    }*/
+                    try{
+                        new SaveGalleryImageTaskRegisterPlateAdhar().execute(selectedImage);
+
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
+
                 }
             }
 
