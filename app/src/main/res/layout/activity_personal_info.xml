@@ -39,7 +39,7 @@
                     android:layout_height="50dp"
                     android:background="@drawable/edittext_bg"
                     android:gravity="center|left"
-                    android:hint="First Name"
+                    android:hint="Full Name"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:singleLine="true"
@@ -56,6 +56,7 @@
                 android:layout_marginTop="10dp"
                 android:imeOptions="actionNext"
                 app:boxBackgroundMode="none"
+                android:visibility="gone"
                 app:hintEnabled="false">
 
                 <EditText

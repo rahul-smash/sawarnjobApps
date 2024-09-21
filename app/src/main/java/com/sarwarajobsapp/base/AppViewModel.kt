@@ -23,8 +23,8 @@ interface AppViewModel {
     fun candiateAdd(
         @Part("admin_user_id") admin_user_id: RequestBody?,
 
-        @Part("first_name") first_name: RequestBody?,
-        @Part("last_name") last_name: RequestBody?,
+        @Part("full_name") first_name: RequestBody?,
+      //  @Part("last_name") last_name: RequestBody?,
         @Part("email") email: RequestBody?,
         @Part("phone") phone: RequestBody?,
         @Part("dob") dob: RequestBody?,
@@ -48,8 +48,8 @@ interface AppViewModel {
         @Part("user_id") user_id: RequestBody?,
         @Part("school") school: RequestBody?,
         @Part("specialized") specialized: RequestBody?,
-        @Part("started_at") started_at: RequestBody?,
-        @Part("ended_at") ended_at: RequestBody?,
+   /*     @Part("started_at") started_at: RequestBody?,
+        @Part("ended_at") ended_at: RequestBody?,*/
         @Part("description") description: RequestBody?,
 
         @Part upload_file: MultipartBody.Part?,
@@ -62,8 +62,8 @@ interface AppViewModel {
     fun candidateedit(
         @Part("user_id") admin_user_id: RequestBody?,
 
-        @Part("first_name") first_name: RequestBody?,
-        @Part("last_name") last_name: RequestBody?,
+        @Part("full_name") first_name: RequestBody?,
+      //  @Part("last_name") last_name: RequestBody?,
         @Part("email") email: RequestBody?,
         @Part("phone") phone: RequestBody?,
         @Part("dob") dob: RequestBody?,
@@ -84,8 +84,8 @@ interface AppViewModel {
 
         @Part("company") company: RequestBody?,
         @Part("position") position: RequestBody?,
-        @Part("started_at") started_at: RequestBody?,
-        @Part("ended_at") ended_at: RequestBody?,
+    //    @Part("started_at") started_at: RequestBody?,
+     //   @Part("ended_at") ended_at: RequestBody?,
         @Part("description") description: RequestBody?,
 
         @Part upload_file: MultipartBody.Part?,

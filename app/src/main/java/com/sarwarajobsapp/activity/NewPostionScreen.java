@@ -73,6 +73,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import Communication.BuildRequestParms;
@@ -93,7 +94,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
      DatePickerDialog toDatePickerDialog;
      DatePickerDialog toDatePickerDialogEnd;
     LinearLayout llAccount;
-    String reformattedStr,EndreformattedStr;
+    //String reformattedStr,EndreformattedStr;
      Uri imageFeatureUri;
     public static final int IMAGE_REQUEST_GALLERY_register_adhar = 325;
     public static final int IMAGE_REQUEST_CAMERA_register_adhar = 326;
@@ -172,8 +173,8 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();*/
             }
         });
-        etStartDate.setOnClickListener(this);
-        etEODDate.setOnClickListener(this);
+      /*  etStartDate.setOnClickListener(this);
+        etEODDate.setOnClickListener(this);*/
         verify_btn.setOnClickListener(this);
         txtADDImage.setOnClickListener(this);
     }
@@ -201,7 +202,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
             } catch (ParseException e) {
                 e.printStackTrace();
             }*/
-            try {
+       /*     try {
                 String dateString=etStartDate.getText().toString().trim();
 
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -211,7 +212,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
+*/
             SimpleDateFormat myFormatEnd = new SimpleDateFormat("yyyy-MM-dd");
 
           /*  try {
@@ -220,7 +221,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
             } catch (ParseException e) {
                 e.printStackTrace();
             }*/
-            try {
+       /*     try {
                 String dateString2=etEODDate.getText().toString().trim();
 
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -230,8 +231,8 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
-            System.out.println("EndreformattedStr====" +EndreformattedStr);
+*/
+           // System.out.println("EndreformattedStr====" +EndreformattedStr);
 
           /*  if (txtTitle.getText().toString().length() <= 0) {
                 Toast.makeText(this,"Enter Title", Toast.LENGTH_SHORT).show();
@@ -254,7 +255,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
                 return;
             }
 
-            if (etStartDate.getText().toString().length() <= 0) {
+           /* if (etStartDate.getText().toString().length() <= 0) {
                 Toast.makeText(this, "Enter Start Date", Toast.LENGTH_SHORT).show();
 
                 return;
@@ -264,7 +265,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
                 Toast.makeText(this, "Enter Looking JobType", Toast.LENGTH_SHORT).show();
 
                 return;
-            }
+            }*/
             if (txtJobRpleDescritpion.getText().toString().length() <= 0) {
                 Toast.makeText(this, "Enter Job Description", Toast.LENGTH_SHORT).show();
 
@@ -273,7 +274,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
             else {
                 getPostionDataTypeApi(getLoginData("id"),
                         txtCompanyName.getText().toString().trim(),  txtPosition.getText().toString().trim(),
-                        reformattedStr, EndreformattedStr, txtJobRpleDescritpion.getText().toString().trim(),file1);
+                      /*  reformattedStr, EndreformattedStr,*/ txtJobRpleDescritpion.getText().toString().trim(),file1);
             }
 
         }
@@ -330,8 +331,8 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
             }
         });
     }*/
-  public void getPostionDataTypeApi(String user_id, String company, String position, String started_at,
-                                    String ended_at,String description, File upload_file) {
+  public void getPostionDataTypeApi(String user_id, String company, String position, /*String started_at,
+                                    String ended_at,*/String description, File upload_file) {
       BuildRequestParms buildRequestParms = new BuildRequestParms();
 
       AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
@@ -344,7 +345,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
 
       File file = new File(imagePathUrlAdhar);
       Log.i("@@file", file.toString());
-      Log.i("@@NewPostionExperience--imagePathUrlAdhar-", imagePathUrlAdhar.toString());
+      Log.i("@@NewPnExpeimagePa", imagePathUrlAdhar.toString());
 
       RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
       MultipartBody.Part body = MultipartBody.Part.createFormData("upload_file", file.getName(), requestBody);
@@ -357,8 +358,8 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
               buildRequestParms.getRequestBody(user_id),
               buildRequestParms.getRequestBody(company),
               buildRequestParms.getRequestBody(position),
-              buildRequestParms.getRequestBody(started_at),
-              buildRequestParms.getRequestBody(ended_at),
+            /*  buildRequestParms.getRequestBody(started_at),
+              buildRequestParms.getRequestBody(ended_at),*/
               buildRequestParms.getRequestBody(description),
               body
 
@@ -408,42 +409,56 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
       });
   }
     private void setStartDateTimeField() {
+
         Calendar newCalendar = Calendar.getInstance();
 
         toDatePickerDialog = new DatePickerDialog(NewPostionScreen.this,
                 new DatePickerDialog.OnDateSetListener() {
-
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        // Set the date on the Calendar instance
                         bookDateAndTime = Calendar.getInstance();
                         bookDateAndTime.set(year, monthOfYear, dayOfMonth);
-                        // date to our edit text.
-                        String dat = (dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                        etStartDate.setText(dat);
-                    }
-                }, newCalendar.get(Calendar.YEAR),
-                newCalendar.get(Calendar.MONTH),
-                newCalendar.get(Calendar.DAY_OF_MONTH));
 
+                        // Use a SimpleDateFormat to correctly format the date
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                        String formattedDate = dateFormat.format(bookDateAndTime.getTime());
+
+                        // Set the formatted date to the EditText
+                        etStartDate.setText(formattedDate);
+                    }
+                },
+                newCalendar.get(Calendar.YEAR),
+                newCalendar.get(Calendar.MONTH),
+                newCalendar.get(Calendar.DAY_OF_MONTH)
+        );
 
     }
     private void setEndDateTimeField() {
+
+
         Calendar newCalendar = Calendar.getInstance();
 
         toDatePickerDialogEnd = new DatePickerDialog(NewPostionScreen.this,
                 new DatePickerDialog.OnDateSetListener() {
-
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        // Set the date on the Calendar instance
                         bookDateAndTime = Calendar.getInstance();
                         bookDateAndTime.set(year, monthOfYear, dayOfMonth);
-                        // date to our edit text.
-                        String dat = (dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                        etEODDate.setText(dat);
+
+                        // Use a SimpleDateFormat to correctly format the date
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                        String formattedDate = dateFormat.format(bookDateAndTime.getTime());
+
+                        // Set the formatted date to the EditText
+                        etEODDate.setText(formattedDate);
                     }
-                }, newCalendar.get(Calendar.YEAR),
+                },
+                newCalendar.get(Calendar.YEAR),
                 newCalendar.get(Calendar.MONTH),
-                newCalendar.get(Calendar.DAY_OF_MONTH));
+                newCalendar.get(Calendar.DAY_OF_MONTH)
+        );
 
 
     }

@@ -68,6 +68,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import Communication.BuildRequestParms;
 import io.reactivex.Observable;
@@ -161,7 +162,6 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         }
 
         if (v == verify_btn) {
-            SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
 
          /*   try {
 
@@ -184,11 +184,11 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 Toast.makeText(getActivity(), "Enter First name", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (etLastName.getText().toString().length() <= 0) {
+           /* if (etLastName.getText().toString().length() <= 0) {
                 Toast.makeText(getActivity(), "Enter Last name", Toast.LENGTH_SHORT).show();
 
                 return;
-            }
+            }*/
             if (!Utility.checkValidEmail(etEmail.getText().toString())) {
                 etEmail.requestFocus();
                 Toast.makeText(getActivity(), "Enter valid email", Toast.LENGTH_SHORT).show();
@@ -222,7 +222,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 return;
             } else {
                 getPersonalInfoApi(getLoginData("id"), etFirstName.getText().toString().trim()
-                        , etLastName.getText().toString().trim(), etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
+                        , /*etLastName.getText().toString().trim(), */etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
                         reformattedStr, etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(), file1);
             }
 
@@ -246,26 +246,31 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
         toDatePickerDialog = new DatePickerDialog(getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
-
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        // Set the date on the Calendar instance
                         bookDateAndTime = Calendar.getInstance();
                         bookDateAndTime.set(year, monthOfYear, dayOfMonth);
-                        // date to our edit text.
-                        String dat = (dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                        etStartDate.setText(dat);
+
+                        // Use a SimpleDateFormat to correctly format the date
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                        String formattedDate = dateFormat.format(bookDateAndTime.getTime());
+
+                        // Set the formatted date to the EditText
+                        etStartDate.setText(formattedDate);
                     }
-                }, newCalendar.get(Calendar.YEAR),
+                },
+                newCalendar.get(Calendar.YEAR),
                 newCalendar.get(Calendar.MONTH),
-                newCalendar.get(Calendar.DAY_OF_MONTH));
-
-
+                newCalendar.get(Calendar.DAY_OF_MONTH)
+        );
     }
+
 
 //for photo code
 
 
-    public void getPersonalInfoApi(String admin_user_id, String first_name, String last_name, String email, String phone,
+    public void getPersonalInfoApi(String admin_user_id, String first_name,/* String last_name,*/ String email, String phone,
                                    String dob, String etLookingJobTypes, String location, File adhar) {
         BuildRequestParms buildRequestParms = new BuildRequestParms();
 
@@ -276,7 +281,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         Observable<AttendanceModell> observable = null;
         File file = new File(imagePathUrlAdhar);
         Log.i("@@file", file.toString());
-        Log.i("@@imagePathUrlAdhar-----", imagePathUrlAdhar.toString());
+       // Log.i("@@imagePathUrlAdhar-----", imagePathUrlAdhar.toString());
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("aadhar", file.getName(), requestBody);
@@ -289,7 +294,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         observable = apiParamsInterface.candiateAdd(
                 buildRequestParms.getRequestBody(admin_user_id),
                 buildRequestParms.getRequestBody(first_name),
-                buildRequestParms.getRequestBody(last_name),
+              //  buildRequestParms.getRequestBody(last_name),
                 buildRequestParms.getRequestBody(email),
                 buildRequestParms.getRequestBody(phone),
                 buildRequestParms.getRequestBody(dob),
@@ -542,7 +547,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             bitMap = FileUtil.checkImageRotation(bitMap, path);
             file1 = FileUtil.getFile(getActivity());
             imagePathUrlAdhar = file1.getAbsolutePath();
-            Log.i("@@GAlleryfileNameset__!2",imagePathUrlAdhar);
+           // Log.i("@@GAlleryfileNameset__!2",imagePathUrlAdhar);
 
             //      txtSelectYourPhoto.setText(file1.getAbsolutePath().toString());
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();

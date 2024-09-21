@@ -43,7 +43,6 @@ public class CandidateSamriddhiActionAdadpterConvert extends RecyclerView.Adapte
             super(view);
             MainLinearView=view.findViewById(R.id.MainLinearView);
             txtSrNo = view.findViewById(R.id.txtSrNo);
-            txtName = view.findViewById(R.id.txtName);
             txtDateOFBirth = view.findViewById(R.id.txtDateOFBirth);
             txtState = view.findViewById(R.id.txtState);
             txtView = view.findViewById(R.id.txtView);
@@ -79,9 +78,9 @@ public class CandidateSamriddhiActionAdadpterConvert extends RecyclerView.Adapte
                 holder.itemView.setBackgroundColor(Color.parseColor("#e6e6e6"));
                 jsonObject = moviesList.getJSONObject(position);
                 Log.i("---@@jsonObject", "" + jsonObject.toString());
-holder.txtSrNo.setText(jsonObject.getString("first_name"));
+holder.txtSrNo.setText(jsonObject.getString("full_name"));
 
-                holder.txtName.setText(jsonObject.getString("last_name"));
+             //   holder.txtName.setText(jsonObject.getString("last_name"));
                 holder.txtDateOFBirth.setText(jsonObject.getString("dob"));
 
                 holder.txtState.setText(jsonObject.getString("looking_job_type"));
@@ -95,8 +94,8 @@ holder.txtSrNo.setText(jsonObject.getString("first_name"));
                             Intent intent = new Intent(mContext, EditPersonInfoActivity.class);
                             PrefHelper.getInstance().storeSharedValue("clickEditID", dataObj.getString("id"));
 
-                            intent.putExtra("first_name", dataObj.getString("first_name"));
-                            intent.putExtra("last_name", dataObj.getString("last_name"));
+                            intent.putExtra("first_name", dataObj.getString("full_name"));
+                        //    intent.putExtra("last_name", dataObj.getString("last_name"));
                             intent.putExtra("email", dataObj.getString("email"));
                             intent.putExtra("phone", dataObj.getString("phone"));
                             intent.putExtra("dob", dataObj.getString("dob"));
@@ -129,9 +128,9 @@ holder.txtSrNo.setText(jsonObject.getString("first_name"));
 
                 Log.i("---@@jsonObject", "" + jsonObject.toString());
 
-                holder.txtSrNo.setText(jsonObject.getString("first_name"));
+                holder.txtSrNo.setText(jsonObject.getString("full_name"));
 
-                holder.txtName.setText(jsonObject.getString("last_name"));
+              //  holder.txtName.setText(jsonObject.getString("last_name"));
                 holder.txtDateOFBirth.setText(jsonObject.getString("dob"));
 
                 holder.txtState.setText(jsonObject.getString("looking_job_type"));
@@ -143,8 +142,8 @@ holder.txtSrNo.setText(jsonObject.getString("first_name"));
                         try {
                             JSONObject dataObj=new JSONObject(v.getTag().toString());
                             Intent intent = new Intent(mContext, EditPersonInfoActivity.class);
-                            intent.putExtra("first_name", dataObj.getString("first_name"));
-                            intent.putExtra("last_name", dataObj.getString("last_name"));
+                            intent.putExtra("first_name", dataObj.getString("full_name"));
+                           // intent.putExtra("last_name", dataObj.getString("last_name"));
                             intent.putExtra("email", dataObj.getString("email"));
                             intent.putExtra("phone", dataObj.getString("phone"));
                             intent.putExtra("dob", dataObj.getString("dob"));
