@@ -222,11 +222,11 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
                 Toast.makeText(this, "Enter First name", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (etLastName.getText().toString().length() <= 0) {
+           /* if (etLastName.getText().toString().length() <= 0) {
                 Toast.makeText(this, "Enter Last name", Toast.LENGTH_SHORT).show();
 
                 return;
-            }
+            }*/
             if (!Utility.checkValidEmail(etEmail.getText().toString())) {
                 etEmail.requestFocus();
                 Toast.makeText(this, "Enter valid email", Toast.LENGTH_SHORT).show();
@@ -261,7 +261,7 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
             }
             else {
                 getPersonalInfoApi(getLoginData("id"), etFirstName.getText().toString().trim()
-                        ,  etLastName.getText().toString().trim(), etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
+                        ,  /*etLastName.getText().toString().trim(),*/ etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
                         reformattedStr, etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(),file1);
             }
 
@@ -330,7 +330,7 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
         });
     }*/
         ///////////////////////////////////////////////////////
-   public void getPersonalInfoApi(String admin_user_id, String first_name, String last_name, String email, String phone,
+   public void getPersonalInfoApi(String admin_user_id, String first_name,/* String last_name, */String email, String phone,
                                   String dob, String etLookingJobTypes, String location, File adhar) {
        BuildRequestParms buildRequestParms = new BuildRequestParms();
 
@@ -356,7 +356,7 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
        observable = apiParamsInterface.candiateAdd(
                buildRequestParms.getRequestBody(admin_user_id),
                buildRequestParms.getRequestBody(first_name),
-               buildRequestParms.getRequestBody(last_name),
+             //  buildRequestParms.getRequestBody(last_name),
                buildRequestParms.getRequestBody(email),
                buildRequestParms.getRequestBody(phone),
                buildRequestParms.getRequestBody(dob),

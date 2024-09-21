@@ -20,6 +20,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -57,10 +59,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import Communication.BuildRequestParms;
-import droidninja.filepicker.FilePickerConst;
 import io.reactivex.Observable;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -106,8 +108,9 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
     public static final int PICKFILE_RESULT_CODE = 1;
     Uri fileUriii;
     MultipartBody.Part bodyAdharfileupload_resume;
-
+    String selectedSchool;
     File filePathsss;
+    Spinner spinnerSchool;
     /*public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
                 CandidateEducation.class.getName());
@@ -161,7 +164,7 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
         txtInputEODDate =findViewById(R.id.txtInputEODDate);
         txtInputJOB = findViewById(R.id.txtInputJOB);
         verify_btn = findViewById(R.id.verify_btn);
-        txtSchool = findViewById(R.id.txtSchool);
+     //   txtSchool = findViewById(R.id.txtSchool);
         txtFieldStudy = findViewById(R.id.txtFieldStudy);
         txtGradle = findViewById(R.id.txtGradle);
         etStartDate = findViewById(R.id.etStartDate);
@@ -171,10 +174,41 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
         etEODDate.setOnClickListener(this);
         verify_btn.setOnClickListener(this);
         txtResume.setOnClickListener(this);
+        // Get reference to the Spinner
+        // Get reference to the Spinner
+
         findViewById(R.id.goback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+         spinnerSchool = findViewById(R.id.spinnerSchool);
+
+        // Array of school options
+        String[] schoolOptions = {"10th", "12th", "Graduation", "Masters"};
+
+        // Adapter for Spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, schoolOptions);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Set adapter to Spinner
+        spinnerSchool.setAdapter(adapter);
+
+        // Set OnItemSelectedListener to Spinner
+        spinnerSchool.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Get selected item
+                selectedSchool = parent.getItemAtPosition(position).toString();
+
+                // Show selected item in a Toast
+                //  Toast.makeText(CandidateEducation.this, "Selected: " + selectedSchool, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Optional: Handle the case when nothing is selected
             }
         });
 
@@ -251,10 +285,7 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
             }
             System.out.println("EndreformattedStr====" + EndreformattedStr);
 
-            if (txtSchool.getText().toString().length() <= 0) {
-                Toast.makeText(this, "Enter School name", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            validateSpinner();
             if (txtDegree.getText().toString().length() <= 0) {
                 Toast.makeText(this, "Enter Degree name", Toast.LENGTH_SHORT).show();
 
@@ -262,7 +293,7 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
             }
 
 
-            if (etStartDate.getText().toString().length() <= 0) {
+          /*  if (etStartDate.getText().toString().length() <= 0) {
                 Toast.makeText(this, "Enter Start Date", Toast.LENGTH_SHORT).show();
 
                 return;
@@ -272,21 +303,33 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
 
                 return;
             }
-
+*/
 
             if (txtJobRpleDescritpion.getText().toString().length() <= 0) {
                 Toast.makeText(this, "Enter Location", Toast.LENGTH_SHORT).show();
 
                 return;
             } else {
-                getCandidateEducation(getLoginData("id"), txtSchool.getText().toString().trim()
+                getCandidateEducation(getLoginData("id"), selectedSchool
                         , txtDegree.getText().toString().trim(),
-                        reformattedStr,EndreformattedStr, txtJobRpleDescritpion.getText().toString().trim(),filePathsss);
+                      /*  reformattedStr,EndreformattedStr, */txtJobRpleDescritpion.getText().toString().trim(),filePathsss);
             }
         }
         //}
     }
+    // Validation function for Spinner
+    private void validateSpinner() {
+        // Get selected item
+        String selectedSchool = spinnerSchool.getSelectedItem().toString();
 
+        // Check if user selected a valid option (e.g., not the default "Select School")
+        if (selectedSchool.equals("Select School")) {
+            Toast.makeText(this, "Please select a valid school option", Toast.LENGTH_SHORT).show();
+        } else {
+           // Toast.makeText(this, "You selected: " + selectedSchool, Toast.LENGTH_SHORT).show();
+            // Proceed with form submission
+        }
+    }
     public String getLoginData(String dataType) {
         try {
             JSONObject data = new JSONObject(new SavePreferences().reterivePreference(this, AppConstants.logindata).toString());
@@ -350,8 +393,8 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
-    public void getCandidateEducation(String user_id, String school, String specialized, String started_at,
-                                      String ended_at,String description,File upload_file) {
+    public void getCandidateEducation(String user_id, String school, String specialized, /*String started_at,
+                                      String ended_at,*/String description,File upload_file) {
         BuildRequestParms buildRequestParms = new BuildRequestParms();
 
         AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
@@ -381,8 +424,8 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
                 buildRequestParms.getRequestBody(user_id),
                 buildRequestParms.getRequestBody(school),
                 buildRequestParms.getRequestBody(specialized),
-                buildRequestParms.getRequestBody(started_at),
-                buildRequestParms.getRequestBody(ended_at),
+              //  buildRequestParms.getRequestBody(started_at),
+               // buildRequestParms.getRequestBody(ended_at),
                 buildRequestParms.getRequestBody(description),
                 bodyAdharfileupload_resume
 
@@ -432,45 +475,56 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
 
         });
     }
+
     private void setStartDateTimeField() {
         Calendar newCalendar = Calendar.getInstance();
 
         toDatePickerDialog = new DatePickerDialog(CandidateEducation.this,
                 new DatePickerDialog.OnDateSetListener() {
-
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        // Set the date on the Calendar instance
                         bookDateAndTime = Calendar.getInstance();
                         bookDateAndTime.set(year, monthOfYear, dayOfMonth);
-                        // date to our edit text.
-                        String dat = (dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                        etStartDate.setText(dat);
+
+                        // Use a SimpleDateFormat to correctly format the date
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                        String formattedDate = dateFormat.format(bookDateAndTime.getTime());
+
+                        // Set the formatted date to the EditText
+                        etStartDate.setText(formattedDate);
                     }
-                }, newCalendar.get(Calendar.YEAR),
+                },
+                newCalendar.get(Calendar.YEAR),
                 newCalendar.get(Calendar.MONTH),
-                newCalendar.get(Calendar.DAY_OF_MONTH));
-
-
+                newCalendar.get(Calendar.DAY_OF_MONTH)
+        );
     }
     private void setEndDateTimeField() {
+
+
         Calendar newCalendar = Calendar.getInstance();
 
         toDatePickerDialogEnd = new DatePickerDialog(CandidateEducation.this,
                 new DatePickerDialog.OnDateSetListener() {
-
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        // Set the date on the Calendar instance
                         bookDateAndTime = Calendar.getInstance();
                         bookDateAndTime.set(year, monthOfYear, dayOfMonth);
-                        // date to our edit text.
-                        String dat = (dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                        etEODDate.setText(dat);
+
+                        // Use a SimpleDateFormat to correctly format the date
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                        String formattedDate = dateFormat.format(bookDateAndTime.getTime());
+
+                        // Set the formatted date to the EditText
+                        etEODDate.setText(formattedDate);
                     }
-                }, newCalendar.get(Calendar.YEAR),
+                },
+                newCalendar.get(Calendar.YEAR),
                 newCalendar.get(Calendar.MONTH),
-                newCalendar.get(Calendar.DAY_OF_MONTH));
-
-
+                newCalendar.get(Calendar.DAY_OF_MONTH)
+        );
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -480,7 +534,7 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
 
 
             type = "File";
-            docPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
+        //    docPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
             if (docPaths != null && docPaths.size() != 0) {
                 logWtf(docPaths.get(0));
             }

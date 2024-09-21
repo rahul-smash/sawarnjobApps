@@ -218,11 +218,11 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
                 Toast.makeText(this, "Enter First name", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (etLastName.getText().toString().length() <= 0) {
+          /*  if (etLastName.getText().toString().length() <= 0) {
                 Toast.makeText(this, "Enter Last name", Toast.LENGTH_SHORT).show();
 
                 return;
-            }
+            }*/
             if (!Utility.checkValidEmail(etEmail.getText().toString())) {
                 etEmail.requestFocus();
                 Toast.makeText(this, "Enter valid email", Toast.LENGTH_SHORT).show();
@@ -257,7 +257,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
                 return;
             } else {
                 getPersonalInfoApi(getClcikIDValue, etFirstName.getText().toString().trim()
-                        , etLastName.getText().toString().trim(), etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
+                        , /*etLastName.getText().toString().trim(),*/ etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
                         reformattedStr, etAddress.getText().toString().trim(), etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(), file1);
             }
 
@@ -276,7 +276,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
         return "";
     }
 
-    public void getPersonalInfoApi(String admin_user_id, String first_name, String last_name, String email, String phone,
+    public void getPersonalInfoApi(String admin_user_id, String first_name,/* String last_name,*/ String email, String phone,
                                    String dob, String etLookingJobTypes, String location, String description, File adhar) {
         if (imagePathUrlAdhar == null) {
             Toast.makeText(getApplicationContext(), "Need to Select Image!", Toast.LENGTH_SHORT).show();
@@ -300,7 +300,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
             observable = apiParamsInterface.candidateedit(
                     buildRequestParms.getRequestBody(admin_user_id),
                     buildRequestParms.getRequestBody(first_name),
-                    buildRequestParms.getRequestBody(last_name),
+                   // buildRequestParms.getRequestBody(last_name),
                     buildRequestParms.getRequestBody(email),
                     buildRequestParms.getRequestBody(phone),
                     buildRequestParms.getRequestBody(dob),

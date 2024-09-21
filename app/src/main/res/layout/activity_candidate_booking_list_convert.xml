@@ -3,32 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    android:orientation="vertical">
+    android:background="@color/colorPrimary">
 
-
+    <!-- Toolbar include -->
     <include
         android:id="@+id/toolar"
         layout="@layout/custom_tool_bar" />
+
+    <!-- Header RelativeLayout -->
     <RelativeLayout
-        android:layout_below="@+id/toolar"
         android:id="@+id/headerRelativeBooking"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-      >
+        android:layout_below="@id/toolar">
 
-
+        <!-- Add User TextView -->
         <TextView
             android:id="@+id/txtAddUSer"
-
             style="@style/EditText.Login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
-            android:cursorVisible="false"
-            android:focusable="false"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:gravity="center"
             android:singleLine="true"
             android:text="Add New"
@@ -37,166 +34,111 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
+    <!-- Main Content LinearLayout -->
     <LinearLayout
         android:id="@+id/MainLinearView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/headerRelativeBooking"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
+        android:layout_below="@id/headerRelativeBooking"
+        android:layout_marginTop="8dp"
         android:background="@color/color_light_gray"
         android:orientation="vertical">
 
+        <!-- Nested Linear Layouts -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Row for TextViews -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:orientation="horizontal"
-                android:weightSum="5">
+                android:weightSum="4">
 
-                <View
-                    android:layout_width=".5dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/color_black"
-                    android:visibility="gone"></View>
-
+                <!-- First Name TextView -->
                 <TextView
                     android:id="@+id/txtStkId"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-
                     android:layout_weight="1"
                     android:gravity="center"
                     android:maxLines="2"
-                    android:text="First Name"
+                    android:text="Full Name"
                     android:textColor="@color/color_black"
-                    android:textSize="11sp"
-                    android:textStyle="bold"></TextView>
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-                <View
-                    android:layout_width=".5dp"
-
-                    android:layout_height="match_parent"
-                    android:background="@color/color_black"
-                    android:visibility="gone"></View>
-
+                <!-- Last Name TextView -->
                 <TextView
                     android:id="@+id/txtStkName"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-
+                    android:layout_weight="1.5"
+                    android:visibility="gone"
                     android:gravity="center"
                     android:maxLines="2"
                     android:text="Last Name"
                     android:textColor="@color/color_black"
-                    android:textSize="11sp"
-                    android:textStyle="bold">  </TextView>
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-
-                <View
-                    android:layout_width=".5dp"
-
-                    android:layout_height="match_parent"
-                    android:background="@color/color_black"
-                    android:visibility="gone"></View>
-
-
+                <!-- DOB TextView -->
                 <TextView
                     android:id="@+id/txtBgtTarget"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-
                     android:gravity="center"
                     android:maxLines="2"
                     android:text="DOB"
                     android:textColor="@color/color_black"
-                    android:textSize="11sp"
-                    android:textStyle="bold">
-                </TextView>
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-
-                <View
-                    android:layout_width=".5dp"
-
-                    android:layout_height="match_parent"
-                    android:background="@color/color_black"
-                    android:visibility="gone"></View>
-
+                <!-- Job Type TextView -->
                 <TextView
                     android:id="@+id/txtThreshold"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-
                     android:gravity="center"
                     android:maxLines="2"
                     android:text="Job Type"
                     android:textColor="@color/color_black"
-                    android:textSize="11sp"
-                    android:textStyle="bold">  </TextView>
-
-                <View
-                    android:layout_width=".5dp"
-
-                    android:layout_height="match_parent"
-                    android:background="@color/color_black"
-                    android:visibility="gone"></View>
-
-
-                <TextView
-                    android:id="@+id/txtActionPerformed"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-
-                    android:gravity="center"
-                    android:maxLines="2"
-                    android:text=""
-                    android:textColor="@color/color_black"
-                    android:textSize="11sp"
-                    android:textStyle="bold">  </TextView>
-
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
+            <!-- Divider -->
             <View
                 android:layout_width="match_parent"
-                android:layout_height=".5dp"
-                android:background="@color/color_light_gray"></View>
-
+                android:layout_height="1dp"
+                android:background="@color/color_light_gray" />
         </LinearLayout>
 
+        <!-- Bottom Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/color_light_gray"></View>
+            android:background="@color/color_black" />
     </LinearLayout>
 
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_black"></View>
-
+    <!-- SwipeRefreshLayout with RecyclerView -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/srLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/MainLinearView"
-        android:layout_marginTop="0dp">
+        android:layout_below="@id/MainLinearView">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/samraddhiiRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/MainLinearView"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"></androidx.recyclerview.widget.RecyclerView>
-
+        <!-- RecyclerView for displaying data -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/samraddhiiRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </RelativeLayout>
