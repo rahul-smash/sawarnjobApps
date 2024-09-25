@@ -3,6 +3,7 @@ package com.sarwarajobsapp.base;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,4 +115,7 @@ public abstract class BaseFragment extends Fragment {
 
 
     protected abstract void setUp(View view);
+    public void logWtf(String msg) {
+        Log.wtf("GoldenEagle", msg);
+    }
 }

@@ -37,7 +37,8 @@ interface AppViewModel {
 
 
         @Part aadhar: MultipartBody.Part?,
-
+        @Part upload_file: MultipartBody.Part?,
+        @Part upload_files: MultipartBody.Part?,
         ): Observable<AttendanceModell>?
 
 
@@ -52,7 +53,7 @@ interface AppViewModel {
         @Part("ended_at") ended_at: RequestBody?,*/
         @Part("description") description: RequestBody?,
 
-        @Part upload_file: MultipartBody.Part?,
+      //  @Part upload_file: MultipartBody.Part?,
 
 
         ): Observable<CanddiateAttendanceModell>?
@@ -73,7 +74,8 @@ interface AppViewModel {
 
 
         @Part aadhar: MultipartBody.Part?,
-
+        @Part upload_file: MultipartBody.Part?,
+        @Part upload_files: MultipartBody.Part?,
         ): Observable<CanddiateEditProfileModell>?
 
     @POST("candidate/experience/add")
@@ -88,7 +90,7 @@ interface AppViewModel {
      //   @Part("ended_at") ended_at: RequestBody?,
         @Part("description") description: RequestBody?,
 
-        @Part upload_file: MultipartBody.Part?,
+     //   @Part upload_file: MultipartBody.Part?,
 
         ): Observable<NewPostionExperience>?
 }

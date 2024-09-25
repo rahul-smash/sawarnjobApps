@@ -142,7 +142,7 @@ public class CandidateListActionaleActivityConvert extends BaseActivity implemen
         return "";
     }
     private void getMember() {
-        System.out.println("wdcodes====" +  PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id"));
+      //  System.out.println("wdcodes====" +  PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id"));
         LinkedHashMap<String, String> m = new LinkedHashMap<>();
         Map<String, String> headerMap = new HashMap<>();
         m.put("admin_user_id",  getLoginData("id"));

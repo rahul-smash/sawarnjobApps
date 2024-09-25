@@ -406,11 +406,11 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
 
         //For Resume upload
        try{
-           Log.i("@@File!!",getPDFPath(fileUriii));
+        //   Log.i("@@File!!",getPDFPath(fileUriii));
 
-           File fileupload_resume = new File(getPDFPath(fileUriii));
-            RequestBody requestBodyfileupload_resume= RequestBody.create(MediaType.parse("*/*"), fileupload_resume);
-            bodyAdharfileupload_resume = MultipartBody.Part.createFormData("upload_file", fileupload_resume.getName(), requestBodyfileupload_resume);
+         //  File fileupload_resume = new File(getPDFPath(fileUriii));
+          //  RequestBody requestBodyfileupload_resume= RequestBody.create(MediaType.parse("*/*"), fileupload_resume);
+           // bodyAdharfileupload_resume = MultipartBody.Part.createFormData("upload_file", fileupload_resume.getName(), requestBodyfileupload_resume);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -426,8 +426,8 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
                 buildRequestParms.getRequestBody(specialized),
               //  buildRequestParms.getRequestBody(started_at),
                // buildRequestParms.getRequestBody(ended_at),
-                buildRequestParms.getRequestBody(description),
-                bodyAdharfileupload_resume
+                buildRequestParms.getRequestBody(description)
+               // bodyAdharfileupload_resume
 
 
         );

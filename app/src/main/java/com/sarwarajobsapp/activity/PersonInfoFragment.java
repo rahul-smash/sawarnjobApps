@@ -5,16 +5,19 @@ import static android.app.Activity.RESULT_OK;
 import static com.sarwarajobsapp.base.BaseActivity.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
@@ -22,7 +25,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,21 +86,34 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     private MainActivity mainActivity;
     View rootView;
     TextInputLayout txtInputFirstName, txtInputLastName, txtInputEmail, txtInputPhone, txtInputStartDate, txtInputEndDate, txtInputLocation;
-    TextView verify_btn, txtADDFile;
+    TextView verify_btn, txtADDFile,txtADDImage;
     EditText etFirstName, etLastName, etEmail, etPhone, etStartDate, etLookingJobType, etLoction;
     Calendar bookDateAndTime;
     private DatePickerDialog toDatePickerDialog;
     LinearLayout llAccount;
     String reformattedStr;
     private Uri imageFeatureUri;
+    private Uri imageFeatureUris;
     public static final int IMAGE_REQUEST_GALLERY_register_adhar = 325;
     public static final int IMAGE_REQUEST_CAMERA_register_adhar = 326;
+    public static final int IMAGE_REQUEST_GALLERY_register_adhars = 328;
+    public static final int IMAGE_REQUEST_CAMERA_register_adhars = 329;
     Uri source;
     EditText etUploadAdharCard;
     String imagePathUrlAdhar;
-    File file1;
+    String imagePathUrlAdhar3;
+    File file1,file3;
     Uri imageUrli;
-
+    EditText txtUploadResume;
+    TextView txtResume;
+    public static final int PICKFILE_RESULT_CODE = 1;
+     ArrayList<String> docPaths;
+    private int REQUEST_CODE_OPEN = 101;
+     String type;
+    Uri fileUriii;
+    MultipartBody.Part bodyAdharfileupload_resume;
+    File filePathsss;
+    EditText etImageUSer;
     public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
                 PersonInfoFragment.class.getName());
@@ -120,11 +138,15 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-        Log.i("@@PersonInfoActivity", "onResume---");
+        Log.i("@@PersonInfofragment", "onResume---");
 
     }
 
     private void initView() {
+        etImageUSer=rootView.findViewById(R.id.etImageUSer);
+        txtADDImage=rootView.findViewById(R.id.txtADDImage);
+        txtResume=(TextView)rootView.findViewById(R.id.txtResume);
+        txtUploadResume=(EditText)rootView. findViewById(R.id.txtUploadResume);
         llAccount = rootView.findViewById(R.id.llAccount);
         etUploadAdharCard = rootView.findViewById(R.id.etUploadAdharCard);
         txtADDFile = rootView.findViewById(R.id.txtADDFile);
@@ -147,12 +169,37 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         // etEndDate.setOnClickListener(this);
         verify_btn.setOnClickListener(this);
         txtADDFile.setOnClickListener(this);
-
+        txtResume.setOnClickListener(this);
+        txtADDImage.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View v) {
+        if(v==txtADDImage){
+            openDailogForImagePickOptionRegisterAdhars();
+        }
+        if(v==txtResume){
+            String[] mimeTypes =
+                    {"application/pdf","application/msword","application/vnd.ms-powerpoint","application/vnd.ms-excel","text/plain"};
+
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                intent.setType(mimeTypes.length == 1 ? mimeTypes[0] : "*/*");
+                if (mimeTypes.length > 0) {
+                    intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+                }
+            } else {
+                String mimeTypesStr = "";
+                for (String mimeType : mimeTypes) {
+                    mimeTypesStr += mimeType + "|";
+                }
+                intent.setType(mimeTypesStr.substring(0,mimeTypesStr.length() - 1));
+            }
+            startActivityForResult(Intent.createChooser(intent,"ChooseFile"), PICKFILE_RESULT_CODE);
+        }
         if(v==txtADDFile){
             openDailogForImagePickOptionRegisterAdhar();
         }
@@ -223,12 +270,47 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             } else {
                 getPersonalInfoApi(getLoginData("id"), etFirstName.getText().toString().trim()
                         , /*etLastName.getText().toString().trim(), */etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
-                        reformattedStr, etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(), file1);
+                        reformattedStr, etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(), file1,filePathsss);
             }
 
         }
     }
+    public String getPDFPath(Uri uri){
 
+        final String id = DocumentsContract.getDocumentId(uri);
+        final Uri contentUri = ContentUris.withAppendedId(
+                Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
+
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getActivity().getContentResolver().query(contentUri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+
+    @SuppressLint("Range")
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
     public String getLoginData(String dataType) {
         try {
             JSONObject data = new JSONObject(new SavePreferences().reterivePreference(getActivity(), AppConstants.logindata).toString());
@@ -271,7 +353,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
 
     public void getPersonalInfoApi(String admin_user_id, String first_name,/* String last_name,*/ String email, String phone,
-                                   String dob, String etLookingJobTypes, String location, File adhar) {
+                                   String dob, String etLookingJobTypes, String location, File adhar,File upload_file) {
         BuildRequestParms buildRequestParms = new BuildRequestParms();
 
         AppViewModel apiParamsInterface = ApiProductionS.getInstance(mainActivity).provideService(AppViewModel.class);
@@ -288,6 +370,23 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
 
         System.out.println("Body==" + body);
+        try{
+            Log.i("@@File!!",getPDFPath(fileUriii));
+
+              File fileupload_resume = new File(getPDFPath(fileUriii));
+              RequestBody requestBodyfileupload_resume= RequestBody.create(MediaType.parse("*/*"), fileupload_resume);
+             bodyAdharfileupload_resume = MultipartBody.Part.createFormData("upload_file", fileupload_resume.getName(), requestBodyfileupload_resume);
+            Log.i("@@file_fileupload_r", fileupload_resume.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        File file3 = new File(imagePathUrlAdhar3);
+        Log.i("@@file3", file3.toString());
+        Log.i("@@NewPnExpeimagePa", imagePathUrlAdhar3.toString());
+
+        RequestBody requestBody3 = RequestBody.create(MediaType.parse("*/*"), file3);
+        MultipartBody.Part body3 = MultipartBody.Part.createFormData("upload_file", file3.getName(), requestBody3);
 
 
         System.out.println("candiateAdd====" + body);
@@ -300,8 +399,9 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 buildRequestParms.getRequestBody(dob),
                 buildRequestParms.getRequestBody(etLookingJobTypes),
                 buildRequestParms.getRequestBody(location),
-                body
-
+                body,
+                bodyAdharfileupload_resume,
+                body3
 
         );
 
@@ -328,6 +428,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                         System.out.println("@@AttendanceModell_2" + uploadFileResponse.getData().getUserID());
                         if (uploadFileResponse.getMsg().equalsIgnoreCase("Candidate Created")) {
                             PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", uploadFileResponse.getData().getUserID());
+                            System.out.println("@@valueee-----get" + PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id"));
 
                             startActivity(new Intent(getActivity(), CandidateEducation.class));
 
@@ -443,6 +544,48 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                     // do your stuff..
                 try{
                     new SaveGalleryImageTaskRegisterPlateAdhar().execute(selectedImage);
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                //}
+            }
+        }
+        else if (requestCode == REQUEST_CODE_OPEN && resultCode == RESULT_OK) {
+
+
+            type = "File";
+            //    docPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
+            if (docPaths != null && docPaths.size() != 0) {
+                mainActivity.logWtf(docPaths.get(0));
+            }
+        }
+        else if (requestCode == PICKFILE_RESULT_CODE && resultCode == RESULT_OK) {
+
+            fileUriii = data.getData();
+            Log.i("@@fileUriii----1111",""+fileUriii);
+
+            filePathsss = new File(((fileUriii.getPath())));
+            Log.i("@@filePathsss----1111",""+filePathsss);
+            //txtUploadResume.setText(filePathsss);
+            // getFileName(fileUriii);
+
+            txtUploadResume.setText(getFileName(fileUriii));
+            //new saveResume().execute(fileUriii);
+        }
+        else if (requestCode == IMAGE_REQUEST_CAMERA_register_adhars) {
+            if (resultCode == RESULT_OK) {
+                new SaveCaputureImageTaskRegisterPlateAdhars().execute();
+            }
+        } else if (requestCode == IMAGE_REQUEST_GALLERY_register_adhars) {
+            if (resultCode == RESULT_OK) {
+                final Uri selectedImage = data.getData();
+//                 performCrop(selectedImage);
+                // if (checkPermissionREAD_EXTERNAL_STORAGE(NewPostionScreen.this)) {
+                // do your stuff..
+                try{
+                    new SaveGalleryImageTaskRegisterPlateAdhars().execute(selectedImage);
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -691,5 +834,182 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 });
         AlertDialog alert = alertBuilder.create();
         alert.show();
+    }
+    public void openDailogForImagePickOptionRegisterAdhars() {
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.layout_popup_image_option, null, false);
+        final Dialog dialog = new Dialog(getActivity());
+        RelativeLayout relativeLayoutCamera = (RelativeLayout) dialogView.findViewById(R.id.relativeBlockCamera);
+        RelativeLayout relativeLayoutGallery = (RelativeLayout) dialogView.findViewById(R.id.relativeBlockGallery);
+
+        relativeLayoutCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getImageFromCameraRegisterPicAdhars();
+                dialog.dismiss();
+            }
+        });
+        relativeLayoutGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getImagefromGalleryRegisterIcAdhars();
+                dialog.dismiss();
+            }
+        });
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(dialogView);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+    }
+    private void getImageFromCameraRegisterPicAdhars() {
+
+
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "New Picture");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+        imageFeatureUris = getActivity().getContentResolver().insert(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFeatureUri);
+        startActivityForResult(intent, IMAGE_REQUEST_CAMERA_register_adhars);
+    }
+    private void getImagefromGalleryRegisterIcAdhars() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_REQUEST_GALLERY_register_adhars);
+    }
+
+    class SaveCaputureImageTaskRegisterPlateAdhars extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... bitmaps) {
+            Bitmap scaledBitmap = null;
+            String path = null;
+            path = DbBitmapUtility.getRealPath(getActivity(), imageFeatureUri);
+//            Uri fileUri = Uri.fromFile(file);
+            try {
+                scaledBitmap = DbBitmapUtility.compressImage(path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // File scaledFile = FileUtil.getFile(getApplicationContext());
+            file3 = FileUtil.getFile(getActivity());
+            imagePathUrlAdhar3 = file3.getAbsolutePath();
+            Log.i("@@FinallyGotSolution--",imagePathUrlAdhar);
+            try {
+                file3.createNewFile();
+                FileOutputStream ostream = new FileOutputStream(file3);
+                scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+                ostream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                scaledBitmap.recycle();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                new File(path).delete();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            source = Uri.fromFile(file3);
+            return source.toString();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            ProgressDialogUtil.showProgressDialog(getActivity());
+        }
+
+        @Override
+        protected void onPostExecute(String picturePath) {
+            super.onPostExecute(picturePath);
+            ProgressDialogUtil.hideProgressDialog();
+
+            if (picturePath != null & !picturePath.isEmpty()) {
+                //   Picasso.with(getActivity()).load(Uri.parse("file://" + picturePath)).
+                //         fit().centerInside().error(R.drawable.side_image).into(vehicleImagePreview);
+                String fileNameset = Uri.parse("file://" + picturePath).getLastPathSegment();
+                Log.e("fileNameset", fileNameset);
+                etImageUSer.setText(fileNameset.toString());
+            } else {
+                Toast.makeText(getActivity(), "Error while saving image!!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    class SaveGalleryImageTaskRegisterPlateAdhars extends AsyncTask<Uri, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            ProgressDialogUtil.showProgressDialog(getActivity());
+        }
+
+        @Override
+        protected String doInBackground(Uri... params) {
+            Uri selectedImage = params[0];
+            String path = null;
+            path = FileUtil.getPath(getActivity(), selectedImage);
+
+            Bitmap bitMap = null;
+            if (path.startsWith("https") || path.startsWith("http")) {
+                return null;
+            }
+            try {
+                bitMap = decodeUri(path);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            bitMap = FileUtil.checkImageRotation(bitMap, path);
+            file3 = FileUtil.getFile(getActivity());
+            imagePathUrlAdhar3 = file3.getAbsolutePath();
+            //      txtSelectYourPhoto.setText(file1.getAbsolutePath().toString());
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            try {
+                bitMap.compress(Bitmap.CompressFormat.PNG, 100, bytes);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //you can create a new file name "test.jpg" in sdcard folder.
+            try {
+                file3.createNewFile();
+                FileOutputStream fo = new FileOutputStream(file3);
+                fo.write(bytes.toByteArray());
+                fo.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return imagePathUrlAdhar3;
+        }
+
+        @Override
+        protected void onPostExecute(String picturePath) {
+            super.onPostExecute(picturePath);
+            ProgressDialogUtil.hideProgressDialog();
+            if (picturePath != null & !picturePath.isEmpty()) {
+                //     Picasso.with(getActivity()).load(Uri.parse("file://" + picturePath)).
+                //           fit().centerInside().error(R.drawable.side_image).into(vehicleImagePreview);
+                /*Picasso.with(getActivity()).load(Uri.parse("file://" + picturePath)).
+                        resize(100, 100).error(R.mipmap.ic_launcher).into(imageAddProfile);*/
+                String fileNameset = Uri.parse("file://" + picturePath).getLastPathSegment();
+                Log.e("fileNameset", fileNameset);
+                etImageUSer.setText(fileNameset.toString());
+
+            } else {
+                Toast.makeText(getActivity(), "Error while saving image!!", Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
 }

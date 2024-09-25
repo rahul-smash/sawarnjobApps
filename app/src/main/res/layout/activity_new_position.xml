@@ -6,8 +6,9 @@
     android:background="@color/colorPrimary"
     android:orientation="vertical">
 
-    <include layout="@layout/custom_tool_bar"
-        android:id="@+id/toolar"/>
+    <include
+        android:id="@+id/toolar"
+        layout="@layout/custom_tool_bar" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -166,8 +167,7 @@
                 android:imeOptions="actionNext"
                 android:visibility="gone"
                 app:boxBackgroundMode="none"
-                app:hintEnabled="false"
-                >
+                app:hintEnabled="false">
 
                 <EditText
                     android:id="@+id/etStartDate"
@@ -193,8 +193,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:imeOptions="actionNext"
-                app:boxBackgroundMode="none"
                 android:visibility="gone"
+                app:boxBackgroundMode="none"
                 app:hintEnabled="false">
 
                 <EditText
@@ -241,8 +241,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/edittext_bg"
-
                 android:orientation="horizontal"
+
+                android:visibility="gone"
                 android:weightSum="2">
 
 
@@ -257,12 +258,12 @@
                     app:hintEnabled="false">
 
                     <EditText
-                        android:editable="false"
-                        android:focusable="false"
                         android:id="@+id/etImageUSer"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@drawable/edittext_bg_use_imag"
+                        android:editable="false"
+                        android:focusable="false"
                         android:gravity="center|left"
                         android:hint="User Image"
                         android:paddingTop="0dp"
