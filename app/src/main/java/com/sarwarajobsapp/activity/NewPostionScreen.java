@@ -274,7 +274,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
             else {
                 getPostionDataTypeApi(getLoginData("id"),
                         txtCompanyName.getText().toString().trim(),  txtPosition.getText().toString().trim(),
-                      /*  reformattedStr, EndreformattedStr,*/ txtJobRpleDescritpion.getText().toString().trim(),file1);
+                      /*  reformattedStr, EndreformattedStr,*/ txtJobRpleDescritpion.getText().toString().trim()/*,file1*/);
             }
 
         }
@@ -332,7 +332,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
         });
     }*/
   public void getPostionDataTypeApi(String user_id, String company, String position, /*String started_at,
-                                    String ended_at,*/String description, File upload_file) {
+                                    String ended_at,*/String description/*, File upload_file*/) {
       BuildRequestParms buildRequestParms = new BuildRequestParms();
 
       AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
@@ -343,25 +343,25 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
 //
 
 
-      File file = new File(imagePathUrlAdhar);
-      Log.i("@@file", file.toString());
-      Log.i("@@NewPnExpeimagePa", imagePathUrlAdhar.toString());
+    //  File file = new File(imagePathUrlAdhar);
+    //  Log.i("@@file", file.toString());
+    //  Log.i("@@NewPnExpeimagePa", imagePathUrlAdhar.toString());
 
-      RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
-      MultipartBody.Part body = MultipartBody.Part.createFormData("upload_file", file.getName(), requestBody);
-
-
+     // RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+     // MultipartBody.Part body = MultipartBody.Part.createFormData("upload_file", file.getName(), requestBody);
 
 
-      System.out.println("NewPostionExperience====" + body);
+
+
+     // System.out.println("NewPostionExperience====" + body);
       observable = apiParamsInterface.candidateExperienceAdd(
               buildRequestParms.getRequestBody(user_id),
               buildRequestParms.getRequestBody(company),
               buildRequestParms.getRequestBody(position),
             /*  buildRequestParms.getRequestBody(started_at),
               buildRequestParms.getRequestBody(ended_at),*/
-              buildRequestParms.getRequestBody(description),
-              body
+              buildRequestParms.getRequestBody(description)
+             // body
 
 
       );

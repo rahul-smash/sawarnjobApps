@@ -26,28 +26,28 @@
             android:padding="24dp"
             android:visibility="visible">
 
-       <!--     <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtInputTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:imeOptions="actionNext"
-                app:hintEnabled="false"
-                app:boxBackgroundMode="none">
+            <!--     <com.google.android.material.textfield.TextInputLayout
+                     android:id="@+id/txtInputTitle"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:imeOptions="actionNext"
+                     app:hintEnabled="false"
+                     app:boxBackgroundMode="none">
 
-                <EditText
-                    android:hint="School"
-                    android:textColorHint="@color/color_dark_gray"
-                    android:id="@+id/txtSchool"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/edittext_bg"
-                    android:gravity="center|left"
-                    android:paddingTop="0dp"
-                    android:paddingBottom="0dp"
-                    android:singleLine="true" />
+                     <EditText
+                         android:hint="School"
+                         android:textColorHint="@color/color_dark_gray"
+                         android:id="@+id/txtSchool"
+                         android:layout_width="match_parent"
+                         android:layout_height="50dp"
+                         android:background="@drawable/edittext_bg"
+                         android:gravity="center|left"
+                         android:paddingTop="0dp"
+                         android:paddingBottom="0dp"
+                         android:singleLine="true" />
 
 
-            </com.google.android.material.textfield.TextInputLayout>-->
+                 </com.google.android.material.textfield.TextInputLayout>-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtInputTitle"
                 android:layout_width="match_parent"
@@ -231,6 +231,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext_bg"
@@ -242,7 +243,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txtInputUploadAdhardCard"
-
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="1.4"
@@ -267,6 +268,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/txtResume"
                     style="@style/EditText.Login"
                     android:layout_width="0dp"
