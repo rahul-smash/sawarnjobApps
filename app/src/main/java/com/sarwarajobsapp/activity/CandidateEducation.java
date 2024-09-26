@@ -310,6 +310,7 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
 
                 return;
             } else {
+                Toast.makeText(getApplicationContext(),"--"+PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id"),Toast.LENGTH_SHORT).show();
                 getCandidateEducation(PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id"), selectedSchool
                         , txtDegree.getText().toString().trim(),
                       /*  reformattedStr,EndreformattedStr, */txtJobRpleDescritpion.getText().toString().trim(),filePathsss);
@@ -431,7 +432,7 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
 
 
         );
-        Log.i("@@user_id----", user_id.toString());
+        Log.i("@@user_id----", observable.toString());
         Log.i("@@candiateAdd", "candiateAdd");
 
         final ProgressDialog mProgressDialog = new ProgressDialog(CandidateEducation.this);
@@ -447,7 +448,7 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
 
 
                 mProgressDialog.dismiss();
-                Log.i("@@uploadFileResponse----", uploadFileResponse.toString());
+                Log.i("@@----", uploadFileResponse.toString());
                 System.out.println("@@CanddiateAttendanceModell" + "CanddiateAttendanceModell");
                 //    Toast.makeText(getActivity(), uploadFileResponse.toString(), Toast.LENGTH_SHORT).show();
                 System.out.println("@@CanddiateAttendanceModell" + uploadFileResponse.toString());

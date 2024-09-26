@@ -144,7 +144,10 @@ holder.txtSrNo.setText(jsonObject.getString("full_name"));
                         try {
                             JSONObject dataObj=new JSONObject(v.getTag().toString());
                             Intent intent = new Intent(mContext, EditPersonInfoActivity.class);
+                            PrefHelper.getInstance().storeSharedValue("clickEditID", dataObj.getString("id"));
+
                             intent.putExtra("first_name", dataObj.getString("full_name"));
+
                            // intent.putExtra("last_name", dataObj.getString("last_name"));
                             intent.putExtra("email", dataObj.getString("email"));
                             intent.putExtra("phone", dataObj.getString("phone"));

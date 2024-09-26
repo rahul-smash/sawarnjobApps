@@ -497,7 +497,10 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
                         if (uploadFileResponse.getMsg().equalsIgnoreCase("Candidate Updated")) {
                             //            PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", uploadFileResponse.getData().getId());
                             startActivity(new Intent(getApplicationContext(), CandidateEducation.class));
-
+                         /*   Intent mIntent = new Intent(getApplicationContext(), CandidateEducation.class);
+                            Bundle mBundle = new Bundle();
+                            mBundle.putString("EditProfile", "Edit");
+                            mIntent.putExtras(mBundle);*/
                             Toast.makeText(getApplicationContext(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
 
                             finish();
