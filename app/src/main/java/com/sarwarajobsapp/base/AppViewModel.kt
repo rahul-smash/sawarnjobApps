@@ -32,13 +32,9 @@ interface AppViewModel {
 
         @Part("address") address: RequestBody?,
 
-
-
-
-
         @Part aadhar: MultipartBody.Part?,
-        @Part upload_file: MultipartBody.Part?,
-        @Part upload_files: MultipartBody.Part?,
+        @Part resume: MultipartBody.Part?,
+        @Part profile_img: MultipartBody.Part?,
         ): Observable<AttendanceModell>?
 
 
@@ -74,8 +70,8 @@ interface AppViewModel {
 
 
         @Part aadhar: MultipartBody.Part?,
-        @Part upload_file: MultipartBody.Part?,
-        @Part upload_files: MultipartBody.Part?,
+        @Part resume: MultipartBody.Part?,
+        @Part profile_img: MultipartBody.Part?,
         ): Observable<CanddiateEditProfileModell>?
 
     @POST("candidate/experience/add")

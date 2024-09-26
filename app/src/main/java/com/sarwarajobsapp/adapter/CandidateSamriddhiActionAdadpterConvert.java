@@ -102,8 +102,10 @@ holder.txtSrNo.setText(jsonObject.getString("full_name"));
                             intent.putExtra("address", dataObj.getString("address"));
 
                             intent.putExtra("looking_job_type", dataObj.getString("looking_job_type"));
-                            intent.putExtra("description", dataObj.getString("description"));
+                            intent.putExtra("address", dataObj.getString("address"));
                             intent.putExtra("aadhar", dataObj.getString("aadhar"));
+                            intent.putExtra("resume", dataObj.getString("resume"));
+                            intent.putExtra("profile_img", dataObj.getString("profile_img"));
                             mContext.startActivity(intent);
                           //  mContext.startActivity(new Intent(mContext, PersonInfoActivity.class));
 
@@ -152,7 +154,8 @@ holder.txtSrNo.setText(jsonObject.getString("full_name"));
                             intent.putExtra("looking_job_type", dataObj.getString("looking_job_type"));
                             intent.putExtra("description", dataObj.getString("description"));
                             intent.putExtra("aadhar", dataObj.getString("aadhar"));
-
+                            intent.putExtra("resume", dataObj.getString("resume"));
+                            intent.putExtra("profile_img", dataObj.getString("profile_img"));
                             mContext.startActivity(intent);
                             //  mContext.startActivity(new Intent(mContext, PersonInfoActivity.class));
 

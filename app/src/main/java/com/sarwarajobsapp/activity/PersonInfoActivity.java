@@ -69,6 +69,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -104,7 +106,8 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
         Uri source;
 EditText etUploadAdharCard;
         String imagePathUrlAdhar;
-        File file1 ;
+    File file1,file3;
+
     EditText txtUploadResume;
     TextView txtResume;
     public static final int PICKFILE_RESULT_CODE = 1;
@@ -116,6 +119,7 @@ EditText etUploadAdharCard;
     File filePathsss;
     EditText etImageUSer;
     String imagePathUrlAdhar3;
+    Uri fileUri;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -309,8 +313,8 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
             }
             else {
                 getPersonalInfoApi(getLoginData("id"), etFirstName.getText().toString().trim()
-                        ,  /*etLastName.getText().toString().trim(),*/ etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
-                        reformattedStr, etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(),file1,filePathsss);
+                        , /*etLastName.getText().toString().trim(), */etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
+                        reformattedStr, etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(), file1,filePathsss,file3);
             }
 
         }
@@ -413,125 +417,155 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
         return result;
     }
         ///////////////////////////////////////////////////////
-   public void getPersonalInfoApi(String admin_user_id, String first_name,/* String last_name, */String email, String phone,
-                                  String dob, String etLookingJobTypes, String location, File adhar,File upload_file) {
-       BuildRequestParms buildRequestParms = new BuildRequestParms();
+        public void getPersonalInfoApi(String admin_user_id, String first_name, String email, String phone,
+                                       String dob, String etLookingJobTypes, String location, File adhar, File reume,File adhars) {
 
-       AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
+            BuildRequestParms buildRequestParms = new BuildRequestParms();
+            AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
 
-       Log.i("@@11", "11");
+            Log.i("getPersonalInfoApi", "API Call Initiated");
 
-       Observable<AttendanceModell> observable = null;
-//
+            // Validate mandatory inputs to avoid crashes
+            if (admin_user_id == null || admin_user_id.isEmpty()) {
+                Log.e("getPersonalInfoApi", "Admin User ID is required.");
+                return;
+            }
+            if (first_name == null || first_name.isEmpty()) {
+                Log.e("getPersonalInfoApi", "First Name is required.");
+                return;
+            }
+            if (email == null || email.isEmpty()) {
+                Log.e("getPersonalInfoApi", "Email is required.");
+                return;
+            }
+            if (phone == null || phone.isEmpty()) {
+                Log.e("getPersonalInfoApi", "Phone is required.");
+                return;
+            }
 
-
-       File file = new File(imagePathUrlAdhar);
-       Log.i("@@file", file.toString());
-       Log.i("@@imagePa----", imagePathUrlAdhar.toString());
-
-       RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
-       MultipartBody.Part body = MultipartBody.Part.createFormData("aadhar", file.getName(), requestBody);
-
-
-
-
-       System.out.println("candiateAdd====" + body);
-      // File fileupload_resume = new File(getPDFPath(fileUriii));
-     //  RequestBody requestBodyfileupload_resume= RequestBody.create(MediaType.parse("*/*"), fileupload_resume);
-       //bodyAdharfileupload_resume = MultipartBody.Part.createFormData("upload_file", fileupload_resume.getName(), requestBodyfileupload_resume);
-
-       // Assuming you have the required permissions and the fileUriii is valid
-       try{
-           Log.i("@@File!!",getPDFPath(fileUriii));
-
-           File fileupload_resume = new File(getPDFPath(fileUriii));
-           RequestBody requestBodyfileupload_resume= RequestBody.create(MediaType.parse("*/*"), fileupload_resume);
-           bodyAdharfileupload_resume = MultipartBody.Part.createFormData("upload_file", fileupload_resume.getName(), requestBodyfileupload_resume);
-           Log.i("@@file_fileupload_r", fileupload_resume.toString());
-       }catch (Exception e){
-           e.printStackTrace();
-       }
-       File file3 = new File(imagePathUrlAdhar3);
-       Log.i("@@file3", file3.toString());
-       Log.i("@@NewPnExpeimagePa", imagePathUrlAdhar3.toString());
-
-       RequestBody requestBody3 = RequestBody.create(MediaType.parse("*/*"), file3);
-       MultipartBody.Part body3 = MultipartBody.Part.createFormData("upload_file", file3.getName(), requestBody3);
-
-
-       observable = apiParamsInterface.candiateAdd(
-               buildRequestParms.getRequestBody(admin_user_id),
-               buildRequestParms.getRequestBody(first_name),
-             //  buildRequestParms.getRequestBody(last_name),
-               buildRequestParms.getRequestBody(email),
-               buildRequestParms.getRequestBody(phone),
-               buildRequestParms.getRequestBody(dob),
-               buildRequestParms.getRequestBody(etLookingJobTypes),
-               buildRequestParms.getRequestBody(location),
-               body,
-               bodyAdharfileupload_resume,
-               body3
+            Observable<AttendanceModell> observable = null;
+            MultipartBody.Part adharPart=null;
+            // Handle Aadhaar file
+            if (adhar != null && adhar.exists()) {
+                RequestBody adharRequestBody = RequestBody.create(MediaType.parse("*/*"), adhar);
+                adharPart = MultipartBody.Part.createFormData("aadhar", adhar.getName(), adharRequestBody);
+                Log.i("@@adhar1__image",   adhar.getAbsolutePath());
+                Log.i("@@adhars1__resume",   adhar.getName());
+            } else {
+                Log.e("@@adhar1__image", "A valid Aadhaar file is required_1.");
+                return;
+            }
+// Resume file part from Uri
+            MultipartBody.Part resumePart = createMultipartFromUri(fileUri, "resume");
+            Log.i("@@adhar1__resume",   resumePart.toString());
+            if (resumePart == null) {
+                Log.i("@@adhar1__resume_null",   resumePart.toString());
+                return;
+            }
 
 
-       );
+            MultipartBody.Part adharParts=null;
+            // Handle Aadhaar file
+            if (adhars != null && adhars.exists()) {
+                RequestBody adharRequestBodys = RequestBody.create(MediaType.parse("*/*"), adhars);
+                adharParts = MultipartBody.Part.createFormData("profile_img", adhars.getName(), adharRequestBodys);
+                Log.i("@@adhars2__resume",   adhars.getAbsolutePath());
+                Log.i("@@adhars2__resume",   adhars.getName());
+            } else {
+                Log.i("@@getPersonalInfoApi", "A valid Aadhaars file is required_2");
+                return;
+            }
 
-       Log.i("@@candiateAdd", "candiateAdd");
-
-       final ProgressDialog mProgressDialog = new ProgressDialog(PersonInfoActivity.this);
-       mProgressDialog.show();
-       mProgressDialog.setCancelable(false);
-       mProgressDialog.setTitle("Please wait..");
-
-
-       RxAPICallHelper.call(observable, new RxAPICallback<AttendanceModell>() {
-
-           @Override
-           public void onSuccess(AttendanceModell uploadFileResponse) {
-               mProgressDialog.dismiss();
-               System.out.println("@@AttendanceModell_1" + "AttendanceModell");
-               //    Toast.makeText(getActivity(), uploadFileResponse.toString(), Toast.LENGTH_SHORT).show();
-               System.out.println("@@AttendanceModell_2" + uploadFileResponse.toString());
-               try {
-                   if (uploadFileResponse.getMsg().equalsIgnoreCase("Email already exist")) {
-                       Toast.makeText(getApplicationContext(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
-                   } else {
-                       System.out.println("@@AttendanceModell_2" + uploadFileResponse.getData().getUserID());
-                       if (uploadFileResponse.getMsg().equalsIgnoreCase("Candidate Created")) {
-                           PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", uploadFileResponse.getData().getUserID());
-                           startActivity(new Intent(getApplicationContext(), CandidateEducation.class));
+            // Prepare additional file
 
 
-                           finish();
+            // Making the API call
+            observable = apiParamsInterface.candiateAdd(
+                    buildRequestParms.getRequestBody(admin_user_id),
+                    buildRequestParms.getRequestBody(first_name),
+                    buildRequestParms.getRequestBody(email),
+                    buildRequestParms.getRequestBody(phone),
+                    buildRequestParms.getRequestBody(dob),
+                    buildRequestParms.getRequestBody(etLookingJobTypes),
+                    buildRequestParms.getRequestBody(location),
+                    adharPart,
+                    resumePart,
+                    adharParts
+            );
 
-                       } else {
+            Log.i("getPersonalInfoApi", "candiateAdd API called");
 
-                         showErrorDialog(uploadFileResponse.getMsg());
-                       }
-                   }
-               } catch (Exception e) {
-                   mProgressDialog.dismiss();
-                   Toast.makeText(getApplicationContext(),"Email Already Exist!",Toast.LENGTH_SHORT).show();
-                   e.printStackTrace();
-               }
+            final ProgressDialog mProgressDialog = new ProgressDialog(PersonInfoActivity.this);
+            mProgressDialog.show();
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.setTitle("Please wait...");
+
+            // API Call using RxJava Helper
+            RxAPICallHelper.call(observable, new RxAPICallback<AttendanceModell>() {
+
+                @Override
+                public void onSuccess(AttendanceModell uploadFileResponse) {
+                    mProgressDialog.dismiss();
+
+                    Log.i("getPersonalInfoApi", "API call successful: " + uploadFileResponse.toString());
+
+                    try {
+                        if ("Email already exist".equalsIgnoreCase(uploadFileResponse.getMsg())) {
+                            Toast.makeText(getApplicationContext(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                        } else if ("Candidate Created".equalsIgnoreCase(uploadFileResponse.getMsg())) {
+                            PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", uploadFileResponse.getData().getUserID());
+                            Toast.makeText(getApplicationContext(),  "Value here userId---"+PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id"), Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), CandidateEducation.class));
+                            finish();
+                        } else {
+                           showErrorDialog(uploadFileResponse.getMsg());
+                        }
+                    } catch (Exception e) {
+                        Log.e("getPersonalInfoApi", "Error processing response.", e);
+                        mProgressDialog.dismiss();
+                    }
+                }
+
+                @Override
+                public void onFailed(Throwable throwable) {
+                    Log.e("getPersonalInfoApi", "API call failed: " + throwable.getMessage());
+                    Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    mProgressDialog.dismiss();
+                }
+            });
+        }
+    private MultipartBody.Part createMultipartFromUri(Uri fileUri, String paramName) {
+        try {
+            // Open InputStream from the Uri
+            InputStream inputStream = getContentResolver().openInputStream(fileUri);
+
+            // Create a temporary file in the cache directory
+            File tempFile = new File(getCacheDir(), "temp_file");
+            OutputStream outputStream = new FileOutputStream(tempFile);
+
+            // Write input stream data to the temp file
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, length);
+            }
+
+            // Close the streams
+            inputStream.close();
+            outputStream.close();
+
+            // Create the MultipartBody.Part
+            RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), tempFile);
+            return MultipartBody.Part.createFormData(paramName, tempFile.getName(), requestBody);
+
+        } catch (Exception e) {
+            Log.e("createMultipartFromUri", "Failed to create multipart from Uri: " + e.getMessage());
+            return null;
+        }
+    }
 
 
-           }
-
-
-           @Override
-           public void onFailed(Throwable throwable) {
-               System.out.println("error===" + throwable.getMessage());
-               mProgressDialog.dismiss();
-
-
-           }
-       });
-
-
-
-
-   }
-        ////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////
 
     private void setStartDateTimeField() {
         Calendar newCalendar = Calendar.getInstance();
@@ -603,71 +637,55 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
 
-             if (requestCode == IMAGE_REQUEST_CAMERA_register_adhar) {
-                if (resultCode == RESULT_OK) {
-                    new SaveCaputureImageTaskRegisterPlateAdhar().execute();
-                }
-            } else if (requestCode == IMAGE_REQUEST_GALLERY_register_adhar) {
-                if (resultCode == RESULT_OK) {
-                    final Uri selectedImage = data.getData();
-//                 performCrop(selectedImage);
-                  /*  if (checkPermissionREAD_EXTERNAL_STORAGE(PersonInfoActivity.this)) {
-                        // do your stuff..
-                        new SaveGalleryImageTaskRegisterPlateAdhar().execute(selectedImage);
+            // Check if the request is for capturing image using the camera (Aadhar)
+            if (requestCode == IMAGE_REQUEST_CAMERA_register_adhar && resultCode == RESULT_OK) {
+                new SaveCaputureImageTaskRegisterPlateAdhar().execute();
+            }
+            // Check if the request is for selecting image from gallery (Aadhar)
+            else if (requestCode == IMAGE_REQUEST_GALLERY_register_adhar && resultCode == RESULT_OK && data != null) {
+                Uri selectedImage = data.getData();
+                Log.i("@@GalleryFirstImage", "Image Uri: " + selectedImage);
 
-                    }*/
-                    try{
-                        new SaveGalleryImageTaskRegisterPlateAdhar().execute(selectedImage);
-
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-
+                // Process the selected image from gallery
+                try {
+                    new SaveGalleryImageTaskRegisterPlateAdhar().execute(selectedImage);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-             else if (requestCode == REQUEST_CODE_OPEN && resultCode == RESULT_OK) {
+            // Check if the request is for selecting a file
+            else if (requestCode == REQUEST_CODE_OPEN && resultCode == RESULT_OK && data != null) {
+                // List<String> docPaths = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS);
+                if (docPaths != null && !docPaths.isEmpty()) {
+                    mainActivity.logWtf(docPaths.get(0));
+                }
+            }
+            // Check if the request is for picking a file
+            else if (requestCode == PICKFILE_RESULT_CODE && resultCode == RESULT_OK && data != null) {
+                fileUri = data.getData();
+                Log.i("@@FileUri", "File Uri: " + fileUri);
 
+                // Convert URI to file path and display in the TextView
+                File filePath = new File(fileUri.getPath());
+                Log.i("@@FilePath", "File Path: " + filePath);
+                txtUploadResume.setText(getFileName(fileUri));
+            }
+            // Check if the request is for capturing image using the camera (Adhars)
+            else if (requestCode == IMAGE_REQUEST_CAMERA_register_adhars && resultCode == RESULT_OK) {
+                new SaveCaputureImageTaskRegisterPlateAdhars().execute();
+            }
+            // Check if the request is for selecting image from gallery (Adhars)
+            else if (requestCode == IMAGE_REQUEST_GALLERY_register_adhars && resultCode == RESULT_OK && data != null) {
+                Uri selectedImage = data.getData();
+                Log.i("@@GallerySecondImage", "Image Uri: " + selectedImage);
 
-                 type = "File";
-                 //    docPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
-                 if (docPaths != null && docPaths.size() != 0) {
-                     mainActivity.logWtf(docPaths.get(0));
-                 }
-             }
-             else if (requestCode == PICKFILE_RESULT_CODE && resultCode == RESULT_OK) {
-
-                 fileUriii = data.getData();
-                 Log.i("@@fileUriii----1111",""+fileUriii);
-
-                 filePathsss = new File(((fileUriii.getPath())));
-                 Log.i("@@filePathsss----1111",""+filePathsss);
-                 //txtUploadResume.setText(filePathsss);
-                 // getFileName(fileUriii);
-
-                 txtUploadResume.setText(getFileName(fileUriii));
-                 //new saveResume().execute(fileUriii);
-             }
-             else if (requestCode == IMAGE_REQUEST_CAMERA_register_adhars) {
-                 if (resultCode == RESULT_OK) {
-                     new SaveCaputureImageTaskRegisterPlateAdhars().execute();
-                 }
-             } else if (requestCode == IMAGE_REQUEST_GALLERY_register_adhars) {
-                 if (resultCode == RESULT_OK) {
-                     final Uri selectedImage = data.getData();
-//                 performCrop(selectedImage);
-                     // if (checkPermissionREAD_EXTERNAL_STORAGE(NewPostionScreen.this)) {
-                     // do your stuff..
-                     try{
-                         new SaveGalleryImageTaskRegisterPlateAdhars().execute(selectedImage);
-
-                     }catch (Exception e){
-                         e.printStackTrace();
-                     }
-
-                     //}
-                 }
-             }
-
+                // Process the selected image from gallery
+                try {
+                    new SaveGalleryImageTaskRegisterPlateAdhars().execute(selectedImage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
         ////Adhar
         class SaveCaputureImageTaskRegisterPlateAdhar extends AsyncTask<Void, Void, String> {
@@ -889,7 +907,6 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
             AlertDialog alert = alertBuilder.create();
             alert.show();
         }
-
     public void openDailogForImagePickOptionRegisterAdhars() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = inflater.inflate(R.layout.layout_popup_image_option, null, false);
@@ -907,6 +924,8 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
         relativeLayoutGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("@@GAlleryfileNameset", "1");
+
                 getImagefromGalleryRegisterIcAdhars();
                 dialog.dismiss();
             }
@@ -930,19 +949,20 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
         startActivityForResult(intent, IMAGE_REQUEST_CAMERA_register_adhars);
     }
     private void getImagefromGalleryRegisterIcAdhars() {
+        Log.i("@@GAlleryfileNameset", "2");
+
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_REQUEST_GALLERY_register_adhars);
     }
-
     class SaveCaputureImageTaskRegisterPlateAdhars extends AsyncTask<Void, Void, String> {
 
         @Override
         protected String doInBackground(Void... bitmaps) {
             Bitmap scaledBitmap = null;
             String path = null;
-            path = DbBitmapUtility.getRealPath(getApplicationContext(),imageFeatureUri);
+            path = DbBitmapUtility.getRealPath(getApplicationContext(), imageFeatureUri);
 //            Uri fileUri = Uri.fromFile(file);
             try {
                 scaledBitmap = DbBitmapUtility.compressImage(path);
@@ -951,12 +971,12 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
             }
 
             // File scaledFile = FileUtil.getFile(getApplicationContext());
-            file1 = FileUtil.getFile(PersonInfoActivity.this);
-            imagePathUrlAdhar3 = file1.getAbsolutePath();
+            file3 = FileUtil.getFile(PersonInfoActivity.this);
+            imagePathUrlAdhar = file3.getAbsolutePath();
             Log.i("@@FinallyGotSolution--",imagePathUrlAdhar);
             try {
                 file1.createNewFile();
-                FileOutputStream ostream = new FileOutputStream(file1);
+                FileOutputStream ostream = new FileOutputStream(file3);
                 scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
                 ostream.close();
             } catch (Exception e) {
@@ -1000,7 +1020,6 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
             }
         }
     }
-
     class SaveGalleryImageTaskRegisterPlateAdhars extends AsyncTask<Uri, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -1010,6 +1029,8 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
 
         @Override
         protected String doInBackground(Uri... params) {
+            Log.i("@@GAlleryfileNameset__!","");
+
             Uri selectedImage = params[0];
             String path = null;
             path = FileUtil.getPath(PersonInfoActivity.this, selectedImage);
@@ -1025,8 +1046,10 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
                 e.printStackTrace();
             }
             bitMap = FileUtil.checkImageRotation(bitMap, path);
-            file1 = FileUtil.getFile(PersonInfoActivity.this);
-            imagePathUrlAdhar3 = file1.getAbsolutePath();
+            file3 = FileUtil.getFile(PersonInfoActivity.this);
+            imagePathUrlAdhar = file3.getAbsolutePath();
+            // Log.i("@@GAlleryfileNameset__!2",imagePathUrlAdhar);
+
             //      txtSelectYourPhoto.setText(file1.getAbsolutePath().toString());
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             try {
@@ -1037,15 +1060,15 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
             }
             //you can create a new file name "test.jpg" in sdcard folder.
             try {
-                file1.createNewFile();
-                FileOutputStream fo = new FileOutputStream(file1);
+                file3.createNewFile();
+                FileOutputStream fo = new FileOutputStream(file3);
                 fo.write(bytes.toByteArray());
                 fo.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            return imagePathUrlAdhar3;
+            return imagePathUrlAdhar;
         }
 
         @Override
@@ -1058,7 +1081,7 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
                 /*Picasso.with(getActivity()).load(Uri.parse("file://" + picturePath)).
                         resize(100, 100).error(R.mipmap.ic_launcher).into(imageAddProfile);*/
                 String fileNameset = Uri.parse("file://" + picturePath).getLastPathSegment();
-                Log.e("fileNameset", fileNameset);
+                Log.i("@@GAlleryfileNameset", fileNameset);
                 etImageUSer.setText(fileNameset.toString());
 
             } else {
