@@ -244,11 +244,11 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
                 return;
             }*/
 
-            if (txtCompanyName.getText().toString().length() <= 0) {
+           /* if (txtCompanyName.getText().toString().length() <= 0) {
                 Toast.makeText(this, "Enter Company Name", Toast.LENGTH_SHORT).show();
 
                 return;
-            }
+            }*/
             if (txtPosition.getText().toString().length() <= 0) {
                 Toast.makeText(this, "Enter Position", Toast.LENGTH_SHORT).show();
 
@@ -272,7 +272,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
                 return;
             }
             else {
-                getPostionDataTypeApi(getLoginData("id"),
+                getPostionDataTypeApi(PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id"),
                         txtCompanyName.getText().toString().trim(),  txtPosition.getText().toString().trim(),
                       /*  reformattedStr, EndreformattedStr,*/ txtJobRpleDescritpion.getText().toString().trim()/*,file1*/);
             }

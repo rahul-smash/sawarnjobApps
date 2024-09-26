@@ -220,7 +220,7 @@
                     android:layout_height="100dp"
                     android:background="@drawable/edittext_bg"
                     android:gravity="left"
-                    android:hint="Location"
+                    android:hint="address"
                     android:singleLine="true"
                     android:textColorHint="@color/color_dark_gray" />
 
