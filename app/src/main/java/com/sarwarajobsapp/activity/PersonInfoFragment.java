@@ -526,7 +526,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                         Toast.makeText(getActivity(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
                     } else if ("Candidate Created".equalsIgnoreCase(uploadFileResponse.getMsg())) {
                         PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", uploadFileResponse.getData().getUserID());
-                        Toast.makeText(getActivity(),  "Value here userId---"+PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id"), Toast.LENGTH_SHORT).show();
+                  //      Toast.makeText(getActivity(),  "Value here userId---"+PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id"), Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getActivity(), CandidateEducation.class));
                         getActivity().finish();
                     } else {
