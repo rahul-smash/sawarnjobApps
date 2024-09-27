@@ -111,6 +111,7 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
     String selectedSchool;
     File filePathsss;
     Spinner spinnerSchool;
+    String editProfileID;
     /*public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
                 CandidateEducation.class.getName());
@@ -135,6 +136,47 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
     protected void setUp() {
      //   docPaths = new ArrayList<>();
        // verifyStoragePermissions(CandidateEducation.this);
+
+
+            // Retrieve the extras from the intent
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                String editProfile = extras.getString("EditProfile");
+
+                // Safely check if editProfile is null before using it
+                if (editProfile != null) {
+                    Log.i("@@cePF_1_profileEdit", editProfile);
+
+                    if ("Edit".equals(editProfile)) {
+                        // Get the edit profile ID
+                        editProfileID = PrefHelper.getInstance().getSharedValue("clickEditID");
+
+                        // Check if editProfileID is null before logging it
+                        if (editProfileID != null) {
+                            Log.i("@@cePF_2_profileEdit", editProfileID.toString());
+                        } else {
+                            Log.e("@@cePF_2_profileEdit", "editProfileID is null");
+                        }
+                    } else {
+                        // Handle non-edit case
+                        editProfileID = PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id");
+
+                        // Check if editProfileID is null before logging it
+                        if (editProfileID != null) {
+                            Log.i("@@cePF_3_profileInfo", editProfileID.toString());
+                        } else {
+                            Log.e("@@cePF_3_profileInfo", "editProfileID is null");
+                        }
+                    }
+                } else {
+                    editProfileID = PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id");
+
+                }
+            } else {
+                Log.e("@@cePF_1_profileEdit", "extras is null Else part");
+                editProfileID = PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id");
+            }
+
         initView();
         setStartDateTimeField();
         setEndDateTimeField();
@@ -310,8 +352,8 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
 
                 return;
             } else {
-                Toast.makeText(getApplicationContext(),"--"+PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id"),Toast.LENGTH_SHORT).show();
-                getCandidateEducation(PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id"), selectedSchool
+                //Toast.makeText(getApplicationContext(),"--"+editProfileID,Toast.LENGTH_SHORT).show();
+                getCandidateEducation(editProfileID, selectedSchool
                         , txtDegree.getText().toString().trim(),
                       /*  reformattedStr,EndreformattedStr, */txtJobRpleDescritpion.getText().toString().trim(),filePathsss);
             }
