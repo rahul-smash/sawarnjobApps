@@ -37,6 +37,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -140,11 +141,12 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     Spinner stateSpinner, citySpinner;
     String selectedState;
     private Map<String, String> stateMap = new HashMap<>();  // Map to store state name and ID
-    private String selectedStateId;  // Variable to store selected state's ID
+     String selectedStateId;  // Variable to store selected state's ID
 
     Spinner spinnerGender;
     String selectedGender;
-
+    String selectedCity;
+    String selectedCityId;
     public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
                 PersonInfoFragment.class.getName());
@@ -275,13 +277,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
         if (v == verify_btn) {
 
-         /*   try {
 
-                reformattedStr = myFormat.format(myFormat.parse(etStartDate.getText().toString().trim()));
-         Log.i("@@reformattedStr----",""+reformattedStr.toString());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }*/
             try {
                 String dateString = etStartDate.getText().toString().trim();
 
@@ -323,7 +319,26 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
                 return;
             }
+            // Validate State Spinner
+           /* if (selectedStateId == null || selectedStateId.equals("Select State")) {
+                Toast.makeText(getActivity(), "Select a State", Toast.LENGTH_SHORT).show();
 
+                return ;
+            }
+
+            // Validate City Spinner
+            if (selectedCity == null || selectedCity.equals("Select City")) {
+                Toast.makeText(getActivity(), "Select a City", Toast.LENGTH_SHORT).show();
+
+                return ;
+            }
+
+            // Validate Gender Selection
+            if (TextUtils.isEmpty(selectedGender)) {
+                Toast.makeText(getActivity(), "Select Gender", Toast.LENGTH_SHORT).show();
+
+                return ;
+            }*/
             if (etLoction.getText().toString().length() <= 0) {
                 Toast.makeText(getActivity(), "Enter Location", Toast.LENGTH_SHORT).show();
 
@@ -333,9 +348,12 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 Toast.makeText(getActivity(), "Select AadharCard", Toast.LENGTH_SHORT).show();
                 return;
             } else {
+                Log.i("@@selectedGender",""+selectedGender);
+                Log.i("@@selectedStateId",""+selectedStateId);
+                Log.i("@@selectedCityId",""+selectedCityId);
                 getPersonalInfoApi(getLoginData("id"), etFirstName.getText().toString().trim()
                         , /*etLastName.getText().toString().trim(), */etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
-                        reformattedStr, etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(), file1, filePathsss, file3);
+                        reformattedStr, etLookingJobType.getText().toString().trim(),selectedGender,selectedStateId,selectedCityId, etLoction.getText().toString().trim(), file1, filePathsss, file3);
             }
 
         }
@@ -489,8 +507,9 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 //for photo code
 
 
-    public void getPersonalInfoApi(String admin_user_id, String first_name, String email, String phone,
-                                   String dob, String etLookingJobTypes, String location, File adhar, File reume, File adhars) {
+   //I am not using this method because resum,and profile_image are mnot need now.
+    public void getPersonalInfoApis(String admin_user_id, String first_name, String email, String phone,
+                                   String dob, String etLookingJobTypes,String gender,String state,String city, String location, File adhar, File reume, File adhars) {
 
         BuildRequestParms buildRequestParms = new BuildRequestParms();
         AppViewModel apiParamsInterface = ApiProductionS.getInstance(mainActivity).provideService(AppViewModel.class);
@@ -538,15 +557,15 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
         MultipartBody.Part adharParts = null;
         // Handle Aadhaar file
-        if (adhars != null && adhars.exists()) {
+     //   if (adhars != null && adhars.exists()) {
             RequestBody adharRequestBodys = RequestBody.create(MediaType.parse("*/*"), adhars);
             adharParts = MultipartBody.Part.createFormData("profile_img", adhars.getName(), adharRequestBodys);
             Log.i("@@adhars2__resume", adhars.getAbsolutePath());
             Log.i("@@adhars2__resume", adhars.getName());
-        } else {
+       /* } else {
             Log.i("@@getPersonalInfoApi", "A valid Aadhaars file is required_2");
             return;
-        }
+        }*/
 
         // Prepare additional file
 
@@ -559,6 +578,9 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 buildRequestParms.getRequestBody(phone),
                 buildRequestParms.getRequestBody(dob),
                 buildRequestParms.getRequestBody(etLookingJobTypes),
+                buildRequestParms.getRequestBody(gender),
+                buildRequestParms.getRequestBody(state),
+                buildRequestParms.getRequestBody(city),
                 buildRequestParms.getRequestBody(location),
                 adharPart,
                 resumePart,
@@ -587,6 +609,119 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                     } else if ("Candidate Created".equalsIgnoreCase(uploadFileResponse.getMsg())) {
                         PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", uploadFileResponse.getData().getUserID());
                         //      Toast.makeText(getActivity(),  "Value here userId---"+PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id"), Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getActivity(), CandidateEducation.class));
+                        getActivity().finish();
+                    } else {
+                        ((MainActivity) getActivity()).showErrorDialog(uploadFileResponse.getMsg());
+                    }
+                } catch (Exception e) {
+                    Log.e("getPersonalInfoApi", "Error processing response.", e);
+                    mProgressDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailed(Throwable throwable) {
+                Log.e("getPersonalInfoApi", "API call failed: " + throwable.getMessage());
+                Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                mProgressDialog.dismiss();
+            }
+        });
+    }
+    public void getPersonalInfoApi(String admin_user_id, String first_name, String email, String phone,
+                                   String dob, String etLookingJobTypes, String gender, String state, String city, String location,
+                                   File adhar, File resume, File profileImage) {
+
+        BuildRequestParms buildRequestParms = new BuildRequestParms();
+        AppViewModel apiParamsInterface = ApiProductionS.getInstance(mainActivity).provideService(AppViewModel.class);
+
+        Log.i("getPersonalInfoApi", "API Call Initiated");
+
+        // Validate mandatory inputs to avoid crashes
+        if (admin_user_id == null || admin_user_id.isEmpty()) {
+            Log.e("getPersonalInfoApi", "Admin User ID is required.");
+            return;
+        }
+        if (first_name == null || first_name.isEmpty()) {
+            Log.e("getPersonalInfoApi", "First Name is required.");
+            return;
+        }
+        if (phone == null || phone.isEmpty()) {
+            Log.e("getPersonalInfoApi", "Phone is required.");
+            return;
+        }
+
+        Observable<AttendanceModell> observable = null;
+        MultipartBody.Part adharPart = null;
+        MultipartBody.Part resumePart = null;
+        MultipartBody.Part profileImagePart = null;
+
+        // Handle Aadhaar file (mandatory)
+        if (adhar != null && adhar.exists()) {
+            RequestBody adharRequestBody = RequestBody.create(MediaType.parse("*/*"), adhar);
+            adharPart = MultipartBody.Part.createFormData("aadhar", adhar.getName(), adharRequestBody);
+            Log.i("@@adhar__image", adhar.getAbsolutePath());
+        } else {
+            Log.e("@@adhar__image", "A valid Aadhaar file is required.");
+            return;
+        }
+
+        // Handle resume file (optional)
+        if (resume != null && resume.exists()) {
+            RequestBody resumeRequestBody = RequestBody.create(MediaType.parse("*/*"), resume);
+            resumePart = MultipartBody.Part.createFormData("resume", resume.getName(), resumeRequestBody);
+            Log.i("@@resume__file", resume.getAbsolutePath());
+        } else {
+            Log.i("@@resume__file", "Resume file is null or doesn't exist.");
+        }
+
+        // Handle profile image file (optional)
+        if (profileImage != null && profileImage.exists()) {
+            RequestBody profileImageRequestBody = RequestBody.create(MediaType.parse("*/*"), profileImage);
+            profileImagePart = MultipartBody.Part.createFormData("profile_img", profileImage.getName(), profileImageRequestBody);
+            Log.i("@@profile_img__file", profileImage.getAbsolutePath());
+        } else {
+            Log.i("@@profile_img__file", "Profile image file is null or doesn't exist.");
+        }
+
+        // Making the API call
+        observable = apiParamsInterface.candiateAdd(
+                buildRequestParms.getRequestBody(admin_user_id),
+                buildRequestParms.getRequestBody(first_name),
+                buildRequestParms.getRequestBody(email),
+                buildRequestParms.getRequestBody(phone),
+                buildRequestParms.getRequestBody(dob),
+                buildRequestParms.getRequestBody(etLookingJobTypes),
+                buildRequestParms.getRequestBody(gender),
+                buildRequestParms.getRequestBody(state),
+                buildRequestParms.getRequestBody(city),
+                buildRequestParms.getRequestBody(location),
+                adharPart,
+                resumePart,     // Optional
+                profileImagePart // Optional
+        );
+
+        Log.i("getPersonalInfoApi", "candiateAdd API called");
+
+        final ProgressDialog mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog.show();
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setTitle("Please wait...");
+
+        // API Call using RxJava Helper
+        RxAPICallHelper.call(observable, new RxAPICallback<AttendanceModell>() {
+
+            @Override
+            public void onSuccess(AttendanceModell uploadFileResponse) {
+                mProgressDialog.dismiss();
+
+                Log.i("getPersonalInfoApi", "API call successful: " + uploadFileResponse.toString());
+
+                try {
+                    if ("Email already exist".equalsIgnoreCase(uploadFileResponse.getMsg())) {
+                        Toast.makeText(getActivity(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                    } else if ("Candidate Created".equalsIgnoreCase(uploadFileResponse.getMsg())) {
+                        PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", uploadFileResponse.getData().getUserID());
                         startActivity(new Intent(getActivity(), CandidateEducation.class));
                         getActivity().finish();
                     } else {
@@ -1272,19 +1407,24 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
     private void parseCityJson(String jsonData) {
         try {
+            // Parse the incoming data as a JSONObject
             JSONObject jsonObject = new JSONObject(jsonData);
-            JSONArray dataArray = jsonObject.getJSONArray("data").getJSONArray(0); // Get the array directly
+
+            // Access the 'data' field, which is an array containing another array
+            JSONArray dataArray = jsonObject.getJSONArray("data").getJSONArray(0); // Get the first nested array
 
             List<String> cityNames = new ArrayList<>();
+            List<String> cityIds = new ArrayList<>(); // To store city IDs
 
-            // Loop through the array and extract city names
+            // Loop through the nested array and extract city names and IDs
             for (int i = 0; i < dataArray.length(); i++) {
                 JSONObject cityObject = dataArray.getJSONObject(i);
                 cityNames.add(cityObject.getString("name"));
+                cityIds.add(cityObject.getString("id")); // Assuming "id" is the key for city ID
             }
 
             // Update the city spinner with the list of city names
-            getActivity().runOnUiThread(() -> populateCitySpinner(cityNames));
+            getActivity().runOnUiThread(() -> populateCitySpinner(cityNames, cityIds));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -1294,14 +1434,31 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         }
     }
 
-
-    private void populateCitySpinner(List<String> cityNames) {
+    private void populateCitySpinner(List<String> cityNames, List<String> cityIds) {
         // Add "Select City" as the first item in the list
         cityNames.add(0, "Select City");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, cityNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         citySpinner.setAdapter(adapter);
+
+        citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedCity = parent.getItemAtPosition(position).toString();
+                // Get the corresponding city ID based on selected city
+                if (position > 0) { // Ensure a valid city is selected (not "Select City")
+                    selectedCityId = cityIds.get(position - 1); // Adjusting index because we added "Select City" at position 0
+                } else {
+                    selectedCityId = null; // Reset ID if "Select City" is chosen
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing or handle the case when no item is selected
+            }
+        });
     }
 
 }

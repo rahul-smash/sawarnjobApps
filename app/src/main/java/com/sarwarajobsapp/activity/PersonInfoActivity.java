@@ -30,10 +30,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +65,8 @@ import com.sarwarajobsapp.utility.PrefHelper;
 import com.wallet.retrofitapi.api.RxAPICallHelper;
 import com.wallet.retrofitapi.api.RxAPICallback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -77,13 +82,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import Communication.BuildRequestParms;
 import io.reactivex.Observable;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class PersonInfoActivity extends BaseActivity implements View.OnClickListener {
 
@@ -120,6 +131,14 @@ EditText etUploadAdharCard;
     EditText etImageUSer;
     String imagePathUrlAdhar3;
     Uri fileUri;
+    private Map<String, String> stateMap = new HashMap<>();  // Map to store state name and ID
+    private String selectedStateId;  // Variable to store selected state's ID
+    String selectedCityId;
+
+    Spinner spinnerGender;
+    String selectedGender;
+    String selectedCity;
+    Spinner stateSpinner, citySpinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -142,6 +161,7 @@ EditText etUploadAdharCard;
 Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().getStringExtra("LastName"));
         initView();
         setStartDateTimeField();
+        fetchStates();
     }
 
     @Override
@@ -153,11 +173,16 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
   //  @Override
     public void onResume() {
         super.onResume();
+        fetchStates();
         Log.i("@@PersonInfoActivity", "onResume---");
 
     }
 
     private void initView() {
+        spinnerGender = findViewById(R.id.spinnerGender);
+
+        citySpinner = findViewById(R.id.citySpinner);
+        stateSpinner = findViewById(R.id.spinnerState);
         txtADDImage=findViewById(R.id.txtADDImage);
         etImageUSer=findViewById(R.id.etImageUSer);
         txtResume=(TextView)findViewById(R.id.txtResume);
@@ -210,6 +235,31 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
             /*    Fragment fragment = new CandidateListActionaleActivity();
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();*/
+            }
+        });
+        String[] schoolOptions = {"Male", "Female",};
+
+        // Adapter for Spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, schoolOptions);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Set adapter to Spinner
+        spinnerGender.setAdapter(adapter);
+
+        // Set OnItemSelectedListener to Spinner
+        spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Get selected item
+                selectedGender = parent.getItemAtPosition(position).toString();
+                Log.i("@@selectedGender-", selectedGender);
+                // Show selected item in a Toast
+                //  Toast.makeText(CandidateEducation.this, "Selected: " + selectedSchool, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Optional: Handle the case when nothing is selected
             }
         });
     }
@@ -279,12 +329,12 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
 
                 return;
             }*/
-            if (!Utility.checkValidEmail(etEmail.getText().toString())) {
+      /*      if (!Utility.checkValidEmail(etEmail.getText().toString())) {
                 etEmail.requestFocus();
                 Toast.makeText(this, "Enter valid email", Toast.LENGTH_SHORT).show();
                 return;
             }
-
+*/
             if (etPhone.getText().toString().length() <= 0) {
                 Toast.makeText(this, "Enter Phone", Toast.LENGTH_SHORT).show();
 
@@ -314,7 +364,7 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
             else {
                 getPersonalInfoApi(getLoginData("id"), etFirstName.getText().toString().trim()
                         , /*etLastName.getText().toString().trim(), */etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
-                        reformattedStr, etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(), file1,filePathsss,file3);
+                        reformattedStr, etLookingJobType.getText().toString().trim(),selectedGender,selectedStateId,selectedCityId, etLoction.getText().toString().trim(), file1,filePathsss,file3);
             }
 
         }
@@ -417,8 +467,10 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
         return result;
     }
         ///////////////////////////////////////////////////////
-        public void getPersonalInfoApi(String admin_user_id, String first_name, String email, String phone,
-                                       String dob, String etLookingJobTypes, String location, File adhar, File reume,File adhars) {
+    //I am not using this method because resum,and profile_image are mnot need now.
+
+        public void getPersonalInfoApis(String admin_user_id, String first_name, String email, String phone,
+                                       String dob, String etLookingJobTypes,String gender,String state,String city, String location, File adhar, File reume,File adhars) {
 
             BuildRequestParms buildRequestParms = new BuildRequestParms();
             AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
@@ -434,10 +486,10 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
                 Log.e("getPersonalInfoApi", "First Name is required.");
                 return;
             }
-            if (email == null || email.isEmpty()) {
+         /*   if (email == null || email.isEmpty()) {
                 Log.e("getPersonalInfoApi", "Email is required.");
                 return;
-            }
+            }*/
             if (phone == null || phone.isEmpty()) {
                 Log.e("getPersonalInfoApi", "Phone is required.");
                 return;
@@ -487,6 +539,9 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
                     buildRequestParms.getRequestBody(phone),
                     buildRequestParms.getRequestBody(dob),
                     buildRequestParms.getRequestBody(etLookingJobTypes),
+                    buildRequestParms.getRequestBody(gender),
+                    buildRequestParms.getRequestBody(state),
+                    buildRequestParms.getRequestBody(city),
                     buildRequestParms.getRequestBody(location),
                     adharPart,
                     resumePart,
@@ -534,7 +589,121 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
                 }
             });
         }
-    private MultipartBody.Part createMultipartFromUri(Uri fileUri, String paramName) {
+
+    public void getPersonalInfoApi(String admin_user_id, String first_name, String email, String phone,
+                                   String dob, String etLookingJobTypes, String gender, String state, String city, String location,
+                                   File adhar, File resume, File profileImage) {
+
+        BuildRequestParms buildRequestParms = new BuildRequestParms();
+        AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
+
+        Log.i("getPersonalInfoApi", "API Call Initiated");
+
+        // Validate mandatory inputs to avoid crashes
+        if (admin_user_id == null || admin_user_id.isEmpty()) {
+            Log.e("getPersonalInfoApi", "Admin User ID is required.");
+            return;
+        }
+        if (first_name == null || first_name.isEmpty()) {
+            Log.e("getPersonalInfoApi", "First Name is required.");
+            return;
+        }
+        if (phone == null || phone.isEmpty()) {
+            Log.e("getPersonalInfoApi", "Phone is required.");
+            return;
+        }
+
+        Observable<AttendanceModell> observable = null;
+        MultipartBody.Part adharPart = null;
+        MultipartBody.Part resumePart = null;
+        MultipartBody.Part profileImagePart = null;
+
+        // Handle Aadhaar file (mandatory)
+        if (adhar != null && adhar.exists()) {
+            RequestBody adharRequestBody = RequestBody.create(MediaType.parse("*/*"), adhar);
+            adharPart = MultipartBody.Part.createFormData("aadhar", adhar.getName(), adharRequestBody);
+            Log.i("@@adhar__image", adhar.getAbsolutePath());
+        } else {
+            Log.e("@@adhar__image", "A valid Aadhaar file is required.");
+            return;
+        }
+
+        // Handle resume file (optional)
+        if (resume != null && resume.exists()) {
+            RequestBody resumeRequestBody = RequestBody.create(MediaType.parse("*/*"), resume);
+            resumePart = MultipartBody.Part.createFormData("resume", resume.getName(), resumeRequestBody);
+            Log.i("@@resume__file", resume.getAbsolutePath());
+        } else {
+            Log.i("@@resume__file", "Resume file is null or doesn't exist.");
+        }
+
+        // Handle profile image file (optional)
+        if (profileImage != null && profileImage.exists()) {
+            RequestBody profileImageRequestBody = RequestBody.create(MediaType.parse("*/*"), profileImage);
+            profileImagePart = MultipartBody.Part.createFormData("profile_img", profileImage.getName(), profileImageRequestBody);
+            Log.i("@@profile_img__file", profileImage.getAbsolutePath());
+        } else {
+            Log.i("@@profile_img__file", "Profile image file is null or doesn't exist.");
+        }
+
+        // Making the API call
+        observable = apiParamsInterface.candiateAdd(
+                buildRequestParms.getRequestBody(admin_user_id),
+                buildRequestParms.getRequestBody(first_name),
+                buildRequestParms.getRequestBody(email),
+                buildRequestParms.getRequestBody(phone),
+                buildRequestParms.getRequestBody(dob),
+                buildRequestParms.getRequestBody(etLookingJobTypes),
+                buildRequestParms.getRequestBody(gender),
+                buildRequestParms.getRequestBody(state),
+                buildRequestParms.getRequestBody(city),
+                buildRequestParms.getRequestBody(location),
+                adharPart,
+                resumePart,     // Optional
+                profileImagePart // Optional
+        );
+
+        Log.i("getPersonalInfoApi", "candiateAdd API called");
+
+        final ProgressDialog mProgressDialog = new ProgressDialog(PersonInfoActivity.this);
+        mProgressDialog.show();
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setTitle("Please wait...");
+
+        // API Call using RxJava Helper
+        RxAPICallHelper.call(observable, new RxAPICallback<AttendanceModell>() {
+
+            @Override
+            public void onSuccess(AttendanceModell uploadFileResponse) {
+                mProgressDialog.dismiss();
+
+                Log.i("getPersonalInfoApi", "API call successful: " + uploadFileResponse.toString());
+
+                try {
+                    if ("Email already exist".equalsIgnoreCase(uploadFileResponse.getMsg())) {
+                        Toast.makeText(getApplicationContext(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                    } else if ("Candidate Created".equalsIgnoreCase(uploadFileResponse.getMsg())) {
+                        PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", uploadFileResponse.getData().getUserID());
+                        startActivity(new Intent(getApplicationContext(), CandidateEducation.class));
+                        finish();
+                    } else {
+                        showErrorDialog(uploadFileResponse.getMsg());
+                    }
+                } catch (Exception e) {
+                    Log.e("getPersonalInfoApi", "Error processing response.", e);
+                    mProgressDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailed(Throwable throwable) {
+                Log.e("getPersonalInfoApi", "API call failed: " + throwable.getMessage());
+                Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                mProgressDialog.dismiss();
+            }
+        });
+    }
+        private MultipartBody.Part createMultipartFromUri(Uri fileUri, String paramName) {
         try {
             // Open InputStream from the Uri
             InputStream inputStream = getContentResolver().openInputStream(fileUri);
@@ -1090,4 +1259,181 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
         }
 
     }
+    private void fetchStates() {
+        OkHttpClient client = new OkHttpClient();
+
+        String url = "https://sarwarajobs.com/api/v1/app/state/8";
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                runOnUiThread(() -> {
+                    Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String jsonData = response.body().string();
+                    parseJson(jsonData);  // Parse the JSON data
+                } else {
+                    runOnUiThread(() -> {
+                        Toast.makeText(getApplicationContext(), "Error: " + response.message(), Toast.LENGTH_SHORT).show();
+                    });
+                }
+            }
+        });
     }
+
+    private void parseJson(String jsonData) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonData);
+            JSONArray dataArray = jsonObject.getJSONArray("data").getJSONArray(0);
+            List<String> stateNames = new ArrayList<>();
+            List<String> stateIds = new ArrayList<>();  // List to store state IDs
+
+            for (int i = 0; i < dataArray.length(); i++) {
+                JSONObject stateObject = dataArray.getJSONObject(i);
+                String stateId = stateObject.getString("id");
+                String stateName = stateObject.getString("name");
+
+                stateNames.add(stateName);
+                stateIds.add(stateId);
+            }
+
+            runOnUiThread(() -> populateSpinner(stateNames, stateIds));  // Update the UI with state names and IDs
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void populateSpinner(List<String> stateNames, List<String> stateIds) {
+        // Add "Select State" as the first item in the list
+        stateNames.add(0, "Select State");
+        stateIds.add(0, "");  // Add an empty ID for "Select State"
+
+        // Populate the stateMap with state names and their corresponding IDs
+        for (int i = 1; i < stateNames.size(); i++) {
+            stateMap.put(stateNames.get(i), stateIds.get(i));  // Store the state ID mapped to its name
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, stateNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        stateSpinner.setAdapter(adapter);
+
+        stateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) { // Ignore the "Select State" option
+                    String selectedStateName = stateNames.get(position);
+                    selectedStateId = stateMap.get(selectedStateName);  // Get the state ID from the map
+
+                    Log.i("@@selectedState", "State Name: " + selectedStateName + ", State ID: " + selectedStateId);
+                    fetchCitiesForState(selectedStateId);  // Call method to fetch and populate cities based on selectedStateId
+                } else {
+                    // Handle "Select State" option, for example, clear city spinner
+                    selectedStateId = "";  // Reset the selectedStateId if "Select State" is selected
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing if nothing is selected
+            }
+        });
+    }
+
+    private void fetchCitiesForState(String stateId) {
+        OkHttpClient client = new OkHttpClient();
+
+        String url = "https://sarwarajobs.com/api/v1/app/cities/" + stateId;  // Use the selected stateId in the URL
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                runOnUiThread(() -> {
+                    Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String jsonData = response.body().string();
+                    parseCityJson(jsonData);  // Parse the JSON data for cities
+                } else {
+                    runOnUiThread(() -> {
+                        Toast.makeText(getApplicationContext(), "Error: " + response.message(), Toast.LENGTH_SHORT).show();
+                    });
+                }
+            }
+        });
+    }
+
+    private void parseCityJson(String jsonData) {
+        try {
+            // Parse the incoming data as a JSONObject
+            JSONObject jsonObject = new JSONObject(jsonData);
+
+            // Access the 'data' field, which is an array containing another array
+            JSONArray dataArray = jsonObject.getJSONArray("data").getJSONArray(0); // Get the first nested array
+
+            List<String> cityNames = new ArrayList<>();
+            List<String> cityIds = new ArrayList<>(); // To store city IDs
+
+            // Loop through the nested array and extract city names and IDs
+            for (int i = 0; i < dataArray.length(); i++) {
+                JSONObject cityObject = dataArray.getJSONObject(i);
+                cityNames.add(cityObject.getString("name"));
+                cityIds.add(cityObject.getString("id")); // Assuming "id" is the key for city ID
+            }
+
+            // Update the city spinner with the list of city names
+            runOnUiThread(() -> populateCitySpinner(cityNames, cityIds));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            runOnUiThread(() -> {
+                Toast.makeText(getApplicationContext(), "Error parsing city data", Toast.LENGTH_SHORT).show();
+            });
+        }
+    }
+
+    private void populateCitySpinner(List<String> cityNames, List<String> cityIds) {
+        // Add "Select City" as the first item in the list
+        cityNames.add(0, "Select City");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cityNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        citySpinner.setAdapter(adapter);
+
+        citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedCity = parent.getItemAtPosition(position).toString();
+                // Get the corresponding city ID based on selected city
+                if (position > 0) { // Ensure a valid city is selected (not "Select City")
+                    selectedCityId = cityIds.get(position - 1); // Adjusting index because we added "Select City" at position 0
+                } else {
+                    selectedCityId = null; // Reset ID if "Select City" is chosen
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing or handle the case when no item is selected
+            }
+        });
+    }
+
+}

@@ -182,7 +182,33 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <Spinner
+                android:layout_marginTop="10dp"
+                android:id="@+id/spinnerGender"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edittext_bg"
+                android:gravity="center|left"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp" />
 
+
+            <Spinner
+                android:layout_marginTop="10dp"
+                android:id="@+id/spinnerState"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edittext_bg"
+                android:spinnerMode="dropdown" />
+
+
+            <Spinner
+                android:layout_marginTop="10dp"
+                android:id="@+id/citySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edittext_bg"
+                android:spinnerMode="dropdown" />
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtInputLocation"
 

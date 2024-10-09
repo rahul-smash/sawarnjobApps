@@ -29,7 +29,9 @@ interface AppViewModel {
         @Part("phone") phone: RequestBody?,
         @Part("dob") dob: RequestBody?,
         @Part("looking_job_type") looking_job_type: RequestBody?,
-
+        @Part("gender") gender: RequestBody?,
+        @Part("state_id") state_id: RequestBody?,
+        @Part("city_id") city_id: RequestBody?,
         @Part("address") address: RequestBody?,
 
         @Part aadhar: MultipartBody.Part?,
@@ -66,6 +68,9 @@ interface AppViewModel {
         @Part("dob") dob: RequestBody?,
         @Part("address") address: RequestBody?,
         @Part("looking_job_type") looking_job_type: RequestBody?,
+        @Part("gender") gender: RequestBody?,
+        @Part("state_id") state_id: RequestBody?,
+        @Part("city_id") city_id: RequestBody?,
         @Part("description") description: RequestBody?,
 
 
