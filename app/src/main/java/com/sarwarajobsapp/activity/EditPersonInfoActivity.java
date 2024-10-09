@@ -28,10 +28,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +63,7 @@ import com.wallet.retrofitapi.api.RxAPICallHelper;
 import com.wallet.retrofitapi.api.RxAPICallback;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -75,13 +79,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import Communication.BuildRequestParms;
 import io.reactivex.Observable;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class EditPersonInfoActivity extends BaseActivity implements View.OnClickListener {
 
@@ -120,6 +130,15 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
     private int REQUEST_CODE_OPEN = 101;
     String type;
     Uri fileUri;
+    private Map<String, String> stateMap = new HashMap<>();  // Map to store state name and ID
+    private String selectedStateId;  // Variable to store selected state's ID
+    String selectedCityId;
+
+    Spinner spinnerGender;
+    String selectedGender;
+    String selectedCity;
+    Spinner stateSpinner, citySpinner;
+//{"message":"Candidate Listing","data":[{"id":109,"full_name":"gddsfgg","email":"ds@gmail.com","phone":"2665353","address":"ss","dob":"01-01-1970","looking_job_type":"spo","aadhar":"https:\/\/sarwarajobs.com\/storage\/uploads\/6IVezlLDDx3pPNPZLeNnJpmk17gqWtirBJrhsrDt.png","resume":"https:\/\/sarwarajobs.com\/storage\/uploads\/UwayVP7vIXhSGWataoQsBom7fHiSOYJ7wDs5z8H0.png","gender":"male","state_id":40,"city_id":3275,"profile_img":"https:\/\/sarwarajobs.com\/storage\/LnCX9msRw2EhXTqUHCJyH3FXMOrm8pIKnguJCFC2.png","description":null},{"id":108,"full_name":"dgv","email":null,"phone":"6666235689","address":"ghn","dob":"09-10-2024","looking_job_type":"ghjj","aadhar":"https:\/\/sarwarajobs.com\/storage\/uploads\/xfAGNjGl4yw98FjEXeby78EpPWeSAbLUrQ0vg4bh.png","resume":"https:\/\/sarwarajobs.com\/storage\/uploads\/kaeQEd5e6xgeb2jZT7bzMT6QxOxb06woqvE8DlnM.pdf","gender":"Male","state_id":null,"city_id":14,"profile_img":"https:\/\/sarwarajobs.com\/storage\/IiVzWRyKPEaBehPTLxAhGnbQKPbshlXCJtTJBrPS.png","description":null},{"id":107,"full_name":"testiser","email":"twst@gmail.xom","phone":"22252222","address":"jo","dob":"06-10-2024","looking_job_type":"job","aadhar":"https:\/\/sarwarajobs.com\/storage\/uploads\/Z1YIu7EWZlXNITLMPqHRKy6dMXNFEHN5nFmxnlgG.png","resume":"https:\/\/sarwarajobs.com\/storage\/uploads\/3KlUYtoEgZqRq7obl6ZY8HyEULC5pOzBUMZtfJl9.pdf","gender":null,"state_id":null,"city_id":null,"profile_img":"https:\/\/sarwarajobs.com\/storage\/Zc6AdqYKjFpu23YgAMQuDCvIhMGmGaELulit2qZo.png","description":null},{"id":104,"full_name":"cjfufifig","email":"jfcjfufi@gmail.com","phone":"5353535653","address":"fjcfuf","dob":"07-10-2024","looking_job_type":"ccjfufh","aadhar":"https:\/\/sarwarajobs.com\/storage\/uploads\/ZCb5vklEkBVoSvnnS1HFhyOR3j0qd0bMmY8f69qp.png","resume":"https:\/\/sarwarajobs.com\/storage\/uploads\/bVhtSCjAbrKabxSc9twFG7hS9oHJrWVDvUg2UWYF.pdf","gender":null,"state_id":null,"city_id":null,"profile_img":"https:\/\/sarwarajobs.com\/storage\/vt1Z6u7fWry2yNG9NySTt7ma0XnobRTT6D3A7sMm.png","description":null}]}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -150,6 +169,10 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
     }
 
     private void initView() {
+        spinnerGender = findViewById(R.id.spinnerGender);
+
+        citySpinner = findViewById(R.id.citySpinner);
+        stateSpinner = findViewById(R.id.spinnerState);
         txtADDImage = findViewById(R.id.txtADDImage);
         etImageUSer = findViewById(R.id.etImageUSer);
         txtResume = (TextView) findViewById(R.id.txtResume);
@@ -211,6 +234,31 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
         /*    Fragment fragment = new CandidateListActionaleActivity();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();*/
+            }
+        });
+        String[] schoolOptions = {"Male", "Female",};
+
+        // Adapter for Spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, schoolOptions);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Set adapter to Spinner
+        spinnerGender.setAdapter(adapter);
+
+        // Set OnItemSelectedListener to Spinner
+        spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Get selected item
+                selectedGender = parent.getItemAtPosition(position).toString();
+                Log.i("@@selectedGender-", selectedGender);
+                // Show selected item in a Toast
+                //  Toast.makeText(CandidateEducation.this, "Selected: " + selectedSchool, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Optional: Handle the case when nothing is selected
             }
         });
     }
@@ -314,7 +362,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
             } else {
                 getPersonalInfoApi(getClcikIDValue, etFirstName.getText().toString().trim()
                         , /*etLastName.getText().toString().trim(),*/ etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
-                        reformattedStr, etAddress.getText().toString().trim(), etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(), file1,filePathsss,file3);
+                        reformattedStr, etAddress.getText().toString().trim(), etLookingJobType.getText().toString().trim(),selectedGender,selectedStateId,selectedCityId, etLoction.getText().toString().trim(), file1,filePathsss,file3);
             }
 
         }
@@ -399,7 +447,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
     }
 
     public void getPersonalInfoApi(String admin_user_id, String first_name, String email, String phone,
-                                   String dob, String etLookingJobTypes, String location,  String description,File adhar, File reume, File adhars) {
+                                   String dob, String etLookingJobTypes, String location,String gender,String state,String city,  String description,File adhar, File reume, File adhars) {
 
         BuildRequestParms buildRequestParms = new BuildRequestParms();
         AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
@@ -415,10 +463,10 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
             Log.e("getPersonalInfoApi", "First Name is required.");
             return;
         }
-        if (email == null || email.isEmpty()) {
+    /*    if (email == null || email.isEmpty()) {
             Log.e("getPersonalInfoApi", "Email is required.");
             return;
-        }
+        }*/
         if (phone == null || phone.isEmpty()) {
             Log.e("getPersonalInfoApi", "Phone is required.");
             return;
@@ -464,6 +512,9 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
                 buildRequestParms.getRequestBody(phone),
                 buildRequestParms.getRequestBody(dob),
                 buildRequestParms.getRequestBody(etLookingJobTypes),
+                buildRequestParms.getRequestBody(gender),
+                buildRequestParms.getRequestBody(state),
+                buildRequestParms.getRequestBody(city),
                 buildRequestParms.getRequestBody(location),
                 buildRequestParms.getRequestBody(description),
                 adharPart,
@@ -1069,5 +1120,181 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
             }
         }
 
+    }
+    private void fetchStates() {
+        OkHttpClient client = new OkHttpClient();
+
+        String url = "https://sarwarajobs.com/api/v1/app/state/8";
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                runOnUiThread(() -> {
+                    Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String jsonData = response.body().string();
+                    parseJson(jsonData);  // Parse the JSON data
+                } else {
+                    runOnUiThread(() -> {
+                        Toast.makeText(getApplicationContext(), "Error: " + response.message(), Toast.LENGTH_SHORT).show();
+                    });
+                }
+            }
+        });
+    }
+
+    private void parseJson(String jsonData) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonData);
+            JSONArray dataArray = jsonObject.getJSONArray("data").getJSONArray(0);
+            List<String> stateNames = new ArrayList<>();
+            List<String> stateIds = new ArrayList<>();  // List to store state IDs
+
+            for (int i = 0; i < dataArray.length(); i++) {
+                JSONObject stateObject = dataArray.getJSONObject(i);
+                String stateId = stateObject.getString("id");
+                String stateName = stateObject.getString("name");
+
+                stateNames.add(stateName);
+                stateIds.add(stateId);
+            }
+
+            runOnUiThread(() -> populateSpinner(stateNames, stateIds));  // Update the UI with state names and IDs
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void populateSpinner(List<String> stateNames, List<String> stateIds) {
+        // Add "Select State" as the first item in the list
+        stateNames.add(0, "Select State");
+        stateIds.add(0, "");  // Add an empty ID for "Select State"
+
+        // Populate the stateMap with state names and their corresponding IDs
+        for (int i = 1; i < stateNames.size(); i++) {
+            stateMap.put(stateNames.get(i), stateIds.get(i));  // Store the state ID mapped to its name
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, stateNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        stateSpinner.setAdapter(adapter);
+
+        stateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) { // Ignore the "Select State" option
+                    String selectedStateName = stateNames.get(position);
+                    selectedStateId = stateMap.get(selectedStateName);  // Get the state ID from the map
+
+                    Log.i("@@selectedState", "State Name: " + selectedStateName + ", State ID: " + selectedStateId);
+                    fetchCitiesForState(selectedStateId);  // Call method to fetch and populate cities based on selectedStateId
+                } else {
+                    // Handle "Select State" option, for example, clear city spinner
+                    selectedStateId = "";  // Reset the selectedStateId if "Select State" is selected
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing if nothing is selected
+            }
+        });
+    }
+
+    private void fetchCitiesForState(String stateId) {
+        OkHttpClient client = new OkHttpClient();
+
+        String url = "https://sarwarajobs.com/api/v1/app/cities/" + stateId;  // Use the selected stateId in the URL
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                runOnUiThread(() -> {
+                    Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String jsonData = response.body().string();
+                    parseCityJson(jsonData);  // Parse the JSON data for cities
+                } else {
+                    runOnUiThread(() -> {
+                        Toast.makeText(getApplicationContext(), "Error: " + response.message(), Toast.LENGTH_SHORT).show();
+                    });
+                }
+            }
+        });
+    }
+
+    private void parseCityJson(String jsonData) {
+        try {
+            // Parse the incoming data as a JSONObject
+            JSONObject jsonObject = new JSONObject(jsonData);
+
+            // Access the 'data' field, which is an array containing another array
+            JSONArray dataArray = jsonObject.getJSONArray("data").getJSONArray(0); // Get the first nested array
+
+            List<String> cityNames = new ArrayList<>();
+            List<String> cityIds = new ArrayList<>(); // To store city IDs
+
+            // Loop through the nested array and extract city names and IDs
+            for (int i = 0; i < dataArray.length(); i++) {
+                JSONObject cityObject = dataArray.getJSONObject(i);
+                cityNames.add(cityObject.getString("name"));
+                cityIds.add(cityObject.getString("id")); // Assuming "id" is the key for city ID
+            }
+
+            // Update the city spinner with the list of city names
+            runOnUiThread(() -> populateCitySpinner(cityNames, cityIds));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            runOnUiThread(() -> {
+                Toast.makeText(getApplicationContext(), "Error parsing city data", Toast.LENGTH_SHORT).show();
+            });
+        }
+    }
+
+    private void populateCitySpinner(List<String> cityNames, List<String> cityIds) {
+        // Add "Select City" as the first item in the list
+        cityNames.add(0, "Select City");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cityNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        citySpinner.setAdapter(adapter);
+
+        citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedCity = parent.getItemAtPosition(position).toString();
+                // Get the corresponding city ID based on selected city
+                if (position > 0) { // Ensure a valid city is selected (not "Select City")
+                    selectedCityId = cityIds.get(position - 1); // Adjusting index because we added "Select City" at position 0
+                } else {
+                    selectedCityId = null; // Reset ID if "Select City" is chosen
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing or handle the case when no item is selected
+            }
+        });
     }
 }
