@@ -2,6 +2,14 @@ package com.sarwarajobsapp.activity;
 
 import static android.app.Activity.RESULT_OK;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+import java.io.IOException;
+
 import static com.sarwarajobsapp.base.BaseActivity.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE;
 
 import android.Manifest;
@@ -34,10 +42,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +58,9 @@ import androidx.fragment.app.Fragment;
 
 import com.app.preferences.SavePreferences;
 import com.google.android.material.textfield.TextInputLayout;
+import com.sarwarajobsapp.communication.CallBack;
 import com.sarwarajobsapp.communication.ImageAttendanceCallBack;
+import com.sarwarajobsapp.communication.ServerHandler;
 import com.sarwarajobsapp.modelattend.AttendanceModell;
 import com.sarwarajobsapp.R;
 import com.sarwarajobsapp.base.AppViewModel;
@@ -62,6 +75,8 @@ import com.sarwarajobsapp.utility.PrefHelper;
 import com.wallet.retrofitapi.api.RxAPICallHelper;
 import com.wallet.retrofitapi.api.RxAPICallback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -76,7 +91,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import Communication.BuildRequestParms;
 import io.reactivex.Observable;
@@ -89,7 +108,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     private MainActivity mainActivity;
     View rootView;
     TextInputLayout txtInputFirstName, txtInputLastName, txtInputEmail, txtInputPhone, txtInputStartDate, txtInputEndDate, txtInputLocation;
-    TextView verify_btn, txtADDFile,txtADDImage;
+    TextView verify_btn, txtADDFile, txtADDImage;
     EditText etFirstName, etLastName, etEmail, etPhone, etStartDate, etLookingJobType, etLoction;
     Calendar bookDateAndTime;
     private DatePickerDialog toDatePickerDialog;
@@ -101,11 +120,11 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     public static final int IMAGE_REQUEST_CAMERA_register_adhar = 326;
     public static final int IMAGE_REQUEST_GALLERY_register_adhars = 328;
     public static final int IMAGE_REQUEST_CAMERA_register_adhars = 329;
-    Uri source,source1;
+    Uri source, source1;
     EditText etUploadAdharCard;
     String imagePathUrlAdhar;
     String imagePathUrlAdhar3;
-    File file1,file3;
+    File file1, file3;
     Uri imageUrli;
     EditText txtUploadResume;
     TextView txtResume;
@@ -118,6 +137,14 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     MultipartBody.Part bodyAdharfileupload_resume;
     File filePathsss;
     EditText etImageUSer;
+    Spinner stateSpinner, citySpinner;
+    String selectedState;
+    private Map<String, String> stateMap = new HashMap<>();  // Map to store state name and ID
+    private String selectedStateId;  // Variable to store selected state's ID
+
+    Spinner spinnerGender;
+    String selectedGender;
+
     public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
                 PersonInfoFragment.class.getName());
@@ -136,6 +163,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
         initView();
         setStartDateTimeField();
+        fetchStates();
         return rootView;
     }
 
@@ -144,13 +172,19 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         super.onResume();
         Log.i("@@PersonInfofragment", "onResume---");
 
+        fetchStates();
+
     }
 
     private void initView() {
-        etImageUSer=rootView.findViewById(R.id.etImageUSer);
-        txtADDImage=rootView.findViewById(R.id.txtADDImage);
-        txtResume=(TextView)rootView.findViewById(R.id.txtResume);
-        txtUploadResume=(EditText)rootView. findViewById(R.id.txtUploadResume);
+        spinnerGender = rootView.findViewById(R.id.spinnerGender);
+
+        citySpinner = rootView.findViewById(R.id.citySpinner);
+        stateSpinner = rootView.findViewById(R.id.spinnerState);
+        etImageUSer = rootView.findViewById(R.id.etImageUSer);
+        txtADDImage = rootView.findViewById(R.id.txtADDImage);
+        txtResume = (TextView) rootView.findViewById(R.id.txtResume);
+        txtUploadResume = (EditText) rootView.findViewById(R.id.txtUploadResume);
         llAccount = rootView.findViewById(R.id.llAccount);
         etUploadAdharCard = rootView.findViewById(R.id.etUploadAdharCard);
         txtADDFile = rootView.findViewById(R.id.txtADDFile);
@@ -175,17 +209,44 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         txtADDFile.setOnClickListener(this);
         txtResume.setOnClickListener(this);
         txtADDImage.setOnClickListener(this);
+
+        // Array of school options
+        String[] schoolOptions = {"Male", "Female",};
+
+        // Adapter for Spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, schoolOptions);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Set adapter to Spinner
+        spinnerGender.setAdapter(adapter);
+
+        // Set OnItemSelectedListener to Spinner
+        spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Get selected item
+                selectedGender = parent.getItemAtPosition(position).toString();
+                Log.i("@@selectedGender-", selectedGender);
+                // Show selected item in a Toast
+                //  Toast.makeText(CandidateEducation.this, "Selected: " + selectedSchool, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Optional: Handle the case when nothing is selected
+            }
+        });
     }
 
 
     @Override
     public void onClick(View v) {
-        if(v==txtADDImage){
+        if (v == txtADDImage) {
             openDailogForImagePickOptionRegisterAdhars();
         }
-        if(v==txtResume){
+        if (v == txtResume) {
             String[] mimeTypes =
-                    {"application/pdf","application/msword","application/vnd.ms-powerpoint","application/vnd.ms-excel","text/plain"};
+                    {"application/pdf", "application/msword", "application/vnd.ms-powerpoint", "application/vnd.ms-excel", "text/plain"};
 
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -200,11 +261,11 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 for (String mimeType : mimeTypes) {
                     mimeTypesStr += mimeType + "|";
                 }
-                intent.setType(mimeTypesStr.substring(0,mimeTypesStr.length() - 1));
+                intent.setType(mimeTypesStr.substring(0, mimeTypesStr.length() - 1));
             }
-            startActivityForResult(Intent.createChooser(intent,"ChooseFile"), PICKFILE_RESULT_CODE);
+            startActivityForResult(Intent.createChooser(intent, "ChooseFile"), PICKFILE_RESULT_CODE);
         }
-        if(v==txtADDFile){
+        if (v == txtADDFile) {
             openDailogForImagePickOptionRegisterAdhar();
         }
         if (v == etStartDate) {
@@ -222,12 +283,12 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 e.printStackTrace();
             }*/
             try {
-                String dateString=etStartDate.getText().toString().trim();
+                String dateString = etStartDate.getText().toString().trim();
 
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                 SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
-                reformattedStr=sdf2.format(sdf.parse(dateString));
-                Log.i("@@@---Date-",""+sdf2.format(sdf.parse(dateString)));
+                reformattedStr = sdf2.format(sdf.parse(dateString));
+                Log.i("@@@---Date-", "" + sdf2.format(sdf.parse(dateString)));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -240,11 +301,11 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
                 return;
             }*/
-            if (!Utility.checkValidEmail(etEmail.getText().toString())) {
+          /*  if (!Utility.checkValidEmail(etEmail.getText().toString())) {
                 etEmail.requestFocus();
                 Toast.makeText(getActivity(), "Enter valid email", Toast.LENGTH_SHORT).show();
                 return;
-            }
+            }*/
 
             if (etPhone.getText().toString().length() <= 0) {
                 Toast.makeText(getActivity(), "Enter Phone", Toast.LENGTH_SHORT).show();
@@ -274,11 +335,12 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             } else {
                 getPersonalInfoApi(getLoginData("id"), etFirstName.getText().toString().trim()
                         , /*etLastName.getText().toString().trim(), */etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
-                        reformattedStr, etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(), file1,filePathsss,file3);
+                        reformattedStr, etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(), file1, filePathsss, file3);
             }
 
         }
     }
+
     public String getPDFPath(Uri uri) {
         String uriAuthority = uri.getAuthority();
 
@@ -363,9 +425,6 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     }
 
 
-
-
-
     @SuppressLint("Range")
     public String getFileName(Uri uri) {
         String result = null;
@@ -388,6 +447,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         }
         return result;
     }
+
     public String getLoginData(String dataType) {
         try {
             JSONObject data = new JSONObject(new SavePreferences().reterivePreference(getActivity(), AppConstants.logindata).toString());
@@ -430,7 +490,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
 
     public void getPersonalInfoApi(String admin_user_id, String first_name, String email, String phone,
-                                   String dob, String etLookingJobTypes, String location, File adhar, File reume,File adhars) {
+                                   String dob, String etLookingJobTypes, String location, File adhar, File reume, File adhars) {
 
         BuildRequestParms buildRequestParms = new BuildRequestParms();
         AppViewModel apiParamsInterface = ApiProductionS.getInstance(mainActivity).provideService(AppViewModel.class);
@@ -446,43 +506,43 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             Log.e("getPersonalInfoApi", "First Name is required.");
             return;
         }
-        if (email == null || email.isEmpty()) {
+     /*   if (email == null || email.isEmpty()) {
             Log.e("getPersonalInfoApi", "Email is required.");
             return;
-        }
+        }*/
         if (phone == null || phone.isEmpty()) {
             Log.e("getPersonalInfoApi", "Phone is required.");
             return;
         }
 
         Observable<AttendanceModell> observable = null;
-        MultipartBody.Part adharPart=null;
+        MultipartBody.Part adharPart = null;
         // Handle Aadhaar file
         if (adhar != null && adhar.exists()) {
             RequestBody adharRequestBody = RequestBody.create(MediaType.parse("*/*"), adhar);
             adharPart = MultipartBody.Part.createFormData("aadhar", adhar.getName(), adharRequestBody);
-            Log.i("@@adhar1__image",   adhar.getAbsolutePath());
-            Log.i("@@adhars1__resume",   adhar.getName());
+            Log.i("@@adhar1__image", adhar.getAbsolutePath());
+            Log.i("@@adhars1__resume", adhar.getName());
         } else {
             Log.e("@@adhar1__image", "A valid Aadhaar file is required_1.");
             return;
         }
 // Resume file part from Uri
         MultipartBody.Part resumePart = createMultipartFromUri(fileUri, "resume");
-        Log.i("@@adhar1__resume",   resumePart.toString());
+        Log.i("@@adhar1__resume", resumePart.toString());
         if (resumePart == null) {
-            Log.i("@@adhar1__resume_null",   resumePart.toString());
+            Log.i("@@adhar1__resume_null", resumePart.toString());
             return;
         }
 
 
-        MultipartBody.Part adharParts=null;
+        MultipartBody.Part adharParts = null;
         // Handle Aadhaar file
         if (adhars != null && adhars.exists()) {
             RequestBody adharRequestBodys = RequestBody.create(MediaType.parse("*/*"), adhars);
             adharParts = MultipartBody.Part.createFormData("profile_img", adhars.getName(), adharRequestBodys);
-            Log.i("@@adhars2__resume",   adhars.getAbsolutePath());
-            Log.i("@@adhars2__resume",   adhars.getName());
+            Log.i("@@adhars2__resume", adhars.getAbsolutePath());
+            Log.i("@@adhars2__resume", adhars.getName());
         } else {
             Log.i("@@getPersonalInfoApi", "A valid Aadhaars file is required_2");
             return;
@@ -526,7 +586,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                         Toast.makeText(getActivity(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
                     } else if ("Candidate Created".equalsIgnoreCase(uploadFileResponse.getMsg())) {
                         PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", uploadFileResponse.getData().getUserID());
-                  //      Toast.makeText(getActivity(),  "Value here userId---"+PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id"), Toast.LENGTH_SHORT).show();
+                        //      Toast.makeText(getActivity(),  "Value here userId---"+PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id"), Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getActivity(), CandidateEducation.class));
                         getActivity().finish();
                     } else {
@@ -546,6 +606,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             }
         });
     }
+
     private MultipartBody.Part createMultipartFromUri(Uri fileUri, String paramName) {
         try {
             // Open InputStream from the Uri
@@ -593,7 +654,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     }
 
     public void openDailogForImagePickOptionRegisterAdhar() {
-        LayoutInflater inflater = (LayoutInflater)mainActivity. getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = inflater.inflate(R.layout.layout_popup_image_option, null, false);
         final Dialog dialog = new Dialog(getActivity());
         RelativeLayout relativeLayoutCamera = (RelativeLayout) dialogView.findViewById(R.id.relativeBlockCamera);
@@ -621,6 +682,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
     }
+
     private void getImageFromCameraRegisterPicAdhar() {
 
 
@@ -633,6 +695,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFeatureUri);
         startActivityForResult(intent, IMAGE_REQUEST_CAMERA_register_adhar);
     }
+
     private void getImagefromGalleryRegisterIcAdhar() {
         Log.i("@@GAlleryfileNameset", "2");
 
@@ -641,6 +704,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_REQUEST_GALLERY_register_adhar);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -670,7 +734,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         }
         // Check if the request is for picking a file
         else if (requestCode == PICKFILE_RESULT_CODE && resultCode == RESULT_OK && data != null) {
-             fileUri = data.getData();
+            fileUri = data.getData();
             Log.i("@@FileUri", "File Uri: " + fileUri);
 
             // Convert URI to file path and display in the TextView
@@ -714,7 +778,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             // File scaledFile = FileUtil.getFile(getApplicationContext());
             file1 = FileUtil.getFile(getActivity());
             imagePathUrlAdhar = file1.getAbsolutePath();
-            Log.i("@@FinallyGotSolution--",imagePathUrlAdhar);
+            Log.i("@@FinallyGotSolution--", imagePathUrlAdhar);
             try {
                 file1.createNewFile();
                 FileOutputStream ostream = new FileOutputStream(file1);
@@ -771,7 +835,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
         @Override
         protected String doInBackground(Uri... params) {
-            Log.i("@@GAlleryfileNameset__!","");
+            Log.i("@@GAlleryfileNameset__!", "");
 
             Uri selectedImage = params[0];
             String path = null;
@@ -876,6 +940,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         return bitmap;
 
     }
+
     public void showDialog(final String msg, final Context context,
                            final String permission) {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
@@ -895,9 +960,8 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     }
 
 
-
     public void openDailogForImagePickOptionRegisterAdhars() {
-        LayoutInflater inflater = (LayoutInflater)mainActivity. getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = inflater.inflate(R.layout.layout_popup_image_option, null, false);
         final Dialog dialog = new Dialog(getActivity());
         RelativeLayout relativeLayoutCamera = (RelativeLayout) dialogView.findViewById(R.id.relativeBlockCamera);
@@ -925,6 +989,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
     }
+
     private void getImageFromCameraRegisterPicAdhars() {
 
 
@@ -937,6 +1002,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFeatureUri);
         startActivityForResult(intent, IMAGE_REQUEST_CAMERA_register_adhars);
     }
+
     private void getImagefromGalleryRegisterIcAdhars() {
         Log.i("@@GAlleryfileNameset", "2");
 
@@ -945,6 +1011,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_REQUEST_GALLERY_register_adhars);
     }
+
     class SaveCaputureImageTaskRegisterPlateAdhars extends AsyncTask<Void, Void, String> {
 
         @Override
@@ -962,7 +1029,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             // File scaledFile = FileUtil.getFile(getApplicationContext());
             file3 = FileUtil.getFile(getActivity());
             imagePathUrlAdhar = file3.getAbsolutePath();
-            Log.i("@@FinallyGotSolution--",imagePathUrlAdhar);
+            Log.i("@@FinallyGotSolution--", imagePathUrlAdhar);
             try {
                 file1.createNewFile();
                 FileOutputStream ostream = new FileOutputStream(file3);
@@ -1009,6 +1076,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             }
         }
     }
+
     class SaveGalleryImageTaskRegisterPlateAdhars extends AsyncTask<Uri, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -1018,7 +1086,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
         @Override
         protected String doInBackground(Uri... params) {
-            Log.i("@@GAlleryfileNameset__!","");
+            Log.i("@@GAlleryfileNameset__!", "");
 
             Uri selectedImage = params[0];
             String path = null;
@@ -1079,4 +1147,161 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         }
 
     }
+
+
+    private void fetchStates() {
+        OkHttpClient client = new OkHttpClient();
+
+        String url = "https://sarwarajobs.com/api/v1/app/state/8";
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                getActivity().runOnUiThread(() -> {
+                    Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String jsonData = response.body().string();
+                    parseJson(jsonData);  // Parse the JSON data
+                } else {
+                    getActivity().runOnUiThread(() -> {
+                        Toast.makeText(getActivity(), "Error: " + response.message(), Toast.LENGTH_SHORT).show();
+                    });
+                }
+            }
+        });
+    }
+
+    private void parseJson(String jsonData) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonData);
+            JSONArray dataArray = jsonObject.getJSONArray("data").getJSONArray(0);
+            List<String> stateNames = new ArrayList<>();
+            List<String> stateIds = new ArrayList<>();  // List to store state IDs
+
+            for (int i = 0; i < dataArray.length(); i++) {
+                JSONObject stateObject = dataArray.getJSONObject(i);
+                String stateId = stateObject.getString("id");
+                String stateName = stateObject.getString("name");
+
+                stateNames.add(stateName);
+                stateIds.add(stateId);
+            }
+
+            getActivity().runOnUiThread(() -> populateSpinner(stateNames, stateIds));  // Update the UI with state names and IDs
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void populateSpinner(List<String> stateNames, List<String> stateIds) {
+        // Add "Select State" as the first item in the list
+        stateNames.add(0, "Select State");
+        stateIds.add(0, "");  // Add an empty ID for "Select State"
+
+        // Populate the stateMap with state names and their corresponding IDs
+        for (int i = 1; i < stateNames.size(); i++) {
+            stateMap.put(stateNames.get(i), stateIds.get(i));  // Store the state ID mapped to its name
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, stateNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        stateSpinner.setAdapter(adapter);
+
+        stateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) { // Ignore the "Select State" option
+                    String selectedStateName = stateNames.get(position);
+                    selectedStateId = stateMap.get(selectedStateName);  // Get the state ID from the map
+
+                    Log.i("@@selectedState", "State Name: " + selectedStateName + ", State ID: " + selectedStateId);
+                    fetchCitiesForState(selectedStateId);  // Call method to fetch and populate cities based on selectedStateId
+                } else {
+                    // Handle "Select State" option, for example, clear city spinner
+                    selectedStateId = "";  // Reset the selectedStateId if "Select State" is selected
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing if nothing is selected
+            }
+        });
+    }
+
+    private void fetchCitiesForState(String stateId) {
+        OkHttpClient client = new OkHttpClient();
+
+        String url = "https://sarwarajobs.com/api/v1/app/cities/" + stateId;  // Use the selected stateId in the URL
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                getActivity().runOnUiThread(() -> {
+                    Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String jsonData = response.body().string();
+                    parseCityJson(jsonData);  // Parse the JSON data for cities
+                } else {
+                    getActivity().runOnUiThread(() -> {
+                        Toast.makeText(getActivity(), "Error: " + response.message(), Toast.LENGTH_SHORT).show();
+                    });
+                }
+            }
+        });
+    }
+
+    private void parseCityJson(String jsonData) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonData);
+            JSONArray dataArray = jsonObject.getJSONArray("data").getJSONArray(0); // Get the array directly
+
+            List<String> cityNames = new ArrayList<>();
+
+            // Loop through the array and extract city names
+            for (int i = 0; i < dataArray.length(); i++) {
+                JSONObject cityObject = dataArray.getJSONObject(i);
+                cityNames.add(cityObject.getString("name"));
+            }
+
+            // Update the city spinner with the list of city names
+            getActivity().runOnUiThread(() -> populateCitySpinner(cityNames));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            getActivity().runOnUiThread(() -> {
+                Toast.makeText(getActivity(), "Error parsing city data", Toast.LENGTH_SHORT).show();
+            });
+        }
+    }
+
+
+    private void populateCitySpinner(List<String> cityNames) {
+        // Add "Select City" as the first item in the list
+        cityNames.add(0, "Select City");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, cityNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        citySpinner.setAdapter(adapter);
+    }
+
 }
