@@ -1285,8 +1285,10 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
 
     private void fetchStates() {
-        OkHttpClient client = new OkHttpClient();
+        // Show progress dialog before starting the API call
+        ProgressDialogUtil.showProgressDialog(getActivity());
 
+        OkHttpClient client = new OkHttpClient();
         String url = "https://sarwarajobs.com/api/v1/app/state/8";
         Request request = new Request.Builder()
                 .url(url)
@@ -1295,8 +1297,9 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
+                // Dismiss progress dialog on failure
                 getActivity().runOnUiThread(() -> {
+                    ProgressDialogUtil.hideProgressDialog();
                     Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
             }
@@ -1306,14 +1309,22 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 if (response.isSuccessful()) {
                     String jsonData = response.body().string();
                     parseJson(jsonData);  // Parse the JSON data
-                } else {
+
+                    // Dismiss progress dialog after successful response
                     getActivity().runOnUiThread(() -> {
+                        ProgressDialogUtil.hideProgressDialog();
+                    });
+                } else {
+                    // Dismiss progress dialog on error response
+                    getActivity().runOnUiThread(() -> {
+                        ProgressDialogUtil.hideProgressDialog();
                         Toast.makeText(getActivity(), "Error: " + response.message(), Toast.LENGTH_SHORT).show();
                     });
                 }
             }
         });
     }
+
 
     private void parseJson(String jsonData) {
         try {
@@ -1375,9 +1386,11 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     }
 
     private void fetchCitiesForState(String stateId) {
-        OkHttpClient client = new OkHttpClient();
+        // Show progress dialog before starting the API call
+        ProgressDialogUtil.showProgressDialog(getActivity());
 
-        String url = "https://sarwarajobs.com/api/v1/app/cities/" + stateId;  // Use the selected stateId in the URL
+        OkHttpClient client = new OkHttpClient();
+        String url = "https://sarwarajobs.com/api/v1/app/cities/" + stateId;
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -1385,8 +1398,9 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
+                // Dismiss progress dialog on failure
                 getActivity().runOnUiThread(() -> {
+                    ProgressDialogUtil.hideProgressDialog();
                     Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
             }
@@ -1396,14 +1410,22 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 if (response.isSuccessful()) {
                     String jsonData = response.body().string();
                     parseCityJson(jsonData);  // Parse the JSON data for cities
-                } else {
+
+                    // Dismiss progress dialog after successful response
                     getActivity().runOnUiThread(() -> {
+                        ProgressDialogUtil.hideProgressDialog();
+                    });
+                } else {
+                    // Dismiss progress dialog on error response
+                    getActivity().runOnUiThread(() -> {
+                        ProgressDialogUtil.hideProgressDialog();
                         Toast.makeText(getActivity(), "Error: " + response.message(), Toast.LENGTH_SHORT).show();
                     });
                 }
             }
         });
     }
+
 
     private void parseCityJson(String jsonData) {
         try {

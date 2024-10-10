@@ -92,6 +92,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import retrofit2.HttpException;
 
 public class EditPersonInfoActivity extends BaseActivity implements View.OnClickListener {
 
@@ -139,7 +140,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
     String selectedCity;
     Spinner stateSpinner, citySpinner;
 //{"message":"Candidate Listing","data":[{"id":109,"full_name":"gddsfgg","email":"ds@gmail.com","phone":"2665353","address":"ss","dob":"01-01-1970","looking_job_type":"spo","aadhar":"https:\/\/sarwarajobs.com\/storage\/uploads\/6IVezlLDDx3pPNPZLeNnJpmk17gqWtirBJrhsrDt.png","resume":"https:\/\/sarwarajobs.com\/storage\/uploads\/UwayVP7vIXhSGWataoQsBom7fHiSOYJ7wDs5z8H0.png","gender":"male","state_id":40,"city_id":3275,"profile_img":"https:\/\/sarwarajobs.com\/storage\/LnCX9msRw2EhXTqUHCJyH3FXMOrm8pIKnguJCFC2.png","description":null},{"id":108,"full_name":"dgv","email":null,"phone":"6666235689","address":"ghn","dob":"09-10-2024","looking_job_type":"ghjj","aadhar":"https:\/\/sarwarajobs.com\/storage\/uploads\/xfAGNjGl4yw98FjEXeby78EpPWeSAbLUrQ0vg4bh.png","resume":"https:\/\/sarwarajobs.com\/storage\/uploads\/kaeQEd5e6xgeb2jZT7bzMT6QxOxb06woqvE8DlnM.pdf","gender":"Male","state_id":null,"city_id":14,"profile_img":"https:\/\/sarwarajobs.com\/storage\/IiVzWRyKPEaBehPTLxAhGnbQKPbshlXCJtTJBrPS.png","description":null},{"id":107,"full_name":"testiser","email":"twst@gmail.xom","phone":"22252222","address":"jo","dob":"06-10-2024","looking_job_type":"job","aadhar":"https:\/\/sarwarajobs.com\/storage\/uploads\/Z1YIu7EWZlXNITLMPqHRKy6dMXNFEHN5nFmxnlgG.png","resume":"https:\/\/sarwarajobs.com\/storage\/uploads\/3KlUYtoEgZqRq7obl6ZY8HyEULC5pOzBUMZtfJl9.pdf","gender":null,"state_id":null,"city_id":null,"profile_img":"https:\/\/sarwarajobs.com\/storage\/Zc6AdqYKjFpu23YgAMQuDCvIhMGmGaELulit2qZo.png","description":null},{"id":104,"full_name":"cjfufifig","email":"jfcjfufi@gmail.com","phone":"5353535653","address":"fjcfuf","dob":"07-10-2024","looking_job_type":"ccjfufh","aadhar":"https:\/\/sarwarajobs.com\/storage\/uploads\/ZCb5vklEkBVoSvnnS1HFhyOR3j0qd0bMmY8f69qp.png","resume":"https:\/\/sarwarajobs.com\/storage\/uploads\/bVhtSCjAbrKabxSc9twFG7hS9oHJrWVDvUg2UWYF.pdf","gender":null,"state_id":null,"city_id":null,"profile_img":"https:\/\/sarwarajobs.com\/storage\/vt1Z6u7fWry2yNG9NySTt7ma0XnobRTT6D3A7sMm.png","description":null}]}
-
+String getGender,getSpinnerStyate,getSpinnerCity,getcity_name,getstate_name;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,6 +154,8 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
         Log.i("@@getClcikIDValue", getClcikIDValue);
         initView();
         setStartDateTimeField();
+        fetchStates();
+
     }
 
     @Override
@@ -164,6 +167,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
     //  @Override
     public void onResume() {
         super.onResume();
+        fetchStates();
         Log.i("@@PersonInfoActivity", "onResume---");
 
     }
@@ -220,7 +224,11 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
             txtUploadResume.setText(getIntent().getStringExtra("resume"));
             etImageUSer.setText(getIntent().getStringExtra("profile_img"));
             Log.i("@@get|ResumeData--", getIntent().getStringExtra("resume"));
-
+            getGender=(getIntent().getStringExtra("gender"));
+                    getSpinnerStyate=(getIntent().getStringExtra("state_id"));
+                    getSpinnerCity=(getIntent().getStringExtra("city_id"));
+            getcity_name=(getIntent().getStringExtra("city_name"));
+            getstate_name=(getIntent().getStringExtra("state_name"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -299,14 +307,8 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
         }
 
         if (v == verify_btn) {
-            SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-      /*      try {
 
-                reformattedStr = myFormat.format(myFormat.parse(etStartDate.getText().toString().trim()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }*/
             try {
                 String dateString = etStartDate.getText().toString().trim();
 
@@ -327,11 +329,11 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
 
                 return;
             }*/
-            if (!Utility.checkValidEmail(etEmail.getText().toString())) {
+           /* if (!Utility.checkValidEmail(etEmail.getText().toString())) {
                 etEmail.requestFocus();
                 Toast.makeText(this, "Enter valid email", Toast.LENGTH_SHORT).show();
                 return;
-            }
+            }*/
 
             if (etPhone.getText().toString().length() <= 0) {
                 Toast.makeText(this, "Enter Phone", Toast.LENGTH_SHORT).show();
@@ -360,26 +362,24 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
 
                 return;
             } else {
-                getPersonalInfoApi(getClcikIDValue, etFirstName.getText().toString().trim()
-                        , /*etLastName.getText().toString().trim(),*/ etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
+                Log.i("@@getClcikIDValue",""+getClcikIDValue);
+                Log.i("@@etFirstName",""+etFirstName.getText().toString().trim());
+                Log.i("@@etEmail",""+etEmail.getText().toString().trim());
+                Log.i("@@etPhone",""+ etPhone.getText().toString().trim());
+                Log.i("@@reformattedStr",""+reformattedStr.trim());
+                Log.i("@@etAddress",""+etAddress.getText().toString().trim());
+                Log.i("@@etLookingJobType",""+etLookingJobType.getText().toString().trim());
+                Log.i("@@selectedGender",""+selectedGender);
+                Log.i("@@selectedStateId",""+selectedStateId);
+                Log.i("@@selectedCityId",""+selectedCityId);
+                getPersonalInfoApiExtra(getClcikIDValue, etFirstName.getText().toString().trim()
+                        ,etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
                         reformattedStr, etAddress.getText().toString().trim(), etLookingJobType.getText().toString().trim(),selectedGender,selectedStateId,selectedCityId, etLoction.getText().toString().trim(), file1,filePathsss,file3);
             }
 
         }
     }
 
-    public String getPDFPath(Uri uri) {
-
-        final String id = DocumentsContract.getDocumentId(uri);
-        final Uri contentUri = ContentUris.withAppendedId(
-                Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(contentUri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
 
     @SuppressLint("Range")
     public String getFileName(Uri uri) {
@@ -445,8 +445,9 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
             return null;
         }
     }
+    //I am not using this method because resum,and profile_image are mnot need now.
 
-    public void getPersonalInfoApi(String admin_user_id, String first_name, String email, String phone,
+    public void getPersonalInfoApis(String admin_user_id, String first_name, String email, String phone,
                                    String dob, String etLookingJobTypes, String location,String gender,String state,String city,  String description,File adhar, File reume, File adhars) {
 
         BuildRequestParms buildRequestParms = new BuildRequestParms();
@@ -500,9 +501,6 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
             adharParts = MultipartBody.Part.createFormData("profile_img", adhars.getName(), adharRequestBodys);
             Log.i("@@adhars2__resume", adhars.getAbsolutePath());
             Log.i("@@adhars2__resume", adhars.getName());
-        } else {
-            Log.i("@@getPersonalInfoApi", "A valid Aadhaars file is required_2");
-            return;
         }
         observable = apiParamsInterface.candidateedit(
                 buildRequestParms.getRequestBody(admin_user_id),
@@ -587,9 +585,293 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
     }
 
 
+    public void getPersonalInfoApi(String admin_user_id, String first_name, String email, String phone,
+                                   String dob, String etLookingJobTypes, String location, String gender,
+                                   String state, String city, String description, File adhar, File resume, File adhars) {
+
+        BuildRequestParms buildRequestParms = new BuildRequestParms();
+        AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
+
+        Log.i("getPersonalInfoApi", "API Call Initiated");
+
+        // Mandatory validation
+        if (admin_user_id == null || admin_user_id.isEmpty()) {
+            Log.e("getPersonalInfoApi", "Admin User ID is required.");
+            return;
+        }
+        if (first_name == null || first_name.isEmpty()) {
+            Log.e("getPersonalInfoApi", "First Name is required.");
+            return;
+        }
+        if (phone == null || phone.isEmpty()) {
+            Log.e("getPersonalInfoApi", "Phone is required.");
+            return;
+        }
+
+        // Validate Aadhaar file
+        MultipartBody.Part adharPart = null;
+        if (adhar != null && adhar.exists()) {
+            RequestBody adharRequestBody = RequestBody.create(MediaType.parse("*/*"), adhar);
+            adharPart = MultipartBody.Part.createFormData("aadhar", adhar.getName(), adharRequestBody);
+            Log.i("@@adhar1__image", adhar.getAbsolutePath());
+        } else {
+            Log.e("@@adhar1__image", "A valid Aadhaar file is required.");
+            return;
+        }
+
+        // Resume file is optional
+        MultipartBody.Part resumePart = null;
+        if (resume != null && resume.exists()) {
+            RequestBody resumeRequestBody = RequestBody.create(MediaType.parse("*/*"), resume);
+            resumePart = MultipartBody.Part.createFormData("resume", resume.getName(), resumeRequestBody);
+            Log.i("@@resume", "Resume file included.");
+        } else {
+            Log.i("@@resume", "No resume file provided. It will be skipped in the API call.");
+        }
+
+        // Profile image is optional
+        MultipartBody.Part adharParts = null;
+        if (adhars != null && adhars.exists()) {
+            RequestBody adharPartsRequestBody = RequestBody.create(MediaType.parse("*/*"), adhars);
+            adharParts = MultipartBody.Part.createFormData("profile_img", adhars.getName(), adharPartsRequestBody);
+            Log.i("@@profile_img", "Profile image included.");
+        } else {
+            Log.i("@@profile_img", "No profile image provided. It will be skipped in the API call.");
+        }
+
+        // Prepare API call
+        Observable<CanddiateEditProfileModell> observable = apiParamsInterface.candidateedit(
+                buildRequestParms.getRequestBody(admin_user_id),
+                buildRequestParms.getRequestBody(first_name),
+                buildRequestParms.getRequestBody(email),
+                buildRequestParms.getRequestBody(phone),
+                buildRequestParms.getRequestBody(dob),
+                buildRequestParms.getRequestBody(etLookingJobTypes),
+                buildRequestParms.getRequestBody(gender),
+                buildRequestParms.getRequestBody(state),
+                buildRequestParms.getRequestBody(city),
+                buildRequestParms.getRequestBody(location),
+                buildRequestParms.getRequestBody(description),
+                adharPart,
+                resumePart,      // Include resumePart even if null
+                adharParts       // Include adharParts even if null
+        );
+
+        Log.i("@@candiateAdd", "candiateAdd");
+
+        final ProgressDialog mProgressDialog = new ProgressDialog(EditPersonInfoActivity.this);
+        mProgressDialog.show();
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setTitle("Please wait...");
+
+        RxAPICallHelper.call(observable, new RxAPICallback<CanddiateEditProfileModell>() {
+
+            @Override
+            public void onSuccess(CanddiateEditProfileModell uploadFileResponse) {
+                mProgressDialog.dismiss();
+                try {
+                    if (uploadFileResponse.getMsg().equalsIgnoreCase("Email already exist")) {
+                        Toast.makeText(getApplicationContext(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                        showErrorDialog(uploadFileResponse.getMsg());
+                    } else if (uploadFileResponse.getMsg().equalsIgnoreCase("Candidate Updated")) {
+                        Intent mIntent = new Intent(getApplicationContext(), CandidateEducation.class);
+                        Bundle mBundle = new Bundle();
+                        mBundle.putString("EditProfile", "Edit");
+                        mIntent.putExtras(mBundle);
+                        startActivity(mIntent);
+                        Toast.makeText(getApplicationContext(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        showErrorDialog(uploadFileResponse.getMsg());
+                    }
+                } catch (Exception e) {
+                    mProgressDialog.dismiss();
+                    showErrorDialog(uploadFileResponse.getMsg());
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailed(Throwable throwable) {
+                mProgressDialog.dismiss();
+                Log.i("@@throwable--", "" + throwable.toString());
+
+                // Check if the throwable is an instance of HttpException
+                if (throwable instanceof HttpException) {
+                    HttpException httpException = (HttpException) throwable;
+                    int statusCode = httpException.code(); // Get the HTTP status code
+                    String errorMessage = httpException.message(); // Get the error message
+
+                    // You can extract the error body if needed
+                    String responseBody;
+                    try {
+                        // Convert response body to string if needed
+                        responseBody = httpException.response().errorBody().string();
+                        Log.e("@@HTTP Error Body", responseBody);
+                    } catch (Exception e) {
+                        responseBody = "Error while retrieving error body";
+                        e.printStackTrace();
+                    }
+
+                    // Handle specific HTTP status codes
+                    switch (statusCode) {
+                        case 400:
+                            Toast.makeText(getApplicationContext(), "Bad Request: " + errorMessage, Toast.LENGTH_SHORT).show();
+                            break;
+                        case 401:
+                            Toast.makeText(getApplicationContext(), "Unauthorized: " + errorMessage, Toast.LENGTH_SHORT).show();
+                            break;
+                        case 403:
+                            Toast.makeText(getApplicationContext(), "Forbidden: " + errorMessage, Toast.LENGTH_SHORT).show();
+                            break;
+                        case 404:
+                            Toast.makeText(getApplicationContext(), "Not Found: " + errorMessage, Toast.LENGTH_SHORT).show();
+                            break;
+                        case 500:
+                            Toast.makeText(getApplicationContext(), "Internal Server Error: " + errorMessage, Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            Toast.makeText(getApplicationContext(), "Unexpected error: " + errorMessage, Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                } else {
+                    // Handle other exceptions
+                    Toast.makeText(getApplicationContext(), "An error occurred: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        });
+    }
+
+    public void getPersonalInfoApiExtra(String admin_user_id, String first_name, String email, String phone,
+                                        String dob, String etLookingJobTypes, String location,String gender,String state,String city,  String description, File adhar, File resume, File profileImage) {
+
+        BuildRequestParms buildRequestParms = new BuildRequestParms();
+        AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
+
+        Log.i("getPersonalInfoApi", "API Call Initiated");
+
+        // Validate mandatory inputs to avoid crashes
+        if (admin_user_id == null || admin_user_id.isEmpty()) {
+            Log.e("getPersonalInfoApi", "Admin User ID is required.");
+            return;
+        }
+        if (first_name == null || first_name.isEmpty()) {
+            Log.e("getPersonalInfoApi", "First Name is required.");
+            return;
+        }
+        if (phone == null || phone.isEmpty()) {
+            Log.e("getPersonalInfoApi", "Phone is required.");
+            return;
+        }
+
+        Observable<CanddiateEditProfileModell> observable = null;
+        MultipartBody.Part adharPart = null;
+        MultipartBody.Part resumePart = null;
+        MultipartBody.Part profileImagePart = null;
+
+        // Handle Aadhaar file (mandatory)
+        if (adhar != null && adhar.exists()) {
+            RequestBody adharRequestBody = RequestBody.create(MediaType.parse("*/*"), adhar);
+            adharPart = MultipartBody.Part.createFormData("aadhar", adhar.getName(), adharRequestBody);
+            Log.i("@@adhar__image", adhar.getAbsolutePath());
+        } else {
+            Log.e("@@adhar__image", "A valid Aadhaar file is required.");
+            return;
+        }
+
+        // Handle resume file (optional)
+        if (resume != null && resume.exists()) {
+            RequestBody resumeRequestBody = RequestBody.create(MediaType.parse("*/*"), resume);
+            resumePart = MultipartBody.Part.createFormData("resume", resume.getName(), resumeRequestBody);
+            Log.i("@@resume__file", resume.getAbsolutePath());
+        } else {
+            Log.i("@@resume__file", "Resume file is null or doesn't exist.");
+        }
+
+        // Handle profile image file (optional)
+        if (profileImage != null && profileImage.exists()) {
+            RequestBody profileImageRequestBody = RequestBody.create(MediaType.parse("*/*"), profileImage);
+            profileImagePart = MultipartBody.Part.createFormData("profile_img", profileImage.getName(), profileImageRequestBody);
+            Log.i("@@profile_img__file", profileImage.getAbsolutePath());
+        } else {
+            Log.i("@@profile_img__file", "Profile image file is null or doesn't exist.");
+        }
+
+
+        // Making the API call
+        observable = apiParamsInterface.candidateedit(
+                buildRequestParms.getRequestBody(admin_user_id),
+                buildRequestParms.getRequestBody(first_name),
+                // buildRequestParms.getRequestBody(last_name),
+                buildRequestParms.getRequestBody(email),
+                buildRequestParms.getRequestBody(phone),
+                buildRequestParms.getRequestBody(dob),
+                buildRequestParms.getRequestBody(etLookingJobTypes),
+                buildRequestParms.getRequestBody(gender),
+                buildRequestParms.getRequestBody(state),
+                buildRequestParms.getRequestBody(city),
+                buildRequestParms.getRequestBody(location),
+                buildRequestParms.getRequestBody(description),
+                adharPart,
+                resumePart,
+                profileImagePart
+        );
+
+        Log.i("getPersonalInfoApi", "candiateAdd API called");
+
+        final ProgressDialog mProgressDialog = new ProgressDialog(EditPersonInfoActivity.this);
+        mProgressDialog.show();
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setTitle("Please wait...");
+
+        // API Call using RxJava Helper
+        RxAPICallHelper.call(observable, new RxAPICallback<CanddiateEditProfileModell>() {
+
+            @Override
+            public void onSuccess(CanddiateEditProfileModell uploadFileResponse) {
+                mProgressDialog.dismiss();
+
+                Log.i("getPersonalInfoApi", "API call successful: " + uploadFileResponse.toString());
+
+                try {
+                    if (uploadFileResponse.getMsg().equalsIgnoreCase("Email already exist")) {
+                        Toast.makeText(getApplicationContext(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                        showErrorDialog(uploadFileResponse.getMsg());
+                    } else {
+                        //          System.out.println("@@AttendanceModell_2" + uploadFileResponse.getData().getId());
+                        if (uploadFileResponse.getMsg().equalsIgnoreCase("Candidate Updated")) {
+                            //            PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", uploadFileResponse.getData().getId());
+                            //  startActivity(new Intent(getApplicationContext(), CandidateEducation.class));
+                            Intent mIntent = new Intent(getApplicationContext(), CandidateEducation.class);
+                            Bundle mBundle = new Bundle();
+                            mBundle.putString("EditProfile", "Edit"); // Example: Sending a String
+                            mIntent.putExtras(mBundle); // Attach the bundle to the intent
+                            startActivity(mIntent); // Start the new activity
+                            Toast.makeText(getApplicationContext(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
+
+                            finish();
 
 
 
+                        } else {
+                            showErrorDialog(uploadFileResponse.getMsg());
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.e("getPersonalInfoApi", "Error processing response.", e);
+                    mProgressDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailed(Throwable throwable) {
+                Log.i("@@getPersonalInfoApi", "API call failed: " + throwable.getMessage().toString());
+                Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                mProgressDialog.dismiss();
+            }
+        });
+    }
     private void setStartDateTimeField() {
         Calendar newCalendar = Calendar.getInstance();
 
@@ -1177,8 +1459,8 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
 
     private void populateSpinner(List<String> stateNames, List<String> stateIds) {
         // Add "Select State" as the first item in the list
-        stateNames.add(0, "Select State");
-        stateIds.add(0, "");  // Add an empty ID for "Select State"
+        stateNames.add(0, getstate_name);
+        stateIds.add(0, getSpinnerStyate);  // Add an empty ID for "Select State"
 
         // Populate the stateMap with state names and their corresponding IDs
         for (int i = 1; i < stateNames.size(); i++) {
@@ -1274,7 +1556,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
     private void populateCitySpinner(List<String> cityNames, List<String> cityIds) {
         // Add "Select City" as the first item in the list
         cityNames.add(0, "Select City");
-
+      //  cityIds.add(0, getSpinnerCity);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cityNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         citySpinner.setAdapter(adapter);

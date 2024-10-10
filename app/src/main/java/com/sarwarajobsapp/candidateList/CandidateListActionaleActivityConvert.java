@@ -24,6 +24,7 @@ import com.sarwarajobsapp.base.BaseActivity;
 import com.sarwarajobsapp.communication.CallBack;
 import com.sarwarajobsapp.communication.ServerHandler;
 import com.sarwarajobsapp.dashboard.MainActivity;
+import com.sarwarajobsapp.util.ProgressDialogUtil;
 import com.sarwarajobsapp.utility.AppConstants;
 import com.sarwarajobsapp.utility.PrefHelper;
 
@@ -143,6 +144,7 @@ public class CandidateListActionaleActivityConvert extends BaseActivity implemen
     }
     private void getMember() {
       //  System.out.println("wdcodes====" +  PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id"));
+        ProgressDialogUtil.showProgressDialog(CandidateListActionaleActivityConvert.this);
         LinkedHashMap<String, String> m = new LinkedHashMap<>();
         Map<String, String> headerMap = new HashMap<>();
         m.put("admin_user_id",  getLoginData("id"));
@@ -154,7 +156,7 @@ public class CandidateListActionaleActivityConvert extends BaseActivity implemen
             @Override
             public void getRespone(String dta, ArrayList<Object> respons) {
                 srLayout.setRefreshing(false);
-
+                ProgressDialogUtil.hideProgressDialog();
                 try {
                     System.out.println("wdcodes====" + dta);
                     JSONObject obj = new JSONObject(dta);
