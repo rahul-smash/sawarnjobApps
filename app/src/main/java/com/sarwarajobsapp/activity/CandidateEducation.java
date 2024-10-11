@@ -228,7 +228,7 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
          spinnerSchool = findViewById(R.id.spinnerSchool);
 
         // Array of school options
-        String[] schoolOptions = {"10th", "12th", "Graduation", "Masters"};
+        String[] schoolOptions = {"10th", "12th", "Graduation", "Masters","No Education"};
 
         // Adapter for Spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, schoolOptions);
