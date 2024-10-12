@@ -5,6 +5,7 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
+
         // Downgrade to AGP 7.3.0-beta05
         classpath 'com.android.tools.build:gradle:7.3.0-beta05'
         classpath 'com.google.gms:google-services:4.4.1'
