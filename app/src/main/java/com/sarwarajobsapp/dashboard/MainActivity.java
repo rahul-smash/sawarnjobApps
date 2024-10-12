@@ -24,6 +24,7 @@ import com.app.preferences.SavePreferences;
 import com.sarwarajobsapp.R;
 import com.sarwarajobsapp.activity.PersonInfoActivity;
 import com.sarwarajobsapp.activity.PersonInfoFragment;
+import com.sarwarajobsapp.activity.PrivacyPolicy;
 import com.sarwarajobsapp.activity.ThanksActivity;
 import com.sarwarajobsapp.base.BaseActivity;
 import com.sarwarajobsapp.candidateList.CandidateListActionaleActivityConvert;
@@ -40,7 +41,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public  static TextView txtToolbartext;
     public  static ImageView imgICBack;
      LinearLayout llPersonalInfo,llCandidateList,llLogout,linearTaskList,linearMAnageOrder,linearMyPoints,linearSamriddhiDashboard,linearNotification,linearChangePasswords,linearPrivacyPolicy,linearChhoseanystartWork;
-    TextView txtCandidateLsit, btn_samriddhiDashboards,home_btn,btn_attendance,btn_taskList,btn_manageOrder,btnMyPoints,btnNotification,btnChangePassword,btnMyOrders,txtLogout,btnPrivacyPolicy,btnChhossestartAnyWork;
+    TextView txtCandidateLsit, btn_samriddhiDashboards,home_btn,btn_attendance,btn_taskList,btn_manageOrder,btnMyPoints,btnNotification,btnChangePassword,btnMyOrders,txtLogout,txtPrivacyPolicy,btnPrivacyPolicy,btnChhossestartAnyWork;
     private boolean doubleBackToExitPressedOnce;
 
     public static Intent getIntent(Context context) {
@@ -67,7 +68,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void initView() {
         txtToolbartext =findViewById(R.id.txtToolbartext);
         imgICBack=(ImageView)findViewById(R.id.imgICBack);
-
+        txtPrivacyPolicy=(TextView)findViewById(R.id.txtPrivacyPolicy);
+        linearPrivacyPolicy=(LinearLayout) findViewById(R.id.linearPrivacyPolicy);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         menuBtn = (ImageButton) findViewById(R.id.menu_btn);
         llPersonalInfo=(LinearLayout) findViewById(R.id.llPersonalInfo);
@@ -95,6 +97,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         txtLogout.setOnClickListener(this);
         llCandidateList.setOnClickListener(this);
         txtCandidateLsit.setOnClickListener(this);
+        txtPrivacyPolicy.setOnClickListener(this);
+        linearPrivacyPolicy.setOnClickListener(this);
     }
 
 
@@ -165,6 +169,31 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     }
                 }, drawerCloseTime);
                 break;
+
+
+            case R.id.linearPrivacyPolicy:
+//                it will check drawer state
+                checkDrawerState();
+//                this function will inflate the My payment screen
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showPrivacyPolicy();
+                    }
+                }, drawerCloseTime);
+                break;
+
+            case R.id.txtPrivacyPolicy:
+//                it will check drawer state
+                checkDrawerState();
+//                this function will inflate the My payment screen
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showPrivacyPolicy();
+                    }
+                }, drawerCloseTime);
+                break;
     }
 
 
@@ -227,6 +256,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         imgICBack.setVisibility(View.GONE);
         showFragment(PersonInfoFragment.newInstance(this), PersonInfoFragment.TAG);
 
+
+    }
+    private void showPrivacyPolicy() {
+        imgICBack.setVisibility(View.GONE);
+
+        txtToolbartext.setText("Privacy Policy");
+        showFragment(new PrivacyPolicy(), PrivacyPolicy.TAG);
 
     }
     private void setUpCandidateLits() {
