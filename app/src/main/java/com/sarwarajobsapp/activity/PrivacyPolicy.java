@@ -78,13 +78,13 @@ public class PrivacyPolicy extends Fragment {
 
         Map<String, String> headerMap = new HashMap<>();
 
-        new ServerHandler().sendToServer(getActivity(), AppConstants.apiUlr + "privacy-policy", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
+        new ServerHandler().sendToServers(getActivity(), AppConstants.apiUlr + "privacy", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
             @Override
             public void getRespone(String dta, ArrayList<Object> respons) {
                 try {
                     System.out.println("privacyPolicy====" + dta);
                     JSONObject obj = new JSONObject(dta);
-                    if (obj.getInt("result") > 0) {
+                    if (obj.getString("message").equalsIgnoreCase("Privacy Policy")) {
 
                         Webview.loadData(obj.getString("data"), "text/html", "utf-8");
 
