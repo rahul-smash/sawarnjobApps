@@ -164,6 +164,125 @@ public class ServerHandler {
             }
         }
     }
+<<<<<<< HEAD
+=======
+    public void sendToServers(final Context ct, String url, final Map<String, String> data, final int showloader, final Map<String, String> headerData, final int requestType, int loaderLayout, final CallBack cb) {
+        ct1 = ct;
+        this.loaderLayout = loaderLayout;
+        if (progressdlg != null && progressdlg.isShowing()) {
+            progressdlg.dismiss();
+        }
+        if (CheckInternetState(ct, showloader)) {
+            try {
+                data.put("device_info", getDeviceName());
+                data.put("device_type", "Android");
+
+
+                int requestMethod=Request.Method.GET;
+                if(requestType==0)
+                {
+                    requestMethod=Request.Method.GET;
+                }
+
+
+                StringRequest stringRequest = new StringRequest(requestMethod, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    System.out.println("Response back======" + response);
+                                    cb.getRespone(response, null);
+                                    progressdlg.dismiss();
+
+                                } catch (Exception e) {
+                                    cb.getRespone("error", null);
+                                    if (showloader <= 0)
+                                        utilClass.show_alert("Network", "Network Error.");
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+
+                                System.out.println("inside on error===="+error);
+                                try {
+                                    //  int statusCode= error.networkResponse.statusCode;
+                                    if (progressdlg != null && progressdlg.isShowing()) {
+                                        progressdlg.dismiss();
+                                    }
+                                    if (error != null) {
+                                        byte[] data1 = error.networkResponse.data;
+                                        char[] ch = new String(data1, "UTF-8").toCharArray();
+                                        cb.getRespone(new String(ch), null);
+
+                                    }
+                                    else
+                                    {
+                                        System.out.println("Error=="+error);
+                                        cb.getRespone("Error", null);
+                                    }
+
+                                } catch (Exception e) {
+                                    cb.getRespone("Error", null);
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+
+
+                ) {
+                    @Override
+                    protected Map<String, String> getParams() {
+                        return data;
+                    }
+
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+
+                        Map<String, String> params = new HashMap<>();
+                        try {
+
+                            params.put("Authorization", headerData.get("Authorization"));
+//                            params.put("Content-Type", "application/json");
+
+                            System.out.println("Heade data=="+params);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return params;
+
+                    }
+
+                    ;
+                };
+
+                stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        20000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+
+                RequestQueue requestQueue = Volley.newRequestQueue(ct);
+                requestQueue.add(stringRequest);
+
+                stringRequest.setShouldCache(true);
+                showProgressDialog();
+                progressdlg.show();
+
+                if (showloader >= 1) {
+                    progressdlg.dismiss();
+                }
+            } catch (Exception e) {
+                if (progressdlg != null)
+                    progressdlg.dismiss();
+
+            }
+        }
+    }
+>>>>>>> 76b77736fd1331d2a5818195084ba5ec3f313bfe
 
     public String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
