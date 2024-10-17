@@ -577,7 +577,11 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             Log.e("getPersonalInfoApi", "Phone is required.");
             return;
         }
-
+        if (payment_method == null || payment_method.isEmpty()) {
+            Log.e("getPersonalInfoApi", "payment_method is required.");
+            Toast.makeText(getActivity(), "Select Payment Method is required.", Toast.LENGTH_SHORT).show();
+            return; // Exit if city is not provided
+        }
         Observable<AttendanceModell> observable = null;
         MultipartBody.Part adharPart = null;
         MultipartBody.Part resumePart = null;

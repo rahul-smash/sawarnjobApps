@@ -226,8 +226,13 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
             etUploadAdharCard.setText(getIntent().getStringExtra("aadhar"));
             txtUploadResume.setText(getIntent().getStringExtra("resume"));
             etImageUSer.setText(getIntent().getStringExtra("profile_img"));
+            String amount = getIntent().getStringExtra("amount");
+            if (amount != null) {
+                etAmount.setText(amount);
+            } else {
+                etAmount.setText(""); // Set a default value, e.g., an empty string
+            }
             Log.i("@@get|ResumeData--", getIntent().getStringExtra("resume"));
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -525,6 +530,10 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
         if (city == null || city.isEmpty()) {
             Log.e("getPersonalInfoApi", "City is required.");
             Toast.makeText(getApplicationContext(), "City is required.", Toast.LENGTH_SHORT).show();
+            return; // Exit if city is not provided
+        }  if (payment_method == null || payment_method.isEmpty()) {
+            Log.e("getPersonalInfoApi", "payment_method is required.");
+            Toast.makeText(getApplicationContext(), "Select Payment is required.", Toast.LENGTH_SHORT).show();
             return; // Exit if city is not provided
         }
 

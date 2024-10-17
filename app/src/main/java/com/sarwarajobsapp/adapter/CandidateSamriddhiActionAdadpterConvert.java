@@ -112,6 +112,8 @@ holder.txtSrNo.setText(jsonObject.getString("full_name"));
                             intent.putExtra("city_id", dataObj.getString("city_id"));
                             intent.putExtra("state_name", dataObj.getString("state_name"));
                             intent.putExtra("city_name", dataObj.getString("city_name"));
+                            intent.putExtra("payment_method", dataObj.getString("payment_method"));
+                            intent.putExtra("amount", dataObj.getString("amount"));
                             mContext.startActivity(intent);
                           //  mContext.startActivity(new Intent(mContext, PersonInfoActivity.class));
 
@@ -170,6 +172,8 @@ holder.txtSrNo.setText(jsonObject.getString("full_name"));
                            intent.putExtra("city_id", dataObj.getString("city_id"));
                             intent.putExtra("state_name", dataObj.getString("state_name"));
                             intent.putExtra("city_name", dataObj.getString("city_name"));
+                            intent.putExtra("payment_method", dataObj.getString("payment_method"));
+                            intent.putExtra("amount", dataObj.getString("amount"));
                             mContext.startActivity(intent);
                             //  mContext.startActivity(new Intent(mContext, PersonInfoActivity.class));
 
