@@ -24,6 +24,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -86,22 +88,25 @@ import okhttp3.RequestBody;
 public class NewPostionScreen extends BaseActivity implements View.OnClickListener {
 
     public static final String TAG = "NewPostionScreen";
-    TextInputLayout txtInputEmployeeType,txtInputPostion, txtInputTitle, txtInputCompanyName, txtInputLocation, txtInputStartDate, txtInputEODDate, txtInputJOB;
-    TextView verify_btn,customeToolbartext,txtADDImage;
+    TextInputLayout txtInputAmount, txtInputPostion, txtInputTitle, txtInputCompanyName, txtInputLocation, txtInputStartDate, txtInputEODDate, txtInputJOB;
+    TextView verify_btn, customeToolbartext, txtADDImage;
     Spinner txtSPinnerEmployeerType;
-    EditText txtEmployeeType,txtPosition,txtTitle, txtCompanyName, txtLocation, etStartDate, etEODDate, txtJobRpleDescritpion;
+    EditText etAmount, txtEmployeeType, txtPosition, txtTitle, txtCompanyName, txtLocation, etStartDate, etEODDate, txtJobRpleDescritpion;
     Calendar bookDateAndTime;
-     DatePickerDialog toDatePickerDialog;
-     DatePickerDialog toDatePickerDialogEnd;
+    DatePickerDialog toDatePickerDialog;
+    DatePickerDialog toDatePickerDialogEnd;
     LinearLayout llAccount;
     //String reformattedStr,EndreformattedStr;
-     Uri imageFeatureUri;
+    Uri imageFeatureUri;
     public static final int IMAGE_REQUEST_GALLERY_register_adhar = 325;
     public static final int IMAGE_REQUEST_CAMERA_register_adhar = 326;
     Uri source;
     EditText etImageUSer;
     String imagePathUrlAdhar;
-    File file1 ;
+    File file1;
+    Spinner spinPaymentMethod;
+    String selectedPayment;
+
   /*  public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
                 NewPostionScreen.class.getName());
@@ -143,30 +148,57 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
 
 
     private void initView() {
-        customeToolbartext=findViewById(R.id.customeToolbartext);
-        etImageUSer=findViewById(R.id.etImageUSer);
-        txtADDImage=findViewById(R.id.txtADDImage);
+        customeToolbartext = findViewById(R.id.customeToolbartext);
+        txtInputAmount = findViewById(R.id.txtInputAmount);
+        etAmount = findViewById(R.id.etAmount);
+        spinPaymentMethod = findViewById(R.id.spinPaymentMethod);
+        etImageUSer = findViewById(R.id.etImageUSer);
+        txtADDImage = findViewById(R.id.txtADDImage);
         txtInputTitle = findViewById(R.id.txtInputTitle);
         txtInputCompanyName = findViewById(R.id.txtInputCompanyName);
-        txtInputPostion= findViewById(R.id.txtInputPostion);
-        txtPosition= findViewById(R.id.txtPosition);
+        txtInputPostion = findViewById(R.id.txtInputPostion);
+        txtPosition = findViewById(R.id.txtPosition);
         txtInputLocation = findViewById(R.id.txtInputLocation);
         txtInputStartDate = findViewById(R.id.txtInputStartDate);
         txtInputEODDate = findViewById(R.id.txtInputEODDate);
         txtInputJOB = findViewById(R.id.txtInputJOB);
         verify_btn = findViewById(R.id.verify_btn);
         txtTitle = findViewById(R.id.txtTitle);
-        txtEmployeeType=findViewById(R.id.txtEmployeeType);
+        txtEmployeeType = findViewById(R.id.txtEmployeeType);
         txtCompanyName = findViewById(R.id.txtCompanyName);
         txtLocation = findViewById(R.id.txtLocation);
         etStartDate = findViewById(R.id.etStartDate);
         etEODDate = findViewById(R.id.etEODDate);
         txtJobRpleDescritpion = findViewById(R.id.txtJobRpleDescritpion);
         customeToolbartext.setText("Add Previous Experience");
+
+/*        String[] paymentMethod = {"Cash", "Online", "Banking"};
+
+        // Adapter for Spinner
+        ArrayAdapter<String> adapters = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, paymentMethod);
+        adapters.setDropDownViewResource(android.R.layout.simple_spinner_item);
+
+        // Set adapter to Spinner
+        spinPaymentMethod.setAdapter(adapters);
+
+        // Set OnItemSelectedListener to Spinner
+        spinPaymentMethod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Get selected item
+                selectedPayment = parent.getItemAtPosition(position).toString();
+                Log.i("@@selectedPayment--", selectedPayment);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Optional: Handle the case when nothing is selected
+            }
+        });*/
         findViewById(R.id.goback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
               /*  Fragment fragment = new CandidateListActionaleActivity();
                 FragmentManager fragmentManager = getSupportFragmentManager();
@@ -182,7 +214,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if(v==txtADDImage){
+        if (v == txtADDImage) {
             openDailogForImagePickOptionRegisterAdhar();
         }
         if (v == etStartDate) {
@@ -232,7 +264,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
                 e.printStackTrace();
             }
 */
-           // System.out.println("EndreformattedStr====" +EndreformattedStr);
+            // System.out.println("EndreformattedStr====" +EndreformattedStr);
 
           /*  if (txtTitle.getText().toString().length() <= 0) {
                 Toast.makeText(this,"Enter Title", Toast.LENGTH_SHORT).show();
@@ -270,11 +302,10 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
                 Toast.makeText(this, "Enter Job Description", Toast.LENGTH_SHORT).show();
 
                 return;
-            }
-            else {
+            } else {
                 getPostionDataTypeApi(PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id"),
-                        txtCompanyName.getText().toString().trim(),  txtPosition.getText().toString().trim(),
-                      /*  reformattedStr, EndreformattedStr,*/ txtJobRpleDescritpion.getText().toString().trim()/*,file1*/);
+                        txtCompanyName.getText().toString().trim(), txtPosition.getText().toString().trim(),
+                        /*  reformattedStr, EndreformattedStr,*/ txtJobRpleDescritpion.getText().toString().trim()/*,file1*/);
             }
 
         }
@@ -293,121 +324,120 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
     }
 
 
-  /*  public void getPostionDataTypeApi(String user_id, String company, String position, String started_at,
-                                      String ended_at,String description) {
+    /*  public void getPostionDataTypeApi(String user_id, String company, String position, String started_at,
+                                        String ended_at,String description) {
 
-        LinkedHashMap<String, String> m = new LinkedHashMap<>();
+          LinkedHashMap<String, String> m = new LinkedHashMap<>();
 
-        m.put("user_id", user_id);
-        m.put("company", company);
-        m.put("position", position);
-        m.put("started_at", started_at);
-        m.put("ended_at", ended_at);
-        m.put("description", description);
+          m.put("user_id", user_id);
+          m.put("company", company);
+          m.put("position", position);
+          m.put("started_at", started_at);
+          m.put("ended_at", ended_at);
+          m.put("description", description);
 
 
-        Map<String, String> headerMap = new HashMap<>();
-        System.out.println("getPostionDataTypeApi====" + AppConstants.apiUlr + "candidate/experience/add" + m);
+          Map<String, String> headerMap = new HashMap<>();
+          System.out.println("getPostionDataTypeApi====" + AppConstants.apiUlr + "candidate/experience/add" + m);
 
-        new ServerHandler().sendToServer(this, AppConstants.apiUlr + "candidate/experience/add", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
+          new ServerHandler().sendToServer(this, AppConstants.apiUlr + "candidate/experience/add", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
+              @Override
+              public void getRespone(String dta, ArrayList<Object> respons) {
+                  try {
+                      JSONObject obj = new JSONObject(dta);
+
+                      System.out.println("getPostionDataTypeApi====" + obj.toString());
+                      if (obj.getString("message").equalsIgnoreCase("User Experience Added")) {
+                          Toast.makeText(getApplicationContext(), obj.getString("message"),Toast.LENGTH_SHORT).show();
+                          startActivity(new Intent(getApplicationContext(), CandidateListActionaleActivityConvert.class));
+                          finish();
+
+                      } else {
+                          showErrorDialog(obj.getString("message"));
+                      }
+                  } catch (Exception e) {
+                      e.printStackTrace();
+                  }
+
+              }
+          });
+      }*/
+    public void getPostionDataTypeApi(String user_id, String company, String position, /*String started_at,
+                                    String ended_at,*/String description/*, File upload_file*/) {
+        BuildRequestParms buildRequestParms = new BuildRequestParms();
+
+        AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
+
+        Log.i("@@11", "11");
+
+        Observable<NewPostionExperience> observable = null;
+//
+
+
+        //  File file = new File(imagePathUrlAdhar);
+        //  Log.i("@@file", file.toString());
+        //  Log.i("@@NewPnExpeimagePa", imagePathUrlAdhar.toString());
+
+        // RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+        // MultipartBody.Part body = MultipartBody.Part.createFormData("upload_file", file.getName(), requestBody);
+
+
+        // System.out.println("NewPostionExperience====" + body);
+        observable = apiParamsInterface.candidateExperienceAdd(
+                buildRequestParms.getRequestBody(user_id),
+                buildRequestParms.getRequestBody(company),
+                buildRequestParms.getRequestBody(position),
+            /*  buildRequestParms.getRequestBody(started_at),
+              buildRequestParms.getRequestBody(ended_at),*/
+                buildRequestParms.getRequestBody(description)
+                // body
+
+
+        );
+
+        Log.i("@@NewPostionExperience", "NewPostionExperience");
+
+        final ProgressDialog mProgressDialog = new ProgressDialog(NewPostionScreen.this);
+        mProgressDialog.show();
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setTitle("Please wait..");
+
+        RxAPICallHelper.call(observable, new RxAPICallback<NewPostionExperience>() {
+
             @Override
-            public void getRespone(String dta, ArrayList<Object> respons) {
-                try {
-                    JSONObject obj = new JSONObject(dta);
+            public void onSuccess(NewPostionExperience uploadFileResponse) {
 
-                    System.out.println("getPostionDataTypeApi====" + obj.toString());
-                    if (obj.getString("message").equalsIgnoreCase("User Experience Added")) {
-                        Toast.makeText(getApplicationContext(), obj.getString("message"),Toast.LENGTH_SHORT).show();
+
+                mProgressDialog.dismiss();
+                System.out.println("@@newEXperienceModel" + "newEXperienceModel");
+                //    Toast.makeText(getActivity(), uploadFileResponse.toString(), Toast.LENGTH_SHORT).show();
+                System.out.println("@@newEXperienceModel" + uploadFileResponse.toString());
+                try {
+                    if (uploadFileResponse.getMsg().equalsIgnoreCase("User Experience Added")) {
+                        Toast.makeText(getApplicationContext(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(), CandidateListActionaleActivityConvert.class));
                         finish();
-
                     } else {
-                        showErrorDialog(obj.getString("message"));
+                        showErrorDialog(uploadFileResponse.getMsg());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
+
             }
+
+            @Override
+            public void onFailed(Throwable throwable) {
+                System.out.println("error===" + throwable.getMessage());
+                mProgressDialog.dismiss();
+
+            }
+
+
         });
-    }*/
-  public void getPostionDataTypeApi(String user_id, String company, String position, /*String started_at,
-                                    String ended_at,*/String description/*, File upload_file*/) {
-      BuildRequestParms buildRequestParms = new BuildRequestParms();
+    }
 
-      AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
-
-      Log.i("@@11", "11");
-
-      Observable<NewPostionExperience> observable = null;
-//
-
-
-    //  File file = new File(imagePathUrlAdhar);
-    //  Log.i("@@file", file.toString());
-    //  Log.i("@@NewPnExpeimagePa", imagePathUrlAdhar.toString());
-
-     // RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
-     // MultipartBody.Part body = MultipartBody.Part.createFormData("upload_file", file.getName(), requestBody);
-
-
-
-
-     // System.out.println("NewPostionExperience====" + body);
-      observable = apiParamsInterface.candidateExperienceAdd(
-              buildRequestParms.getRequestBody(user_id),
-              buildRequestParms.getRequestBody(company),
-              buildRequestParms.getRequestBody(position),
-            /*  buildRequestParms.getRequestBody(started_at),
-              buildRequestParms.getRequestBody(ended_at),*/
-              buildRequestParms.getRequestBody(description)
-             // body
-
-
-      );
-
-      Log.i("@@NewPostionExperience", "NewPostionExperience");
-
-      final ProgressDialog mProgressDialog = new ProgressDialog(NewPostionScreen.this);
-      mProgressDialog.show();
-      mProgressDialog.setCancelable(false);
-      mProgressDialog.setTitle("Please wait..");
-
-      RxAPICallHelper.call(observable, new RxAPICallback<NewPostionExperience>() {
-
-          @Override
-          public void onSuccess(NewPostionExperience uploadFileResponse) {
-
-
-              mProgressDialog.dismiss();
-              System.out.println("@@newEXperienceModel" + "newEXperienceModel");
-              //    Toast.makeText(getActivity(), uploadFileResponse.toString(), Toast.LENGTH_SHORT).show();
-              System.out.println("@@newEXperienceModel" + uploadFileResponse.toString());
-              try {
-                  if (uploadFileResponse.getMsg().equalsIgnoreCase("User Experience Added")) {
-                      Toast.makeText(getApplicationContext(), uploadFileResponse.getMsg(),Toast.LENGTH_SHORT).show();
-                      startActivity(new Intent(getApplicationContext(), CandidateListActionaleActivityConvert.class));
-                      finish();
-                  } else {
-                      showErrorDialog(uploadFileResponse.getMsg());
-                  }
-              } catch (Exception e) {
-                  e.printStackTrace();
-              }
-
-
-          }
-
-          @Override
-          public void onFailed(Throwable throwable) {
-              System.out.println("error===" + throwable.getMessage());
-              mProgressDialog.dismiss();
-
-          }
-
-
-      });
-  }
     private void setStartDateTimeField() {
 
         Calendar newCalendar = Calendar.getInstance();
@@ -434,6 +464,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
         );
 
     }
+
     private void setEndDateTimeField() {
 
 
@@ -462,6 +493,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
 
 
     }
+
     public void openDailogForImagePickOptionRegisterAdhar() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = inflater.inflate(R.layout.layout_popup_image_option, null, false);
@@ -489,6 +521,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
     }
+
     private void getImageFromCameraRegisterPicAdhar() {
 
 
@@ -501,12 +534,14 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFeatureUri);
         startActivityForResult(intent, IMAGE_REQUEST_CAMERA_register_adhar);
     }
+
     private void getImagefromGalleryRegisterIcAdhar() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_REQUEST_GALLERY_register_adhar);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -519,12 +554,12 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
             if (resultCode == RESULT_OK) {
                 final Uri selectedImage = data.getData();
 //                 performCrop(selectedImage);
-               // if (checkPermissionREAD_EXTERNAL_STORAGE(NewPostionScreen.this)) {
-                    // do your stuff..
-                try{
+                // if (checkPermissionREAD_EXTERNAL_STORAGE(NewPostionScreen.this)) {
+                // do your stuff..
+                try {
                     new SaveGalleryImageTaskRegisterPlateAdhar().execute(selectedImage);
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -533,6 +568,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
         }
 
     }
+
     ////Adhar
     class SaveCaputureImageTaskRegisterPlateAdhar extends AsyncTask<Void, Void, String> {
 
@@ -551,7 +587,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
             // File scaledFile = FileUtil.getFile(getApplicationContext());
             file1 = FileUtil.getFile(NewPostionScreen.this);
             imagePathUrlAdhar = file1.getAbsolutePath();
-            Log.i("@@FinallyGotSolution--",imagePathUrlAdhar);
+            Log.i("@@FinallyGotSolution--", imagePathUrlAdhar);
             try {
                 file1.createNewFile();
                 FileOutputStream ostream = new FileOutputStream(file1);
@@ -665,6 +701,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
         }
 
     }
+
     public boolean checkPermissionREAD_EXTERNAL_STORAGE(
             final Context context) {
         int currentAPIVersion = Build.VERSION.SDK_INT;
@@ -693,6 +730,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
             return true;
         }
     }
+
     private Bitmap decodeUri(String selectedImage) throws FileNotFoundException {
 
         // Decode image size
@@ -736,6 +774,7 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
         return bitmap;
 
     }
+
     public void showDialog(final String msg, final Context context,
                            final String permission) {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
@@ -753,4 +792,6 @@ public class NewPostionScreen extends BaseActivity implements View.OnClickListen
         AlertDialog alert = alertBuilder.create();
         alert.show();
     }
+
+
 }

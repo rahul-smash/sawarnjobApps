@@ -17,21 +17,42 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/toolar">
 
-        <!-- Add User TextView -->
+        <!-- LinearLayout containing TextView -->
+
+<RelativeLayout
+    android:layout_centerVertical="true"
+    android:layout_width="wrap_content"
+    android:layout_height="40dp">
+            <TextView
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:background="@color/colorWhite"
+                android:id="@+id/txtSummary"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:singleLine="true"
+                android:text="Add New"
+                android:textColor="@color/color_black"
+                android:textSize="12sp"
+                />
+
+        <!-- Add User TextView aligned to the right -->
         <TextView
+            android:layout_marginRight="2dp"
             android:id="@+id/txtAddUSer"
             style="@style/EditText.Login"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:gravity="center"
             android:singleLine="true"
             android:text="Add New"
             android:textColor="@color/colorWhite"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textSize="16sp"></TextView>
+</RelativeLayout>
     </RelativeLayout>
 
     <!-- Main Content LinearLayout -->
@@ -76,13 +97,13 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1.5"
-                    android:visibility="gone"
                     android:gravity="center"
                     android:maxLines="2"
                     android:text="Last Name"
                     android:textColor="@color/color_black"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <!-- DOB TextView -->
                 <TextView
@@ -138,7 +159,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </RelativeLayout>

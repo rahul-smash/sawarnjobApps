@@ -230,7 +230,39 @@
                     android:textColorHint="@color/color_dark_gray" />
 
             </com.google.android.material.textfield.TextInputLayout>
+            <Spinner
+                android:drawableRight="@drawable/ic_down"
+                android:layout_marginTop="10dp"
+                android:id="@+id/spinPaymentMethod"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edittext_bg"
+                android:gravity="center|left"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtInputAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:imeOptions="actionNext"
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false">
 
+                <EditText
+                    android:id="@+id/etAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edittext_bg"
+
+                    android:gravity="center|left"
+                    android:hint="Enter Amount"
+                    android:paddingTop="0dp"
+
+                    android:paddingBottom="0dp"
+                    android:singleLine="true"
+                    android:textColorHint="@color/color_dark_gray" />
+            </com.google.android.material.textfield.TextInputLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -108,9 +108,9 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     public static final String TAG = "PersonInfoActivity";
     private MainActivity mainActivity;
     View rootView;
-    TextInputLayout txtInputFirstName, txtInputLastName, txtInputEmail, txtInputPhone, txtInputStartDate, txtInputEndDate, txtInputLocation;
+    TextInputLayout txtInputAmount,txtInputFirstName, txtInputLastName, txtInputEmail, txtInputPhone, txtInputStartDate, txtInputEndDate, txtInputLocation;
     TextView verify_btn, txtADDFile, txtADDImage;
-    EditText etFirstName, etLastName, etEmail, etPhone, etStartDate, etLookingJobType, etLoction;
+    EditText etAmount,etFirstName, etLastName, etEmail, etPhone, etStartDate, etLookingJobType, etLoction;
     Calendar bookDateAndTime;
     private DatePickerDialog toDatePickerDialog;
     LinearLayout llAccount;
@@ -147,6 +147,9 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     String selectedGender;
     String selectedCity;
     String selectedCityId;
+    Spinner spinPaymentMethod;
+    String selectedPayment;
+
     public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
                 PersonInfoFragment.class.getName());
@@ -179,6 +182,9 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     }
 
     private void initView() {
+        txtInputAmount = rootView.findViewById(R.id.txtInputAmount);
+        etAmount = rootView.findViewById(R.id.etAmount);
+          spinPaymentMethod=rootView.findViewById(R.id.spinPaymentMethod);
         spinnerGender = rootView.findViewById(R.id.spinnerGender);
 
         citySpinner = rootView.findViewById(R.id.citySpinner);
@@ -206,6 +212,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         etLookingJobType = rootView.findViewById(R.id.etLookingJobType);
         etLoction = rootView.findViewById(R.id.etLocation);
         etStartDate.setOnClickListener(this);
+   //     etAmount.setText(todayCollection);
         // etEndDate.setOnClickListener(this);
         verify_btn.setOnClickListener(this);
         txtADDFile.setOnClickListener(this);
@@ -238,6 +245,40 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 // Optional: Handle the case when nothing is selected
             }
         });
+        // Array of school options
+        // Payment method array with a default prompt at the 0th index
+        String[] paymentMethod = {"Select Payment Method", "Cash", "Online", "Banking"};
+
+// Adapter for Spinner
+        ArrayAdapter<String> adapters = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, paymentMethod);
+        adapters.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // use dropdown layout
+
+// Set adapter to Spinner
+        spinPaymentMethod.setAdapter(adapters);
+
+// Set OnItemSelectedListener to Spinner
+        spinPaymentMethod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Check if the first item (index 0) is selected
+                if (position == 0) {
+                    // Handle case when "Select Payment Method" is selected (if needed)
+                    selectedPayment = null;
+                    Log.i("@@selectedPayment--", "No payment method selected");
+                } else {
+                    // Get the selected payment method
+                    selectedPayment = parent.getItemAtPosition(position).toString();
+                    Log.i("@@selectedPayment--", selectedPayment);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Optional: Handle the case when nothing is selected
+            }
+        });
+
+
     }
 
 
@@ -347,13 +388,18 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             if (etUploadAdharCard.getText().toString().length() <= 0) {
                 Toast.makeText(getActivity(), "Select AadharCard", Toast.LENGTH_SHORT).show();
                 return;
-            } else {
+            }   if (etAmount.getText().toString().length() <= 0) {
+                Toast.makeText(getActivity(), "Enter Amount", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            else {
                 Log.i("@@selectedGender",""+selectedGender);
                 Log.i("@@selectedStateId",""+selectedStateId);
                 Log.i("@@selectedCityId",""+selectedCityId);
                 getPersonalInfoApi(getLoginData("id"), etFirstName.getText().toString().trim()
                         , /*etLastName.getText().toString().trim(), */etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
-                        reformattedStr, etLookingJobType.getText().toString().trim(),selectedGender,selectedStateId,selectedCityId, etLoction.getText().toString().trim(), file1, filePathsss, file3);
+                        reformattedStr, etLookingJobType.getText().toString().trim(),selectedGender,selectedStateId,selectedCityId, etLoction.getText().toString().trim(),selectedPayment,etAmount.getText().toString().trim(), file1, filePathsss, file3);
             }
 
         }
@@ -508,128 +554,9 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
 
    //I am not using this method because resum,and profile_image are mnot need now.
-    public void getPersonalInfoApis(String admin_user_id, String first_name, String email, String phone,
-                                   String dob, String etLookingJobTypes,String gender,String state,String city, String location, File adhar, File reume, File adhars) {
 
-        BuildRequestParms buildRequestParms = new BuildRequestParms();
-        AppViewModel apiParamsInterface = ApiProductionS.getInstance(mainActivity).provideService(AppViewModel.class);
-
-        Log.i("getPersonalInfoApi", "API Call Initiated");
-
-        // Validate mandatory inputs to avoid crashes
-        if (admin_user_id == null || admin_user_id.isEmpty()) {
-            Log.e("getPersonalInfoApi", "Admin User ID is required.");
-            return;
-        }
-        if (first_name == null || first_name.isEmpty()) {
-            Log.e("getPersonalInfoApi", "First Name is required.");
-            return;
-        }
-     /*   if (email == null || email.isEmpty()) {
-            Log.e("getPersonalInfoApi", "Email is required.");
-            return;
-        }*/
-        if (phone == null || phone.isEmpty()) {
-            Log.e("getPersonalInfoApi", "Phone is required.");
-            return;
-        }
-
-        Observable<AttendanceModell> observable = null;
-        MultipartBody.Part adharPart = null;
-        // Handle Aadhaar file
-        if (adhar != null && adhar.exists()) {
-            RequestBody adharRequestBody = RequestBody.create(MediaType.parse("*/*"), adhar);
-            adharPart = MultipartBody.Part.createFormData("aadhar", adhar.getName(), adharRequestBody);
-            Log.i("@@adhar1__image", adhar.getAbsolutePath());
-            Log.i("@@adhars1__resume", adhar.getName());
-        } else {
-            Log.e("@@adhar1__image", "A valid Aadhaar file is required_1.");
-            return;
-        }
-// Resume file part from Uri
-        MultipartBody.Part resumePart = createMultipartFromUri(fileUri, "resume");
-        Log.i("@@adhar1__resume", resumePart.toString());
-        if (resumePart == null) {
-            Log.i("@@adhar1__resume_null", resumePart.toString());
-            return;
-        }
-
-
-        MultipartBody.Part adharParts = null;
-        // Handle Aadhaar file
-     //   if (adhars != null && adhars.exists()) {
-            RequestBody adharRequestBodys = RequestBody.create(MediaType.parse("*/*"), adhars);
-            adharParts = MultipartBody.Part.createFormData("profile_img", adhars.getName(), adharRequestBodys);
-            Log.i("@@adhars2__resume", adhars.getAbsolutePath());
-            Log.i("@@adhars2__resume", adhars.getName());
-       /* } else {
-            Log.i("@@getPersonalInfoApi", "A valid Aadhaars file is required_2");
-            return;
-        }*/
-
-        // Prepare additional file
-
-
-        // Making the API call
-        observable = apiParamsInterface.candiateAdd(
-                buildRequestParms.getRequestBody(admin_user_id),
-                buildRequestParms.getRequestBody(first_name),
-                buildRequestParms.getRequestBody(email),
-                buildRequestParms.getRequestBody(phone),
-                buildRequestParms.getRequestBody(dob),
-                buildRequestParms.getRequestBody(etLookingJobTypes),
-                buildRequestParms.getRequestBody(gender),
-                buildRequestParms.getRequestBody(state),
-                buildRequestParms.getRequestBody(city),
-                buildRequestParms.getRequestBody(location),
-                adharPart,
-                resumePart,
-                adharParts
-        );
-
-        Log.i("getPersonalInfoApi", "candiateAdd API called");
-
-        final ProgressDialog mProgressDialog = new ProgressDialog(getActivity());
-        mProgressDialog.show();
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.setTitle("Please wait...");
-
-        // API Call using RxJava Helper
-        RxAPICallHelper.call(observable, new RxAPICallback<AttendanceModell>() {
-
-            @Override
-            public void onSuccess(AttendanceModell uploadFileResponse) {
-                mProgressDialog.dismiss();
-
-                Log.i("getPersonalInfoApi", "API call successful: " + uploadFileResponse.toString());
-
-                try {
-                    if ("Email already exist".equalsIgnoreCase(uploadFileResponse.getMsg())) {
-                        Toast.makeText(getActivity(), uploadFileResponse.getMsg(), Toast.LENGTH_SHORT).show();
-                    } else if ("Candidate Created".equalsIgnoreCase(uploadFileResponse.getMsg())) {
-                        PrefHelper.getInstance().storeSharedValue("AppConstants.P_user_id", uploadFileResponse.getData().getUserID());
-                        //      Toast.makeText(getActivity(),  "Value here userId---"+PrefHelper.getInstance().getSharedValue("AppConstants.P_user_id"), Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getActivity(), CandidateEducation.class));
-                        getActivity().finish();
-                    } else {
-                        ((MainActivity) getActivity()).showErrorDialog(uploadFileResponse.getMsg());
-                    }
-                } catch (Exception e) {
-                    Log.e("getPersonalInfoApi", "Error processing response.", e);
-                    mProgressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onFailed(Throwable throwable) {
-                Log.e("getPersonalInfoApi", "API call failed: " + throwable.getMessage());
-                Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                mProgressDialog.dismiss();
-            }
-        });
-    }
     public void getPersonalInfoApi(String admin_user_id, String first_name, String email, String phone,
-                                   String dob, String etLookingJobTypes, String gender, String state, String city, String location,
+                                   String dob, String etLookingJobTypes, String gender, String state, String city, String location,String payment_method,String amount,
                                    File adhar, File resume, File profileImage) {
 
         BuildRequestParms buildRequestParms = new BuildRequestParms();
@@ -696,6 +623,8 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 buildRequestParms.getRequestBody(state),
                 buildRequestParms.getRequestBody(city),
                 buildRequestParms.getRequestBody(location),
+                buildRequestParms.getRequestBody(payment_method),
+                buildRequestParms.getRequestBody(amount),
                 adharPart,
                 resumePart,     // Optional
                 profileImagePart // Optional
@@ -1482,5 +1411,46 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             }
         });
     }
+    public void summery(String admin_user_id)
+    {
+        LinkedHashMap<String, String> m = new LinkedHashMap<>();
+        m.put("admin_user_id", admin_user_id);
 
+
+        Map<String, String> headerMap = new HashMap<>();
+
+        new ServerHandler().sendToServer(getActivity(), AppConstants.apiUlr+"today/summery", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
+            @Override
+            public void getRespone(String dta, ArrayList<Object> respons) {
+                try {
+                    System.out.println("summery===="+dta);
+                    JSONObject obj = new JSONObject(dta);
+                    // Get the "data" JSONObject
+                    JSONObject dataObj = obj.getJSONObject("data");
+
+                    // Fetch "today_collection" (it could be null, so handle it safely)
+                    Integer todayCollection = dataObj.isNull("today_collection") ? null : dataObj.getInt("today_collection");
+
+                    // Check if "today_collection" is null before using it
+                    if (todayCollection == null) {
+                        // Handle the case when "today_collection" is null
+                        Log.d("JSON Parsing", "today_collection is null");
+                        etAmount.setText("0"); // Set default value if null
+                    } else {
+                        // Use "today_collection" safely
+                        int todayCollectionValue = todayCollection; // This is safe because it's not null
+                        Log.d("JSON Parsing", "today_collection: " + todayCollectionValue);
+
+                        // Convert the integer to String before setting the text
+                        etAmount.setText(String.valueOf(todayCollectionValue));
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
 }

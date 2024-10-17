@@ -33,7 +33,8 @@ interface AppViewModel {
         @Part("state_id") state_id: RequestBody?,
         @Part("city_id") city_id: RequestBody?,
         @Part("address") address: RequestBody?,
-
+        @Part("payment_method") payment_method: RequestBody?,
+        @Part("amount") amount: RequestBody?,
         @Part aadhar: MultipartBody.Part?,
         @Part resume: MultipartBody.Part?,
         @Part profile_img: MultipartBody.Part?,
@@ -73,6 +74,8 @@ interface AppViewModel {
         @Part("gender") gender: RequestBody?,
         @Part("state_id") state_id: RequestBody?,
         @Part("city_id") city_id: RequestBody?,
+        @Part("payment_method") payment_method: RequestBody?,
+        @Part("amount") amount: RequestBody?,
         @Part aadhar: MultipartBody.Part?,
         @Part resume: MultipartBody.Part?,
         @Part profile_img: MultipartBody.Part?,

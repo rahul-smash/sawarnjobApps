@@ -42,7 +42,7 @@ public class CandidateListActionaleActivityConvert extends BaseActivity implemen
     private ImageView back_btn;
      CandidateSamriddhiActionAdadpterConvert candidateSamriddhiActionAdadpterConvert;
      CandidateListActionaleActivityConvert candidateSamraddhiActionaleActivity;
-    private TextView txtSignOut,txtAddUSer;
+    private TextView txtSignOut,txtAddUSer,txtSummary;
      MainActivity mainActivity;
     TextView customeToolbartext;
     private SwipeRefreshLayout srLayout;
@@ -61,6 +61,7 @@ public class CandidateListActionaleActivityConvert extends BaseActivity implemen
     @Override
     protected void setUp() {
         init();
+        summery(getLoginData("id"));
         getMember();
     }
 
@@ -85,11 +86,13 @@ public class CandidateListActionaleActivityConvert extends BaseActivity implemen
     public void onResume() {
         super.onResume();
         Log.i("@@PersonInfoActivity", "onResume---");
+        summery(getLoginData("id"));
         getMember();
     }
 
 
     private void init() {
+        txtSummary=findViewById(R.id.txtSummary);
         customeToolbartext=findViewById(R.id.customeToolbartext);
         srLayout = findViewById(R.id.srLayout);
         srLayout.setOnRefreshListener(this);
@@ -161,8 +164,10 @@ public class CandidateListActionaleActivityConvert extends BaseActivity implemen
                     System.out.println("wdcodes====" + dta);
                     JSONObject obj = new JSONObject(dta);
                     if (obj.getString("message") .equalsIgnoreCase("Candidate Listing")) {
+
                         JSONArray dataAr = obj.getJSONArray("data");
                         System.out.println("dataAr====" + dataAr);
+
                         showSamriddhiActionable(dataAr);
 
 
@@ -183,5 +188,48 @@ public class CandidateListActionaleActivityConvert extends BaseActivity implemen
         srLayout.setRefreshing(true);
 
         getMember();
+    }
+    public void summery(String admin_user_id) {
+        LinkedHashMap<String, String> m = new LinkedHashMap<>();
+        m.put("admin_user_id", admin_user_id);
+
+
+        Map<String, String> headerMap = new HashMap<>();
+
+        new ServerHandler().sendToServer(this, AppConstants.apiUlr + "today/summery", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
+            @Override
+            public void getRespone(String dta, ArrayList<Object> respons) {
+                try {
+                    System.out.println("summery====" + dta);
+                    JSONObject obj = new JSONObject(dta);
+                    // Get the "data" JSONObject
+                    JSONObject dataObj = obj.getJSONObject("data");
+
+                    // Fetch "today_collection" (it could be null, so handle it safely)
+                    Integer todayCollection = dataObj.isNull("today_collection") ? null : dataObj.getInt("today_collection");
+                    Integer today_submitted = dataObj.isNull("today_submitted") ? null : dataObj.getInt("today_submitted");
+
+                    // Check if "today_collection" is null before using it
+                    if (todayCollection == null) {
+                        // Handle the case when "today_collection" is null
+                        Log.d("JSON Parsing", "today_collection is null");
+                       // etAmount.setText("0"); // Set default value if null
+                    } else {
+                        // Use "today_collection" safely
+                        int todayCollectionValue = todayCollection; // This is safe because it's not null
+                        Log.d("JSON Parsing", "today_collection: " + todayCollectionValue);
+                        txtSummary.setText("Today from Submitted: "+today_submitted+ " | "+"Today Collection: "+todayCollectionValue);
+
+                        // Convert the integer to String before setting the text
+                     //   etAmount.setText(String.valueOf(todayCollectionValue));
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
 }

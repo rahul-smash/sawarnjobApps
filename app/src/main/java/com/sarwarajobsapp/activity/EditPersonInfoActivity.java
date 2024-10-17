@@ -98,9 +98,9 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
     public static final String TAG = "PersonInfoActivity";
     private MainActivity mainActivity;
     View rootView;
-    TextInputLayout txtInputAddress, txtInputFirstName, txtInputLastName, txtInputEmail, txtInputPhone, txtInputStartDate, txtInputEndDate, txtInputLocation;
+    TextInputLayout txtInputAmount,txtInputAddress, txtInputFirstName, txtInputLastName, txtInputEmail, txtInputPhone, txtInputStartDate, txtInputEndDate, txtInputLocation;
     TextView verify_btn, customeToolbartext, txtADDFile, txtADDImage;
-    EditText etFirstName, etLastName, etEmail, etPhone, etStartDate, etLookingJobType, etLoction, etAddress;
+    EditText etAmount,etFirstName, etLastName, etEmail, etPhone, etStartDate, etLookingJobType, etLoction, etAddress;
     Calendar bookDateAndTime;
     private DatePickerDialog toDatePickerDialog;
     LinearLayout llAccount;
@@ -140,6 +140,8 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
     String selectedGender;
     String selectedCity;
     Spinner stateSpinner, citySpinner;
+    Spinner spinPaymentMethod;
+    String selectedPayment;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,6 +173,9 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
     }
 
     private void initView() {
+        txtInputAmount = findViewById(R.id.txtInputAmount);
+        etAmount = findViewById(R.id.etAmount);
+        spinPaymentMethod=findViewById(R.id.spinPaymentMethod);
         spinnerGender = findViewById(R.id.spinnerGender);
 
         citySpinner = findViewById(R.id.citySpinner);
@@ -254,6 +259,36 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
                 Log.i("@@selectedGender-", selectedGender);
                 // Show selected item in a Toast
                 //  Toast.makeText(CandidateEducation.this, "Selected: " + selectedSchool, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Optional: Handle the case when nothing is selected
+            }
+        });
+        String[] paymentMethod = {"Select Payment Method", "Cash", "Online", "Banking"};
+
+// Adapter for Spinner
+        ArrayAdapter<String> adapters = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, paymentMethod);
+        adapters.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // use dropdown layout
+
+// Set adapter to Spinner
+        spinPaymentMethod.setAdapter(adapters);
+
+// Set OnItemSelectedListener to Spinner
+        spinPaymentMethod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Check if the first item (index 0) is selected
+                if (position == 0) {
+                    // Handle case when "Select Payment Method" is selected (if needed)
+                    selectedPayment = null;
+                    Log.i("@@selectedPayment--", "No payment method selected");
+                } else {
+                    // Get the selected payment method
+                    selectedPayment = parent.getItemAtPosition(position).toString();
+                    Log.i("@@selectedPayment--", selectedPayment);
+                }
             }
 
             @Override
@@ -359,10 +394,15 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
                 Toast.makeText(this, "Enter Location", Toast.LENGTH_SHORT).show();
 
                 return;
-            } else {
+            } if (etAmount.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter Amount", Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+            else {
                 getPersonalInfoApi(getClcikIDValue, etFirstName.getText().toString().trim()
                         , /*etLastName.getText().toString().trim(),*/ etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
-                        reformattedStr, etAddress.getText().toString().trim(), etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(),selectedGender,selectedStateId,selectedCityId, file1,filePathsss,file3);
+                        reformattedStr, etAddress.getText().toString().trim(), etLookingJobType.getText().toString().trim(), etLoction.getText().toString().trim(),selectedGender,selectedStateId,selectedCityId,selectedPayment,etAmount.getText().toString().trim(),  file1,filePathsss,file3);
             }
 
         }
@@ -448,7 +488,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
 
     public void getPersonalInfoApi(String admin_user_id, String first_name, String email, String phone,
                                    String dob, String etLookingJobTypes, String location, String description, String gender, String state, String city,
-                                   File adhar, File resume, File adhars) {
+                                   String payment_method,String amount, File adhar, File resume, File adhars) {
 
         BuildRequestParms buildRequestParms = new BuildRequestParms();
         AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
@@ -531,6 +571,8 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
                 buildRequestParms.getRequestBody(gender),
                 buildRequestParms.getRequestBody(state),
                 buildRequestParms.getRequestBody(city),
+                buildRequestParms.getRequestBody(payment_method),
+                buildRequestParms.getRequestBody(amount),
                 adharPart,
                 resumePart,
                 adharParts

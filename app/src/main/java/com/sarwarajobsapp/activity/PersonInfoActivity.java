@@ -101,9 +101,9 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     public static final String TAG = "PersonInfoActivity";
      MainActivity mainActivity;
     View rootView;
-    TextInputLayout txtInputFirstName, txtInputLastName, txtInputEmail, txtInputPhone, txtInputStartDate, txtInputEndDate, txtInputLocation;
+    TextInputLayout txtInputAmount,txtInputFirstName, txtInputLastName, txtInputEmail, txtInputPhone, txtInputStartDate, txtInputEndDate, txtInputLocation;
     TextView verify_btn,customeToolbartext,txtADDFile,txtADDImage;
-    EditText etFirstName, etLastName, etEmail, etPhone, etStartDate, etLookingJobType, etLoction;
+    EditText etAmount,etFirstName, etLastName, etEmail, etPhone, etStartDate, etLookingJobType, etLoction;
     Calendar bookDateAndTime;
      DatePickerDialog toDatePickerDialog;
     LinearLayout llAccount;
@@ -139,7 +139,8 @@ EditText etUploadAdharCard;
     String selectedGender;
     String selectedCity;
     Spinner stateSpinner, citySpinner;
-
+    Spinner spinPaymentMethod;
+    String selectedPayment;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,6 +180,9 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
     }
 
     private void initView() {
+        txtInputAmount = findViewById(R.id.txtInputAmount);
+        etAmount = findViewById(R.id.etAmount);
+        spinPaymentMethod=findViewById(R.id.spinPaymentMethod);
         spinnerGender = findViewById(R.id.spinnerGender);
 
         citySpinner = findViewById(R.id.citySpinner);
@@ -262,6 +266,37 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
                 // Optional: Handle the case when nothing is selected
             }
         });
+        String[] paymentMethod = {"Select Payment Method", "Cash", "Online", "Banking"};
+
+// Adapter for Spinner
+        ArrayAdapter<String> adapters = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, paymentMethod);
+        adapters.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // use dropdown layout
+
+// Set adapter to Spinner
+        spinPaymentMethod.setAdapter(adapters);
+
+// Set OnItemSelectedListener to Spinner
+        spinPaymentMethod.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Check if the first item (index 0) is selected
+                if (position == 0) {
+                    // Handle case when "Select Payment Method" is selected (if needed)
+                    selectedPayment = null;
+                    Log.i("@@selectedPayment--", "No payment method selected");
+                } else {
+                    // Get the selected payment method
+                    selectedPayment = parent.getItemAtPosition(position).toString();
+                    Log.i("@@selectedPayment--", selectedPayment);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Optional: Handle the case when nothing is selected
+            }
+        });
+
     }
 
 
@@ -356,15 +391,21 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
                 Toast.makeText(this, "Enter Location", Toast.LENGTH_SHORT).show();
 
                 return;
-            } if (etUploadAdharCard.getText().toString().length() <= 0) {
+            } if (etAmount.getText().toString().length() <= 0) {
+                Toast.makeText(this, "Enter Amount", Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+            if (etUploadAdharCard.getText().toString().length() <= 0) {
                 Toast.makeText(getApplicationContext(), "Select AadharCard", Toast.LENGTH_SHORT).show();
 
                 return;
             }
+
             else {
                 getPersonalInfoApi(getLoginData("id"), etFirstName.getText().toString().trim()
                         , /*etLastName.getText().toString().trim(), */etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
-                        reformattedStr, etLookingJobType.getText().toString().trim(),selectedGender,selectedStateId,selectedCityId, etLoction.getText().toString().trim(), file1,filePathsss,file3);
+                        reformattedStr, etLookingJobType.getText().toString().trim(),selectedGender,selectedStateId,selectedCityId, etLoction.getText().toString().trim(),selectedPayment,etAmount.getText().toString().trim(), file1,filePathsss,file3);
             }
 
         }
@@ -470,7 +511,7 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
     //I am not using this method because resum,and profile_image are mnot need now.
 
         public void getPersonalInfoApis(String admin_user_id, String first_name, String email, String phone,
-                                       String dob, String etLookingJobTypes,String gender,String state,String city, String location, File adhar, File reume,File adhars) {
+                                       String dob, String etLookingJobTypes,String gender,String state,String city, String location,String payment_method,String amount, File adhar, File reume,File adhars) {
 
             BuildRequestParms buildRequestParms = new BuildRequestParms();
             AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
@@ -543,6 +584,8 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
                     buildRequestParms.getRequestBody(state),
                     buildRequestParms.getRequestBody(city),
                     buildRequestParms.getRequestBody(location),
+                    buildRequestParms.getRequestBody(payment_method),
+                    buildRequestParms.getRequestBody(amount),
                     adharPart,
                     resumePart,
                     adharParts
@@ -592,7 +635,7 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
 
     public void getPersonalInfoApi(String admin_user_id, String first_name, String email, String phone,
                                    String dob, String etLookingJobTypes, String gender, String state, String city, String location,
-                                   File adhar, File resume, File profileImage) {
+                                   String payment_method,String amount,File adhar, File resume, File profileImage) {
 
         BuildRequestParms buildRequestParms = new BuildRequestParms();
         AppViewModel apiParamsInterface = ApiProductionS.getInstance(getApplicationContext()).provideService(AppViewModel.class);
@@ -658,6 +701,8 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
                 buildRequestParms.getRequestBody(state),
                 buildRequestParms.getRequestBody(city),
                 buildRequestParms.getRequestBody(location),
+                buildRequestParms.getRequestBody(payment_method),
+                buildRequestParms.getRequestBody(amount),
                 adharPart,
                 resumePart,     // Optional
                 profileImagePart // Optional

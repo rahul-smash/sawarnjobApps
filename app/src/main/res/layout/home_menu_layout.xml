@@ -96,8 +96,6 @@ android:layout_marginLeft="2dp"
                 android:text="Candidate List" />
 
         </LinearLayout>
-<<<<<<< HEAD
-=======
 
         <LinearLayout
             android:id="@+id/linearPrivacyPolicy"
@@ -130,7 +128,6 @@ android:layout_marginLeft="2dp"
         </LinearLayout>
 
 
->>>>>>> 76b77736fd1331d2a5818195084ba5ec3f313bfe
         <LinearLayout
             android:id="@+id/llLogout"
             android:layout_width="match_parent"

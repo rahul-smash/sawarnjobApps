@@ -164,8 +164,7 @@ public class ServerHandler {
             }
         }
     }
-<<<<<<< HEAD
-=======
+
     public void sendToServers(final Context ct, String url, final Map<String, String> data, final int showloader, final Map<String, String> headerData, final int requestType, int loaderLayout, final CallBack cb) {
         ct1 = ct;
         this.loaderLayout = loaderLayout;
@@ -282,7 +281,6 @@ public class ServerHandler {
             }
         }
     }
->>>>>>> 76b77736fd1331d2a5818195084ba5ec3f313bfe
 
     public String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
