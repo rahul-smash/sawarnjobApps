@@ -5,8 +5,6 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        // Downgrade to AGP 7.3.0-beta05
-        classpath 'com.android.tools.build:gradle:7.3.0-rc01'
 
         // Downgrade to AGP 7.3.0-beta05
         classpath 'com.android.tools.build:gradle:7.3.0-beta05'
@@ -28,4 +26,3 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
