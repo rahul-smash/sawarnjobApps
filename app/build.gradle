@@ -11,8 +11,8 @@ android {
         applicationId "com.sarwarajobsapp"
         minSdkVersion 21
         targetSdkVersion 34
-        versionCode 12
-        versionName "12.0"
+        versionCode 14
+        versionName "14.0"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

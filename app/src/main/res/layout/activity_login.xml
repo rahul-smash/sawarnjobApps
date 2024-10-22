@@ -8,11 +8,11 @@
 
     <ImageView
         android:id="@+id/iv_logo"
-        android:layout_width="300dp"
-        android:layout_height="100dp"
+        android:layout_width="400dp"
+        android:layout_height="125dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
-        android:src="@drawable/logosarwarajobs" />
+        android:src="@drawable/logosarwarajobs_new" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -132,7 +132,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="10dp"
 
-                android:background="@color/colorPrimary"
+                android:background="@color/buttonColor"
                 android:gravity="center"
                 android:text="Login"
                 android:textColor="@color/colorWhite"

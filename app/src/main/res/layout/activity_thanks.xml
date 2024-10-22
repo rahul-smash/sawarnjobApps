@@ -6,11 +6,11 @@
 
     <ImageView
         android:id="@+id/iv_logo"
-        android:layout_width="300dp"
-        android:layout_height="100dp"
+        android:layout_width="400dp"
+        android:layout_height="125dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
-        android:src="@drawable/logosarwarajobs" />
+        android:src="@drawable/logosarwarajobs_new" />
 
     <TextView
         android:layout_width="match_parent"
