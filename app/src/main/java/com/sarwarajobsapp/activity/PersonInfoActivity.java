@@ -1307,7 +1307,7 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
     private void fetchStates() {
         OkHttpClient client = new OkHttpClient();
 
-        String url = "https://sarwarajobs.com/api/v1/app/state/8";
+        String url = "https://career-finder.co.in/api/v1/app/state/8";
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -1397,7 +1397,7 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
     private void fetchCitiesForState(String stateId) {
         OkHttpClient client = new OkHttpClient();
 
-        String url = "https://sarwarajobs.com/api/v1/app/cities/" + stateId;  // Use the selected stateId in the URL
+        String url = "https://career-finder.co.in/api/v1/app/cities/" + stateId;  // Use the selected stateId in the URL
         Request request = new Request.Builder()
                 .url(url)
                 .build();

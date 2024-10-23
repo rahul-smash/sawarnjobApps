@@ -10,7 +10,7 @@ public class AppConstants {
    // public static String apiUlr="https://career-finder.co.in/";
 
 
-    public static String apiUlr=" https://career-finder.co.in/";
+    public static String apiUlr="https://career-finder.co.in/api/v1/app/";
     public static  String logindata="logindata";
 
 

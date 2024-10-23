@@ -1222,7 +1222,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         ProgressDialogUtil.showProgressDialog(getActivity());
 
         OkHttpClient client = new OkHttpClient();
-        String url = "https://sarwarajobs.com/api/v1/app/state/8";
+        String url = "https://career-finder.co.in/api/v1/app/state/8";
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -1323,7 +1323,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         ProgressDialogUtil.showProgressDialog(getActivity());
 
         OkHttpClient client = new OkHttpClient();
-        String url = "https://sarwarajobs.com/api/v1/app/cities/" + stateId;
+        String url = "https://career-finder.co.in/api/v1/app/cities/" + stateId;
         Request request = new Request.Builder()
                 .url(url)
                 .build();
