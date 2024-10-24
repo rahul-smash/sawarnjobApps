@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "565316116435",
-    "project_id": "sarwarajobsapp",
-    "storage_bucket": "sarwarajobsapp.appspot.com"
+    "project_number": "683140980159",
+    "project_id": "careerfinder-251b8",
+    "storage_bucket": "careerfinder-251b8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:565316116435:android:a61f8a1f68b5eadf911926",
+        "mobilesdk_app_id": "1:683140980159:android:384c7d18629698a1d2150a",
         "android_client_info": {
-          "package_name": "com.sarwarajobsapp"
+          "package_name": "com.careerfinder"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAH6pWfd1f5OyNgqzZ6CTQ79UqTBOgMqnw"
+          "current_key": "AIzaSyBVvz8o6ZYM_Of2IsLitSbiIeo1XeU7kQc"
         }
       ],
       "services": {
