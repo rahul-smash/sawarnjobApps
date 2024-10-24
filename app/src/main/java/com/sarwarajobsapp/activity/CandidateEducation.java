@@ -190,6 +190,7 @@ public class CandidateEducation extends BaseActivity implements View.OnClickList
     public void onResume() {
         super.onResume();
         Log.i("@@CanddiateActivity", "onResume---");
+
         //verifyStoragePermissions(CandidateEducation.this);
 
     }
