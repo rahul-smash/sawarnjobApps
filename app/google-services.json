@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:683140980159:android:2f99ed90df1f193ed2150a",
+        "android_client_info": {
+          "package_name": "com.career"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVvz8o6ZYM_Of2IsLitSbiIeo1XeU7kQc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:683140980159:android:384c7d18629698a1d2150a",
         "android_client_info": {
           "package_name": "com.careerfinder"
