@@ -682,14 +682,24 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
         }
 
         // Handle resume file (optional)
-        if (resume != null && resume.exists()) {
-            RequestBody resumeRequestBody = RequestBody.create(MediaType.parse("*/*"), resume);
-            resumePart = MultipartBody.Part.createFormData("resume", resume.getName(), resumeRequestBody);
-            Log.i("@@resume__file", resume.getAbsolutePath());
-        } else {
-            Log.i("@@resume__file", "Resume file is null or doesn't exist.");
-        }
+        //if (resume != null && resume.exists()) {
+       //     RequestBody resumeRequestBody = RequestBody.create(MediaType.parse("*/*"), resume);
+         //   resumePart = MultipartBody.Part.createFormData("resume", resume.getName(), resumeRequestBody);
+         //   Log.i("@@resume__file", resume.getAbsolutePath());
+        //} else {
+      //      Log.i("@@resume__file", "Resume file is null or doesn't exist.");
+      //  }
+        resumePart = createMultipartFromUri(fileUri, "resume");
 
+        // Check if resumePart is null before calling toString()
+        if (resumePart == null) {
+            Log.i("@@resumePart", "resumePart is null; sending an empty part.");
+            // Create an empty MultipartBody.Part if resumePart is null
+            RequestBody emptyRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), ""); // Empty body
+            resumePart = MultipartBody.Part.createFormData("resume", "", emptyRequestBody);
+        } else {
+            Log.i("@@resumePart", resumePart.toString()); // Log the valid resumePart
+        }
         // Handle profile image file (optional)
         if (profileImage != null && profileImage.exists()) {
             RequestBody profileImageRequestBody = RequestBody.create(MediaType.parse("*/*"), profileImage);

@@ -132,8 +132,6 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     public static final int PICKFILE_RESULT_CODE = 1;
     ArrayList<String> docPaths;
     private int REQUEST_CODE_OPEN = 101;
-    String type;
-    Uri fileUriii;
     Uri fileUri;
     MultipartBody.Part bodyAdharfileupload_resume;
     File filePathsss;
@@ -149,7 +147,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     String selectedCityId;
     Spinner spinPaymentMethod;
     String selectedPayment;
-
+    File resumed;
     public static Fragment newInstance(Context context) {
         return Fragment.instantiate(context,
                 PersonInfoFragment.class.getName());
@@ -177,7 +175,6 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         super.onResume();
         Log.i("@@PersonInfofragment", "onResume---");
 
-      //  fetchStates();
 
     }
 
@@ -397,6 +394,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 Log.i("@@selectedGender",""+selectedGender);
                 Log.i("@@selectedStateId",""+selectedStateId);
                 Log.i("@@selectedCityId",""+selectedCityId);
+                Log.i("@@selectedfilePaths",""+filePathsss);
                 getPersonalInfoApi(getLoginData("id"), etFirstName.getText().toString().trim()
                         , /*etLastName.getText().toString().trim(), */etEmail.getText().toString().trim(), etPhone.getText().toString().trim(),
                         reformattedStr, etLookingJobType.getText().toString().trim(),selectedGender,selectedStateId,selectedCityId, etLoction.getText().toString().trim(),selectedPayment,etAmount.getText().toString().trim(), file1, filePathsss, file3);
@@ -404,157 +402,6 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
         }
     }
-
-    public String getPDFPath(Uri uri) {
-        String uriAuthority = uri.getAuthority();
-
-        if ("com.android.providers.downloads.documents".equals(uriAuthority)) {
-            return getDownloadsDocumentPath(uri);
-        } else if ("com.android.providers.media.documents".equals(uriAuthority)) {
-            return getMediaDocumentPath(uri);
-        } else if ("com.android.externalstorage.documents".equals(uriAuthority)) {
-            return getExternalStorageDocumentPath(uri);
-        }
-
-        return null;
-    }
-
-    private String getDownloadsDocumentPath(Uri uri) {
-        String id = DocumentsContract.getDocumentId(uri);
-        String[] split = id.split(":");
-        String actualId = split.length > 1 ? split[1] : split[0];
-
-        Uri contentUri = ContentUris.withAppendedId(
-                Uri.parse("content://downloads/public_downloads"), Long.parseLong(actualId));
-
-        return getDataColumn(contentUri);
-    }
-
-    private String getMediaDocumentPath(Uri uri) {
-        String docId = DocumentsContract.getDocumentId(uri);
-        String[] split = docId.split(":");
-        String type = split[0];
-        Uri contentUri = null;
-
-        if ("image".equals(type)) {
-            contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        } else if ("video".equals(type)) {
-            contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-        } else if ("audio".equals(type)) {
-            contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        }
-
-        String selection = "_id=?";
-        String[] selectionArgs = new String[]{split[1]};
-
-        return getDataColumn(contentUri, selection, selectionArgs);
-    }
-
-    private String getExternalStorageDocumentPath(Uri uri) {
-        String docId = DocumentsContract.getDocumentId(uri);
-        String[] split = docId.split(":");
-        String type = split[0];
-
-        if ("primary".equalsIgnoreCase(type)) {
-            return Environment.getExternalStorageDirectory() + "/" + split[1];
-        }
-
-        return null;
-    }
-
-    private String getDataColumn(Uri uri) {
-        String[] projection = {MediaStore.Images.Media.DATA};
-        try (Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null)) {
-            if (cursor != null && cursor.moveToFirst()) {
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                return cursor.getString(column_index);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private String getDataColumn(Uri uri, String selection, String[] selectionArgs) {
-        String[] projection = {MediaStore.Images.Media.DATA};
-        try (Cursor cursor = getActivity().getContentResolver().query(uri, projection, selection, selectionArgs, null)) {
-            if (cursor != null && cursor.moveToFirst()) {
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                return cursor.getString(column_index);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    @SuppressLint("Range")
-    public String getFileName(Uri uri) {
-        String result = null;
-        if (uri.getScheme().equals("content")) {
-            Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
-            try {
-                if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                }
-            } finally {
-                cursor.close();
-            }
-        }
-        if (result == null) {
-            result = uri.getPath();
-            int cut = result.lastIndexOf('/');
-            if (cut != -1) {
-                result = result.substring(cut + 1);
-            }
-        }
-        return result;
-    }
-
-    public String getLoginData(String dataType) {
-        try {
-            JSONObject data = new JSONObject(new SavePreferences().reterivePreference(getActivity(), AppConstants.logindata).toString());
-            return data.getString(dataType);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return "";
-    }
-
-    private void setStartDateTimeField() {
-        Calendar newCalendar = Calendar.getInstance();
-
-        toDatePickerDialog = new DatePickerDialog(getActivity(),
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        // Set the date on the Calendar instance
-                        bookDateAndTime = Calendar.getInstance();
-                        bookDateAndTime.set(year, monthOfYear, dayOfMonth);
-
-                        // Use a SimpleDateFormat to correctly format the date
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                        String formattedDate = dateFormat.format(bookDateAndTime.getTime());
-
-                        // Set the formatted date to the EditText
-                        etStartDate.setText(formattedDate);
-                    }
-                },
-                newCalendar.get(Calendar.YEAR),
-                newCalendar.get(Calendar.MONTH),
-                newCalendar.get(Calendar.DAY_OF_MONTH)
-        );
-    }
-
-
-//for photo code
-
-
-   //I am not using this method because resum,and profile_image are mnot need now.
-
     public void getPersonalInfoApi(String admin_user_id, String first_name, String email, String phone,
                                    String dob, String etLookingJobTypes, String gender, String state, String city, String location,String payment_method,String amount,
                                    File adhar, File resume, File profileImage) {
@@ -596,15 +443,27 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             Log.e("@@adhar__image", "A valid Aadhaar file is required.");
             return;
         }
+        // Create resumePart from the file URI
+        resumePart = createMultipartFromUri(fileUri, "resume");
+
+        // Check if resumePart is null before calling toString()
+        if (resumePart == null) {
+            Log.i("@@resumePart", "resumePart is null; sending an empty part.");
+            // Create an empty MultipartBody.Part if resumePart is null
+            RequestBody emptyRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), ""); // Empty body
+            resumePart = MultipartBody.Part.createFormData("resume", "", emptyRequestBody);
+        } else {
+            Log.i("@@resumePart", resumePart.toString()); // Log the valid resumePart
+        }
 
         // Handle resume file (optional)
-        if (resume != null && resume.exists()) {
-            RequestBody resumeRequestBody = RequestBody.create(MediaType.parse("*/*"), resume);
-            resumePart = MultipartBody.Part.createFormData("resume", resume.getName(), resumeRequestBody);
-            Log.i("@@resume__file", resume.getAbsolutePath());
-        } else {
-            Log.i("@@resume__file", "Resume file is null or doesn't exist.");
-        }
+       // if (resume != null&& resume.exists()) {
+         //   RequestBody resumeRequestBody = RequestBody.create(MediaType.parse("*/*"), resume);
+       //     resumePart = MultipartBody.Part.createFormData("resume", resume.getName(), resumeRequestBody);
+        //    Log.i("@@resume__file", resume.getAbsolutePath());
+       // } else {
+      //      Log.i("@@resume__file", "Resume file is null or doesn't exist.");
+      //  }
 
         // Handle profile image file (optional)
         if (profileImage != null && profileImage.exists()) {
@@ -675,6 +534,8 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         });
     }
 
+
+
     private MultipartBody.Part createMultipartFromUri(Uri fileUri, String paramName) {
         try {
             // Open InputStream from the Uri
@@ -704,22 +565,90 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             return null;
         }
     }
+    private String getDataColumn(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        try (Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                return cursor.getString(column_index);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-    private String getDate(String date) {
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd hh:mm:ss");
-        Date myDate = null;
+
+    @SuppressLint("Range")
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
+    public String getLoginData(String dataType) {
         try {
-            myDate = dateFormat.parse(date);
+            JSONObject data = new JSONObject(new SavePreferences().reterivePreference(getActivity(), AppConstants.logindata).toString());
+            return data.getString(dataType);
 
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return timeFormat.format(myDate).toString();
+        return "";
     }
+
+    private void setStartDateTimeField() {
+        Calendar newCalendar = Calendar.getInstance();
+
+        toDatePickerDialog = new DatePickerDialog(getActivity(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        // Set the date on the Calendar instance
+                        bookDateAndTime = Calendar.getInstance();
+                        bookDateAndTime.set(year, monthOfYear, dayOfMonth);
+
+                        // Use a SimpleDateFormat to correctly format the date
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                        String formattedDate = dateFormat.format(bookDateAndTime.getTime());
+
+                        // Set the formatted date to the EditText
+                        etStartDate.setText(formattedDate);
+                    }
+                },
+                newCalendar.get(Calendar.YEAR),
+                newCalendar.get(Calendar.MONTH),
+                newCalendar.get(Calendar.DAY_OF_MONTH)
+        );
+    }
+
+
+//for photo code
+
+
+
+
+
+
+
 
     public void openDailogForImagePickOptionRegisterAdhar() {
         LayoutInflater inflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -806,9 +735,18 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             Log.i("@@FileUri", "File Uri: " + fileUri);
 
             // Convert URI to file path and display in the TextView
-            File filePath = new File(fileUri.getPath());
-            Log.i("@@FilePath", "File Path: " + filePath);
-            txtUploadResume.setText(getFileName(fileUri));
+           filePathsss = new File(fileUri.getPath());
+            String filePaths = String.valueOf(filePathsss); // Get the file path
+            Log.i("@@FilePath", "File Path: " + filePaths);
+            Log.i("@@filePathsss", "filePathsss Path: " + filePathsss);
+            if (filePaths != null) {
+                 resumed = new File(filePaths); // Store the resume file
+                Log.i("@@ResumeFile", "Selected file exists: " + this.resumed.getAbsolutePath());
+                txtUploadResume.setText(getFileName(fileUri)); // Update UI
+            } else {
+                Log.e("@@ResumeFile", "Could not get the file path from URI.");
+            }
+           // txtUploadResume.setText(getFileName(fileUri));
         }
         // Check if the request is for capturing image using the camera (Adhars)
         else if (requestCode == IMAGE_REQUEST_CAMERA_register_adhars && resultCode == RESULT_OK) {
@@ -1009,23 +947,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
 
     }
 
-    public void showDialog(final String msg, final Context context,
-                           final String permission) {
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
-        alertBuilder.setCancelable(true);
-        alertBuilder.setTitle("Permission necessary");
-        alertBuilder.setMessage(msg + " permission is necessary");
-        alertBuilder.setPositiveButton(android.R.string.yes,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions((Activity) context,
-                                new String[]{permission},
-                                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                    }
-                });
-        AlertDialog alert = alertBuilder.create();
-        alert.show();
-    }
+
 
 
     public void openDailogForImagePickOptionRegisterAdhars() {
@@ -1415,46 +1337,5 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             }
         });
     }
-    public void summery(String admin_user_id)
-    {
-        LinkedHashMap<String, String> m = new LinkedHashMap<>();
-        m.put("admin_user_id", admin_user_id);
 
-
-        Map<String, String> headerMap = new HashMap<>();
-
-        new ServerHandler().sendToServer(getActivity(), AppConstants.apiUlr+"today/summery", m, 0, headerMap, 20000, R.layout.loader_dialog, new CallBack() {
-            @Override
-            public void getRespone(String dta, ArrayList<Object> respons) {
-                try {
-                    System.out.println("summery===="+dta);
-                    JSONObject obj = new JSONObject(dta);
-                    // Get the "data" JSONObject
-                    JSONObject dataObj = obj.getJSONObject("data");
-
-                    // Fetch "today_collection" (it could be null, so handle it safely)
-                    Integer todayCollection = dataObj.isNull("today_collection") ? null : dataObj.getInt("today_collection");
-
-                    // Check if "today_collection" is null before using it
-                    if (todayCollection == null) {
-                        // Handle the case when "today_collection" is null
-                        Log.d("JSON Parsing", "today_collection is null");
-                        etAmount.setText("0"); // Set default value if null
-                    } else {
-                        // Use "today_collection" safely
-                        int todayCollectionValue = todayCollection; // This is safe because it's not null
-                        Log.d("JSON Parsing", "today_collection: " + todayCollectionValue);
-
-                        // Convert the integer to String before setting the text
-                        etAmount.setText(String.valueOf(todayCollectionValue));
-                    }
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-    }
 }

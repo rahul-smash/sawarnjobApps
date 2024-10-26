@@ -550,14 +550,25 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
 
         // Prepare resume part if the file exists
         MultipartBody.Part resumePart = null;
-        if (resume != null && resume.exists()) {
-            RequestBody resumeRequestBody = RequestBody.create(MediaType.parse("*/*"), resume);
-            resumePart = MultipartBody.Part.createFormData("resume", resume.getName(), resumeRequestBody);
-            Log.i("@@resume_file", resume.getAbsolutePath());
-        } else {
-            Log.i("@@resume_file", "No Resume file provided.");
-        }
+     //   if (resume != null && resume.exists()) {
+      //      RequestBody resumeRequestBody = RequestBody.create(MediaType.parse("*/*"), resume);
+       //     resumePart = MultipartBody.Part.createFormData("resume", resume.getName(), resumeRequestBody);
+       //     Log.i("@@resume_file", resume.getAbsolutePath());
+      //  } else {
+        //    Log.i("@@resume_file", "No Resume file provided.");
+      //  }
+        // Create resumePart from the file URI
+        resumePart = createMultipartFromUri(fileUri, "resume");
 
+        // Check if resumePart is null before calling toString()
+        if (resumePart == null) {
+            Log.i("@@resumePart", "resumePart is null; sending an empty part.");
+            // Create an empty MultipartBody.Part if resumePart is null
+            RequestBody emptyRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), ""); // Empty body
+            resumePart = MultipartBody.Part.createFormData("resume", "", emptyRequestBody);
+        } else {
+            Log.i("@@resumePart", resumePart.toString()); // Log the valid resumePart
+        }
         // Prepare profile image part if the file exists
         MultipartBody.Part adharParts = null;
         if (adhars != null && adhars.exists()) {
