@@ -142,6 +142,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
     Spinner stateSpinner, citySpinner;
     Spinner spinPaymentMethod;
     String selectedPayment;
+    String selectedStateName;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,7 +168,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
     //  @Override
     public void onResume() {
         super.onResume();
-        fetchStates();
+      //  fetchStates();
         Log.i("@@PersonInfoActivity", "onResume---");
 
     }
@@ -522,7 +523,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
             return; // Exit if Aadhaar is not provided or invalid
         }
         // Validate state and city
-        if (state == null || state.isEmpty()) {
+        if (selectedStateName == null || selectedStateName.isEmpty()) {
             Log.e("getPersonalInfoApi", "State is required.");
             Toast.makeText(getApplicationContext(), "State is required.", Toast.LENGTH_SHORT).show();
             return; // Exit if state is not provided
@@ -1239,7 +1240,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) { // Ignore the "Select State" option
-                    String selectedStateName = stateNames.get(position);
+                     selectedStateName = stateNames.get(position);
                     selectedStateId = stateMap.get(selectedStateName);  // Get the state ID from the map
 
                     Log.i("@@selectedState", "State Name: " + selectedStateName + ", State ID: " + selectedStateId);

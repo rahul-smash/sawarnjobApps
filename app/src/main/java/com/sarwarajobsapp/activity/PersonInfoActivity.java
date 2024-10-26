@@ -141,6 +141,7 @@ EditText etUploadAdharCard;
     Spinner stateSpinner, citySpinner;
     Spinner spinPaymentMethod;
     String selectedPayment;
+    String selectedStateName;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,7 +175,7 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
   //  @Override
     public void onResume() {
         super.onResume();
-        fetchStates();
+      //  fetchStates();
         Log.i("@@PersonInfoActivity", "onResume---");
 
     }
@@ -655,7 +656,16 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
             Log.e("getPersonalInfoApi", "Phone is required.");
             return;
         }
-
+        if (selectedStateName == null || selectedStateName.isEmpty()) {
+            Log.e("getPersonalInfoApi", "State is required.");
+            Toast.makeText(getApplicationContext(), "State is required.", Toast.LENGTH_SHORT).show();
+            return; // Exit if state is not provided
+        }
+        if (city == null || city.isEmpty()) {
+            Log.e("getPersonalInfoApi", "City is required.");
+            Toast.makeText(getApplicationContext(), "City is required.", Toast.LENGTH_SHORT).show();
+            return; // Exit if city is not provided
+        }
         Observable<AttendanceModell> observable = null;
         MultipartBody.Part adharPart = null;
         MultipartBody.Part resumePart = null;
@@ -1376,7 +1386,7 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) { // Ignore the "Select State" option
-                    String selectedStateName = stateNames.get(position);
+                     selectedStateName = stateNames.get(position);
                     selectedStateId = stateMap.get(selectedStateName);  // Get the state ID from the map
 
                     Log.i("@@selectedState", "State Name: " + selectedStateName + ", State ID: " + selectedStateId);

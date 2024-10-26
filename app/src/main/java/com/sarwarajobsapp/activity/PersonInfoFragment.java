@@ -142,7 +142,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
     String selectedState;
     private Map<String, String> stateMap = new HashMap<>();  // Map to store state name and ID
      String selectedStateId;  // Variable to store selected state's ID
-
+    String selectedStateName;
     Spinner spinnerGender;
     String selectedGender;
     String selectedCity;
@@ -177,7 +177,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         super.onResume();
         Log.i("@@PersonInfofragment", "onResume---");
 
-        fetchStates();
+      //  fetchStates();
 
     }
 
@@ -361,7 +361,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 return;
             }
             // Validate State Spinner
-           /* if (selectedStateId == null || selectedStateId.equals("Select State")) {
+           if (selectedStateName == null || selectedStateName.equals("Select State")) {
                 Toast.makeText(getActivity(), "Select a State", Toast.LENGTH_SHORT).show();
 
                 return ;
@@ -379,7 +379,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
                 Toast.makeText(getActivity(), "Select Gender", Toast.LENGTH_SHORT).show();
 
                 return ;
-            }*/
+            }
             if (etLoction.getText().toString().length() <= 0) {
                 Toast.makeText(getActivity(), "Enter Location", Toast.LENGTH_SHORT).show();
 
@@ -1300,7 +1300,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) { // Ignore the "Select State" option
-                    String selectedStateName = stateNames.get(position);
+                     selectedStateName = stateNames.get(position);
                     selectedStateId = stateMap.get(selectedStateName);  // Get the state ID from the map
 
                     Log.i("@@selectedState", "State Name: " + selectedStateName + ", State ID: " + selectedStateId);
