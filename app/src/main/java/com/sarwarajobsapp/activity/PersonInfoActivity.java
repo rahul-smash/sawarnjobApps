@@ -242,7 +242,7 @@ Log.i("@@@@@@@FirstName--",getIntent().getStringExtra("FirstName")+getIntent().g
                 fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();*/
             }
         });
-        String[] schoolOptions = {"Male", "Female",};
+        String[] schoolOptions = {"male", "female",};
 
         // Adapter for Spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, schoolOptions);

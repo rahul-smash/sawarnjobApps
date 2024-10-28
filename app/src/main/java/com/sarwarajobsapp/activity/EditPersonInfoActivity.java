@@ -247,7 +247,7 @@ public class EditPersonInfoActivity extends BaseActivity implements View.OnClick
 
             }
         });
-        String[] schoolOptions = {"Male", "Female",};
+        String[] schoolOptions = {"male", "female",};
 
         // Adapter for Spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, schoolOptions);

@@ -217,7 +217,7 @@ public class PersonInfoFragment extends Fragment implements View.OnClickListener
         txtADDImage.setOnClickListener(this);
 
         // Array of school options
-        String[] schoolOptions = {"Male", "Female",};
+        String[] schoolOptions = {"male", "female",};
 
         // Adapter for Spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, schoolOptions);
